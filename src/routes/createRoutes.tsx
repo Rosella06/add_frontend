@@ -21,6 +21,36 @@ const router = () =>
               path: '/',
               element: <Home />,
               errorElement: <ErrorPage />
+            },
+            {
+              path: '/refill',
+              element: <div>Refill</div>,
+              errorElement: <ErrorPage />
+            },
+            {
+              path: '/drugs',
+              element: <div>Drug</div>,
+              errorElement: <ErrorPage />
+            },
+            {
+              path: '/inventory',
+              element: <div>Inventory</div>,
+              errorElement: <ErrorPage />
+            },
+            {
+              path: '/machine',
+              element: <div>Machine</div>,
+              errorElement: <ErrorPage />
+            },
+            {
+              path: '/user',
+              element: <div>User</div>,
+              errorElement: <ErrorPage />
+            },
+            {
+              path: '/settings',
+              element: <div>Settings</div>,
+              errorElement: <ErrorPage />
             }
           ]
         }

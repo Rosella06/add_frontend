@@ -91,7 +91,9 @@ const Login = () => {
       <div className='card w-full rounded-[32px] sm:rounded-[48px] max-w-lg bg-base-100 shadow-xl'>
         <div className='card-body p-8 sm:p-12'>
           <div className='text-center mb-6'>
-            <h1 className='text-5xl font-bold text-primary'>ADD</h1>
+            <h1 className='text-5xl font-bold text-primary'>
+              <BiSolidDownArrow className='text-center w-full' />
+            </h1>
             <p className='text-lg text-base-content/60 mt-2'>
               {t('loginDescription')}
             </p>
