@@ -1,0 +1,168 @@
+import axios, { AxiosError } from 'axios'
+import { ChangeEvent, FormEvent, useState } from 'react'
+import { ApiResponse } from '../../types/api.response.type'
+import { LoginResponse } from '../../types/login.type'
+import {
+  accessToken,
+  cookieOptions,
+  cookies
+} from '../../constants/utils/utilsConstants'
+import { useDispatch } from 'react-redux'
+import { setCookieEncode } from '../../redux/actions/utilsActions'
+import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import { BiLockAlt, BiSolidDownArrow, BiUser } from 'react-icons/bi'
+import { showToast } from '../../constants/utils/toast'
+
+const Login = () => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const { t } = useTranslation()
+  const [userLogin, setUserLogin] = useState({
+    userName: '',
+    userPassword: ''
+  })
+  const [loading, setLoading] = useState(false)
+
+  const handleLogin = async (e: FormEvent) => {
+    e.preventDefault()
+    setLoading(true)
+
+    if (userLogin.userName === '' && userLogin.userPassword === '') {
+      alert('Please complete all field!')
+      return
+    }
+
+    try {
+      const result = await axios.post<ApiResponse<LoginResponse>>(
+        `${import.meta.env.VITE_APP_API}/auth/login`,
+        userLogin
+      )
+
+      const { displayName, id, token, userImage, userRole, userStatus } =
+        result.data.data
+
+      const tokenObject = {
+        id,
+        displayName,
+        userImage,
+        userRole,
+        userStatus,
+        token
+      }
+
+      cookies.set(
+        'tokenObject',
+        String(accessToken(tokenObject)),
+        cookieOptions
+      )
+      cookies.update()
+      dispatch(setCookieEncode(String(accessToken(tokenObject))))
+      navigate(`/`)
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        showToast({
+          type: 'error',
+          icon: BiSolidDownArrow,
+          message: error.response?.data.message,
+          duration: 5000
+        })
+      } else {
+        console.error(error)
+      }
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target
+
+    setUserLogin(prev => ({
+      ...prev,
+      [name]: value
+    }))
+  }
+
+  return (
+    <div className='min-h-screen flex justify-center items-center bg-base-200 p-4'>
+      <div className='card w-full rounded-[32px] sm:rounded-[48px] max-w-lg bg-base-100 shadow-xl'>
+        <div className='card-body p-8 sm:p-12'>
+          <div className='text-center mb-6'>
+            <h1 className='text-5xl font-bold text-primary'>ADD</h1>
+            <p className='text-lg text-base-content/60 mt-2'>
+              {t('loginDescription')}
+            </p>
+          </div>
+
+          <form onSubmit={handleLogin} className='flex flex-col gap-6'>
+            <div className='form-control w-full'>
+              <label className='input input-bordered flex items-center gap-4 rounded-[20px] h-[60px] w-full'>
+                <BiUser size={22} />
+                <input
+                  type='text'
+                  className='grow border-none focus:ring-0 focus:outline-none text-lg'
+                  required
+                  placeholder={t('userName')}
+                  pattern='[A-Za-z][A-Za-z0-9\-]*'
+                  minLength={3}
+                  maxLength={30}
+                  title={t('userNameTitle')}
+                  name='userName'
+                  value={userLogin.userName}
+                  onChange={handleChange}
+                />
+              </label>
+              <div className='label mt-2 ml-2'>
+                <span className='label-text-alt text-sm text-base-content/70'>
+                  {t('userNameTitle')}
+                </span>
+              </div>
+            </div>
+
+            <div className='form-control w-full'>
+              <label className='input input-bordered flex items-center gap-4 rounded-[20px] h-[60px] w-full'>
+                <BiLockAlt size={22} />
+                <input
+                  type='password'
+                  className='grow border-none focus:ring-0 focus:outline-none text-lg'
+                  required
+                  placeholder={t('userPassword')}
+                  minLength={6}
+                  pattern='[a-zA-Z0-9]{6,}'
+                  title={t('userPasswordTitle')}
+                  name='userPassword'
+                  value={userLogin.userPassword}
+                  onChange={handleChange}
+                />
+              </label>
+              <div className='label mt-2 ml-2'>
+                <span className='label-text-alt text-sm text-base-content/70'>
+                  {t('userPasswordTitle')}
+                </span>
+              </div>
+            </div>
+
+            <div className='form-control mt-6'>
+              <button
+                type='submit'
+                disabled={loading}
+                className='btn btn-primary w-full text-xl rounded-[20px] h-[60px]'
+              >
+                {loading ? (
+                  <span className='loading loading-spinner'></span>
+                ) : (
+                  t('loginButton')
+                )}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default Login

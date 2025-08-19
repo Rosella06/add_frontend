@@ -1,0 +1,10 @@
+enum Role {
+  ADMIN = 'ADMIN',
+  USER = 'USER',
+  HEAD_PHARMACIST = 'HEAD_PHARMACIST',
+  PHARMACIST = 'PHARMACIST',
+  ASSISTANT = 'ASSISTANT',
+  SUPER = 'SUPER'
+}
+
+export { Role }

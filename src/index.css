@@ -1,0 +1,62 @@
+@import "tailwindcss";
+
+@plugin "daisyui" {
+  themes: light --default;
+}
+
+@font-face {
+  font-family: 'IBMPlexSansThaiLooped';
+  src: url('./assets/fonts/IBMPlexSansThaiLooped-Thin.ttf') format('truetype');
+  font-weight: 100;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'IBMPlexSansThaiLooped';
+  src: url('./assets/fonts/IBMPlexSansThaiLooped-ExtraLight.ttf') format('truetype');
+  font-weight: 200;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'IBMPlexSansThaiLooped';
+  src: url('./assets/fonts/IBMPlexSansThaiLooped-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'IBMPlexSansThaiLooped';
+  src: url('./assets/fonts/IBMPlexSansThaiLooped-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'IBMPlexSansThaiLooped';
+  src: url('./assets/fonts/IBMPlexSansThaiLooped-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'IBMPlexSansThaiLooped';
+  src: url('./assets/fonts/IBMPlexSansThaiLooped-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'IBMPlexSansThaiLooped';
+  src: url('./assets/fonts/IBMPlexSansThaiLooped-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+* {
+  font-family: 'IBMPlexSansThaiLooped', sans-serif;
+}
+
+.go2072408551 {
+  @apply !bg-transparent !max-w-none !shadow-none;
+}
