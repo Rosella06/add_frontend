@@ -30,7 +30,10 @@ const Navbar = () => {
           </div>
 
           <div className='dropdown dropdown-end'>
-            <label tabIndex={0} className='btn btn-ghost avatar'>
+            <label
+              tabIndex={0}
+              className='btn btn-ghost h-auto focus:bg-transparent p-0 rounded-full avatar'
+            >
               <div className='w-12 rounded-full ring-2 ring-offset-2 ring-primary'>
                 <img
                   src={import.meta.env.VITE_APP_IMG + cookieDecode?.userImage}

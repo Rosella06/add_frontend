@@ -5,10 +5,10 @@ import isPropValid from '@emotion/is-prop-valid'
 import { Provider } from 'react-redux'
 import { Toaster } from 'react-hot-toast'
 import { I18nextProvider } from 'react-i18next'
-import './index.css'
 import store from './redux/store'
 import i18n from './lang/i18n'
 import Routes from './routes/routes'
+import './index.css'
 
 class AppRenderer {
   private static instance: AppRenderer
@@ -70,27 +70,28 @@ class AppRenderer {
         <StrictMode>
           <Profiler
             id='app'
-            onRender={(
+            onRender={() =>
               // id,
               // phase,
               // actualDuration,
               // baseDuration,
               // startTime,
               // commitTime
-            ) => {
-              if (import.meta.env.VITE_APP_NODE_ENV === 'development') {
-                // console.table([
-                //   {
-                //     Component: id,
-                //     Phase: phase,
-                //     'Actual Duration (ms)': actualDuration.toFixed(2),
-                //     'Base Duration (ms)': baseDuration.toFixed(2),
-                //     'Start Time (ms)': startTime.toFixed(2),
-                //     'Commit Time (ms)': commitTime.toFixed(2)
-                //   }
-                // ])
+              {
+                if (import.meta.env.VITE_APP_NODE_ENV === 'development') {
+                  // console.table([
+                  //   {
+                  //     Component: id,
+                  //     Phase: phase,
+                  //     'Actual Duration (ms)': actualDuration.toFixed(2),
+                  //     'Base Duration (ms)': baseDuration.toFixed(2),
+                  //     'Start Time (ms)': startTime.toFixed(2),
+                  //     'Commit Time (ms)': commitTime.toFixed(2)
+                  //   }
+                  // ])
+                }
               }
-            }}
+            }
           >
             <StyleSheetManager shouldForwardProp={isPropValid}>
               <Provider store={store}>
