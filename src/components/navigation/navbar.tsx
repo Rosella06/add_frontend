@@ -24,13 +24,13 @@ const Navbar = () => {
       <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
         <div className='flex h-20 items-center justify-between'>
           <div className='flex-shrink-0'>
-            <Link to='/' className='text-2xl font-bold text-slate-800'>
+            <Link to='/' className='text-4xl font-bold text-slate-800'>
               ADD
             </Link>
           </div>
 
           <div className='dropdown dropdown-end'>
-            <label tabIndex={0} className='btn btn-ghost btn-circle avatar'>
+            <label tabIndex={0} className='btn btn-ghost avatar'>
               <div className='w-12 rounded-full ring-2 ring-offset-2 ring-primary'>
                 <img
                   src={import.meta.env.VITE_APP_IMG + cookieDecode?.userImage}

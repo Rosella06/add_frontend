@@ -36,7 +36,7 @@ const CustomToast = ({
       } flex items-center w-full max-w-2xl bg-base-100 shadow-lg rounded-full pointer-events-auto p-2`}
     >
       <div
-        className={`flex-shrink-0 w-14 h-14 flex items-center justify-center rounded-full`}
+        className={`flex-shrink-0 w-14 h-14 flex items-center justify-center rounded-full animate-bounce-in`}
       >
         <div
           className={`w-full h-full flex items-center justify-center rounded-full ${styles.iconBg}`}
