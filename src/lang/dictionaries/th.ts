@@ -16,5 +16,6 @@ export default {
     itemMachine: 'จัดการเครื่อง',
     itemUser: 'จัดการผู้ใช้',
     itemSettings: 'การตั้งค่า',
+    somethingWentWrong: 'เกิดข้อผิดพลาดขึ้น!',
   }
 }

@@ -64,7 +64,7 @@ const Login = () => {
         showToast({
           type: 'error',
           icon: BiSolidDownArrow,
-          message: error.response?.data.message,
+          message: error.response?.data.message ?? t('somethingWentWrong'),
           duration: 5000
         })
       } else {

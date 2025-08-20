@@ -33,7 +33,7 @@ const CustomToast = ({
     <div
       className={`${
         t.visible ? 'animate-enter' : 'animate-leave'
-      } flex items-center w-full max-w-2xl bg-base-100 shadow-lg rounded-full pointer-events-auto p-2`}
+      } flex items-center min-w-[354px] w-full max-w-2xl bg-base-100 shadow-lg rounded-full pointer-events-auto p-2 animate-jelly-bounce`}
     >
       <div
         className={`flex-shrink-0 w-14 h-14 flex items-center justify-center rounded-full animate-bounce-in`}

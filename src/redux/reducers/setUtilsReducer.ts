@@ -6,14 +6,20 @@ import {
   UtilsState,
   UtilsAction,
   RESET_UTILS,
-  SOCKET_ID
+  SOCKET_ID,
+  SOCKET_DATA,
+  CURRENT_LANG,
+  MACHINE_ID
 } from '../types/utilsTypes'
 
 const initialState: UtilsState = {
   cookieEncode: cookies.get('tokenObject'),
   cookieDecode: undefined,
   tokenDecode: undefined,
-  socketId: undefined
+  socketId: undefined,
+  socketData: undefined,
+  currentLang: cookies.get('lang') ?? 'th',
+  machineID: cookies.get('machineId') ?? undefined
 }
 
 const utilsReducer = (
@@ -31,6 +37,12 @@ const utilsReducer = (
       return initialState
     case SOCKET_ID:
       return { ...state, socketId: action.payload }
+    case SOCKET_DATA:
+      return { ...state, socketData: action.payload }
+    case CURRENT_LANG:
+      return { ...state, currentLang: action.payload }
+    case MACHINE_ID:
+      return { ...state, machineID: action.payload }
     default:
       return state
   }

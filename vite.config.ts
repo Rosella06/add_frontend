@@ -35,7 +35,7 @@ export default defineConfig({
     }
   },
   server: {
-    port: 12345,
+    port: 1234,
     strictPort: true,
     host: true,
     cors: true,

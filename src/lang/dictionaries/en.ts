@@ -16,5 +16,6 @@ export default {
     itemMachine: 'Machine',
     itemUser: 'User',
     itemSettings: 'Settings',
+    somethingWentWrong: 'Something went wrong!',
   }
 }

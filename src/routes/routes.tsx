@@ -3,7 +3,7 @@ import { RouterProvider } from 'react-router-dom'
 import { router } from './createRoutes'
 import { useDispatch } from 'react-redux'
 import { socket } from '../services/webSocket'
-import { setSocketId } from '../redux/actions/utilsActions'
+import { setSocketData, setSocketId } from '../redux/actions/utilsActions'
 import toast, { useToasterStore } from 'react-hot-toast'
 
 const Routes = () => {
@@ -19,6 +19,10 @@ const Routes = () => {
 
   socket.on('connect', () => {
     dispatch(setSocketId(socket.id))
+  })
+
+  socket.on('drug_dispensed', response => {
+    dispatch(setSocketData(response))
   })
 
   useEffect(() => {

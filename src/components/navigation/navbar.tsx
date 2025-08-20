@@ -20,7 +20,7 @@ const Navbar = () => {
   ]
 
   return (
-    <nav className='bg-white shadow-sm border-b border-slate-200'>
+    <nav className='bg-white shadow-sm border-b border-slate-200 sticky top-0 left-0 z-50'>
       <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
         <div className='flex h-20 items-center justify-between'>
           <div className='flex-shrink-0'>

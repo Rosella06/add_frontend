@@ -1,11 +1,15 @@
 import { CookieDecode } from '../../types/cookie.type'
+import { SocketResponse } from '../../types/socket.type'
 import { TokenDecode } from '../../types/token.type'
 import {
   COOKIE_ENCODE,
   COOKIE_DECODE,
   TOKEN_DECODE,
   RESET_UTILS,
-  SOCKET_ID
+  SOCKET_ID,
+  SOCKET_DATA,
+  CURRENT_LANG,
+  MACHINE_ID
 } from '../types/utilsTypes'
 
 const setCookieEncode = (dataEncode?: string) => ({
@@ -28,6 +32,21 @@ const setSocketId = (socketId: string | undefined) => ({
   payload: socketId
 })
 
+const setSocketData = (data: SocketResponse | undefined) => ({
+  type: SOCKET_DATA,
+  payload: data
+})
+
+const setLanguage = (lang: string) => ({
+  type: CURRENT_LANG,
+  payload: lang
+})
+
+const setMachineId = (machineId: string) => ({
+  type: MACHINE_ID,
+  payload: machineId
+})
+
 const resetUtils = () => ({
   type: RESET_UTILS
 })
@@ -37,5 +56,8 @@ export {
   setCookieDecode,
   setTokenDecode,
   setSocketId,
-  resetUtils
+  resetUtils,
+  setSocketData,
+  setLanguage,
+  setMachineId
 }

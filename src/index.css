@@ -82,9 +82,95 @@
   }
 }
 
+@keyframes jelly-bounce {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+
+  40% {
+    transform: scaleX(1.15) scaleY(0.85);
+    opacity: 1;
+  }
+
+  60% {
+    transform: scaleX(0.95) scaleY(1.15);
+  }
+
+  80% {
+    transform: scaleX(1.05) scaleY(0.99);
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(calc(-100% - 2rem));
+  }
+}
+
+@keyframes ping-pong-scroll-with-delay {
+
+  0%,
+  15% {
+    transform: translateX(0);
+  }
+
+  85%,
+  100% {
+    transform: translateX(var(--marquee-scroll-distance));
+  }
+}
+
 .animate-bounce-in {
   animation-name: bounce-in;
   animation-duration: 0.5s;
   animation-timing-function: ease-out;
   animation-fill-mode: forwards;
+}
+
+.animate-jelly-bounce {
+  animation-name: jelly-bounce;
+  animation-duration: 0.65s;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: forwards;
+}
+
+.marquee-wrapper:hover .marquee-ping-pong,
+.marquee-wrapper:hover .marquee-text {
+  animation-play-state: paused;
+}
+
+.marquee-text {
+  display: inline-block;
+  padding-left: 100%;
+  animation: marquee-scroll 15s linear infinite;
+  animation-play-state: running;
+}
+
+.marquee-ping-pong {
+  display: inline-block;
+  animation: ping-pong-scroll-with-delay var(--marquee-duration, 10s) ease-in-out infinite alternate;
+  animation-play-state: running;
+}
+
+.fade-edges {
+  -webkit-mask-image: linear-gradient(to right,
+      transparent 0%,
+      black 3%,
+      black 98%,
+      transparent 100%);
+  mask-image: linear-gradient(to right,
+      transparent 0%,
+      black 3%,
+      black 98%,
+      transparent 100%);
 }

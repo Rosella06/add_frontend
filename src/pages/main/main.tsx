@@ -3,7 +3,7 @@ import Navbar from '../../components/navigation/navbar'
 
 const Layout = () => {
   return (
-    <div className='min-h-screen'>
+    <div className='min-h-screen bg-base-200'>
       <Navbar />
       <main className='p-4 sm:p-6 lg:p-8'>
         <Outlet />
