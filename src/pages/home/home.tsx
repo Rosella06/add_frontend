@@ -227,7 +227,7 @@ const Home = () => {
         >
           <BiReset size={32} />
         </button>
-        <span className='text-base font-medium text-shadow-lg'>
+        <span className='badge badge-accent py-3 px-3 text-base font-medium text-shadow-lg'>
           {t('reset')}
         </span>
       </div>
