@@ -29,10 +29,10 @@ const OrderItem = (props: OrderItem) => {
       </div>
       <div className='divider'></div>
       <div className='grid grid-cols-2 gap-3'>
-        {prescriptionData?.orders.map(item => (
+        {prescriptionData?.orders.map((item, index) => (
           <div
             key={item.id}
-            className={`card rounded-t-3xl rounded-b-none min-h-36 border-b-[6px] bg-base-100 shadow-md ${
+            className={`card rounded-t-3xl rounded-b-none min-h-36 border-b-[6px] bg-base-100 shadow-md animate-bounce-in-two ${
               item.status === OrderStatus.READY
                 ? 'border-[#D4D4D4]'
                 : item.status === OrderStatus.PENDING
@@ -43,6 +43,10 @@ const OrderItem = (props: OrderItem) => {
                 ? 'border-[#617ED4]'
                 : 'border-[#D46161]'
             }`}
+            style={{
+              opacity: 0,
+              animationDelay: `${index * 100}ms`
+            }}
           >
             <div className='flex flex-row items-center gap-7 card-body'>
               {item.drug.drugImage ? (

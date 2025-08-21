@@ -20,11 +20,11 @@ const Navbar = () => {
   ]
 
   return (
-    <nav className='bg-white shadow-sm border-b border-slate-200 sticky top-0 left-0 z-50'>
+    <nav className='bg-base-100 shadow-sm border-b border-base-200 sticky top-0 left-0 z-50'>
       <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
         <div className='flex h-20 items-center justify-between'>
           <div className='flex-shrink-0'>
-            <Link to='/' className='text-4xl font-bold text-slate-800'>
+            <Link to='/' className='text-4xl font-bold text-base-content'>
               ADD
             </Link>
           </div>
@@ -83,7 +83,7 @@ const Navbar = () => {
                       ${
                         isActive
                           ? 'text-primary'
-                          : 'text-slate-500 hover:text-slate-800'
+                          : 'text-slate-500 hover:text-slate-700'
                       }`
                     }
                   >
