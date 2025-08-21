@@ -202,3 +202,41 @@
       black 98%,
       transparent 100%);
 }
+
+.dataTableWrapper {
+  &>div:nth-child(1) {
+    @apply rounded-none;
+  }
+
+  &>div>div>div>div>div>div>button {
+    @apply text-inherit;
+  }
+
+  &>div>div>div>div {
+    @apply bg-base-100 duration-300 ease-linear h-full;
+  }
+
+  &>div>div>div>div>div {
+    &>div {
+      @apply duration-300 ease-linear;
+    }
+
+    @apply bg-transparent !text-base-content !border-b-base-content/10 duration-300 ease-linear;
+  }
+
+  &>div>div>div>div:nth-child(2)>div:hover {
+    @apply duration-300 ease-linear bg-base-300;
+  }
+
+  &>div:nth-child(2)>nav {
+    @apply bg-transparent text-base-content border-t-base-content/10 duration-300 ease-linear;
+
+    &>div:nth-child(4)>button:disabled {
+      @apply !cursor-not-allowed text-base-content/30 fill-base-content/30;
+    }
+
+    &>div:nth-child(4)>button {
+      @apply text-base-content fill-base-content;
+    }
+  }
+}

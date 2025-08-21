@@ -1,16 +1,18 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { BiPlus, BiSearch, BiSolidDownArrow, BiX } from 'react-icons/bi'
 import { showToast } from '../../constants/utils/toast'
 import { AxiosError } from 'axios'
-import axiosInstance from '../../constants/axios/axiosInstance'
 import { ApiResponse } from '../../types/api.response.type'
 import { Machines } from '../../types/machine.type'
+import DataTable, { TableColumn } from 'react-data-table-component'
+import axiosInstance from '../../constants/axios/axiosInstance'
 
 const Machine = () => {
   const { t } = useTranslation()
   const [search, setSearch] = useState('')
   const [machineData, setMachineData] = useState<Machines[]>([])
+  const [machineDataFilter, setMachineDataFilter] = useState<Machines[]>([])
   const [machineForm, setMachineForm] = useState({
     machineName: '',
     ipAddress: ''
@@ -83,9 +85,29 @@ const Machine = () => {
     setMachineForm({ machineName: '', ipAddress: '' })
   }
 
+  const columns: TableColumn<Machines>[] = useMemo(
+    () => [
+      {
+        name: 'name',
+        selector: item => item.machineName,
+        sortable: false,
+        center: true,
+        width: '200px'
+      }
+    ],
+    [t, machineDataFilter, search]
+  )
+
   useEffect(() => {
     fetchMachine()
   }, [])
+
+  useEffect(() => {
+    const filter = machineData.filter(f =>
+      f.machineName.toLowerCase().includes(search.toLowerCase())
+    )
+    setMachineDataFilter(filter)
+  }, [machineData, search])
 
   return (
     <div>
@@ -100,7 +122,7 @@ const Machine = () => {
               value={search}
               onChange={e => setSearch(e.target.value)}
             />
-            {search.length > 1 && (
+            {search.length > 0 && (
               <span
                 className='kbd kbd-md cursor-pointer'
                 onClick={() => setSearch('')}
@@ -124,8 +146,22 @@ const Machine = () => {
         </div>
       </div>
 
-      <div className='mt-3'>
-        
+      <div className='dataTableWrapper mt-3 bg-base-100 p-3 rounded-selector'>
+        <DataTable
+          responsive
+          fixedHeader
+          pagination
+          columns={columns}
+          data={machineDataFilter}
+          paginationPerPage={30}
+          progressPending={isloading}
+          progressComponent={
+            <span className='loading loading-spinner loading-md'></span>
+          }
+          noDataComponent={<span>Empty</span>}
+          paginationRowsPerPageOptions={[30, 75, 100]}
+          className='md:!max-h-[calc(100dvh-530px)]'
+        />
       </div>
 
       <dialog ref={addModal} className='modal'>
