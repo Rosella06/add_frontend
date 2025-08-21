@@ -23,9 +23,9 @@ const OrderItem = (props: OrderItem) => {
   return (
     <div className='flex flex-col gap-3 flex-1'>
       <div className='flex flex-col gap-1.5'>
-        <span>PrescriptionNo: {prescriptionData?.prescriptionNo}</span>
-        <span>Name: {prescriptionData?.patientName}</span>
-        <span>an: {prescriptionData?.an}</span>
+        <span className='text-base'>PrescriptionNo: {prescriptionData?.prescriptionNo}</span>
+        <span className='text-base'>Name: {prescriptionData?.patientName}</span>
+        <span className='text-base'>an: {prescriptionData?.an}</span>
       </div>
       <div className='divider'></div>
       <div className='grid grid-cols-2 gap-3'>

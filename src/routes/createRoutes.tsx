@@ -5,6 +5,7 @@ import NotFound from './notFound'
 import ErrorPage from './errorPage'
 import Home from '../pages/home/home'
 import Layout from '../pages/main/main'
+import Machine from '../pages/machine/machine'
 
 const router = () =>
   createBrowserRouter([
@@ -39,7 +40,7 @@ const router = () =>
             },
             {
               path: '/machine',
-              element: <div>Machine</div>,
+              element: <Machine />,
               errorElement: <ErrorPage />
             },
             {

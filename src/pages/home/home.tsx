@@ -59,6 +59,13 @@ const Home = () => {
       setDispenseOrder(mergePrescription)
     } catch (error) {
       if (error instanceof AxiosError) {
+        await showToast({
+          type: 'error',
+          icon: BiSolidDownArrow,
+          message: error.response?.data.message ?? t('somethingWentWrong'),
+          duration: 3000,
+          showClose: false
+        })
       } else {
         console.error(error)
       }
@@ -115,6 +122,13 @@ const Home = () => {
       setDispenseOrder(mergePrescription)
     } catch (error) {
       if (error instanceof AxiosError) {
+        await showToast({
+          type: 'error',
+          icon: BiSolidDownArrow,
+          message: error.response?.data.message ?? t('somethingWentWrong'),
+          duration: 3000,
+          showClose: false
+        })
       } else {
         console.error(error)
       }
@@ -136,6 +150,13 @@ const Home = () => {
       )
     } catch (error) {
       if (error instanceof AxiosError) {
+        await showToast({
+          type: 'error',
+          icon: BiSolidDownArrow,
+          message: error.response?.data.message ?? t('somethingWentWrong'),
+          duration: 3000,
+          showClose: false
+        })
       } else {
         console.error(error)
       }
@@ -225,7 +246,7 @@ const Home = () => {
           className='btn btn-error rounded-2xl px-3 py-3 h-17 w-17'
           onClick={resetPrescription}
         >
-          <BiReset size={32} />
+          <BiReset size={36} />
         </button>
         <span className='badge badge-accent py-3 px-3 text-base font-medium text-shadow-lg'>
           {t('reset')}

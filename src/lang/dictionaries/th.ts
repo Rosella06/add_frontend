@@ -12,6 +12,7 @@ export default {
     scanQrCode: 'สแกน QR Code เพื่อเข้าสู่ระบบ',
 
     closeButton: 'ปิด',
+    saveButton: 'บันทึก',
 
     itemDispense: 'จัดยา',
     itemRefill: 'เติมยา',
@@ -23,7 +24,7 @@ export default {
     somethingWentWrong: 'เกิดข้อผิดพลาดขึ้น!',
 
     pleaseScan: 'กรุณาสแกน qr code เพื่อจัดยา',
-    pleaseSelectMachine: 'กรุณาเลือกเครื่องในหน้าการตั้งค่าก่อนจัดยา',
+    pleaseSelectMachine: 'กรุณาเลือกเครื่องในหน้าการตั้งค่า',
 
     readyStatus: 'รอจัด',
     pendingStatus: 'กำลังจัด',
@@ -34,7 +35,14 @@ export default {
     quantity: 'จำนวน',
     floor: 'ชั้น',
     position: 'ช่อง',
+    reset: 'รีเซ็ต',
 
-    reset: 'รีเซ็ต'
+    addMachine: 'เพิ่มเครื่อง',
+    search: 'ค้นหา',
+
+    machineName: 'ชื่อเครื่อง',
+    machineIpaddress: 'ที่อยู่ไอพี',
+
+    pleaseCompleteField: 'กรุณากรอกข้อมูลให้ครบ'
   }
 }

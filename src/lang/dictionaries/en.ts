@@ -13,6 +13,7 @@ export default {
     scanQrCode: 'Scan QR Code to Sign in',
 
     closeButton: 'Close',
+    saveButton: 'Save',
 
     itemDispense: 'Dispense',
     itemRefill: 'Refill',
@@ -24,8 +25,7 @@ export default {
     somethingWentWrong: 'Something went wrong!',
 
     pleaseScan: 'Please scan qr code to dispense',
-    pleaseSelectMachine:
-      'Please select a machine in the settings page before dispensing.',
+    pleaseSelectMachine: 'Please select a machine in the settings page.',
 
     readyStatus: 'Ready',
     pendingStatus: 'Dispensing',
@@ -36,7 +36,14 @@ export default {
     quantity: 'Quantity',
     floor: 'Floor',
     position: 'Position',
+    reset: 'Reset',
 
-    reset: 'Reset'
+    addMachine: 'Add Machine',
+    search: 'Search',
+
+    machineName: 'Machine name',
+    machineIpaddress: 'Ip address',
+
+    pleaseCompleteField: 'Please Complete Field!'
   }
 }
