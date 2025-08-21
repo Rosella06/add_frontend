@@ -19,7 +19,7 @@ const initialState: UtilsState = {
   socketId: undefined,
   socketData: undefined,
   currentLang: cookies.get('lang') ?? 'th',
-  machineID: cookies.get('machineId') ?? undefined
+  machineId: cookies.get('machineId') ?? undefined
 }
 
 const utilsReducer = (
@@ -42,7 +42,7 @@ const utilsReducer = (
     case CURRENT_LANG:
       return { ...state, currentLang: action.payload }
     case MACHINE_ID:
-      return { ...state, machineID: action.payload }
+      return { ...state, machineId: action.payload }
     default:
       return state
   }

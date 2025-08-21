@@ -6,7 +6,8 @@ const CustomToast = ({
   t,
   icon: Icon,
   message,
-  type = 'info'
+  type = 'info',
+  showClose
 }: ToastComponentType) => {
   const typeStyles = {
     success: {
@@ -53,14 +54,16 @@ const CustomToast = ({
           {message}
         </p>
       </div>
-      <div className='flex-shrink-0 mr-2'>
-        <button
-          onClick={() => toast.dismiss(t.id)}
-          className='btn btn-ghost btn-circle btn-sm'
-        >
-          <HiXMark className='w-6 h-6 text-base-content/50 hover:text-base-content' />
-        </button>
-      </div>
+      {showClose && (
+        <div className='flex-shrink-0 mr-2'>
+          <button
+            onClick={() => toast.dismiss(t.id)}
+            className='btn btn-ghost btn-circle btn-sm'
+          >
+            <HiXMark className='w-6 h-6 text-base-content/50 hover:text-base-content' />
+          </button>
+        </div>
+      )}
     </div>
   )
 }

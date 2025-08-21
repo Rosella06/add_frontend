@@ -1,5 +1,5 @@
 import axios, { AxiosError } from 'axios'
-import { ChangeEvent, FormEvent, useState } from 'react'
+import { ChangeEvent, FormEvent, useRef, useState } from 'react'
 import { ApiResponse } from '../../types/api.response.type'
 import { LoginResponse } from '../../types/login.type'
 import {
@@ -23,6 +23,8 @@ const Login = () => {
     userPassword: ''
   })
   const [loading, setLoading] = useState(false)
+  const signInQrModal = useRef<HTMLDialogElement>(null)
+  let textScanner = ''
 
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault()
@@ -61,11 +63,67 @@ const Login = () => {
       navigate(`/`)
     } catch (error) {
       if (error instanceof AxiosError) {
-        showToast({
+        await showToast({
           type: 'error',
           icon: BiSolidDownArrow,
           message: error.response?.data.message ?? t('somethingWentWrong'),
-          duration: 5000
+          duration: 3000,
+          showClose: false
+        })
+      } else {
+        console.error(error)
+      }
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleLoginWithQrCode = async (qrCodeText: string) => {
+    if (qrCodeText === '') return
+
+    try {
+      const result = await axios.post<ApiResponse<LoginResponse>>(
+        `${import.meta.env.VITE_APP_API}/auth/login`,
+        {
+          pinCode: qrCodeText
+        }
+      )
+
+      const { displayName, id, token, userImage, userRole, userStatus } =
+        result.data.data
+
+      const tokenObject = {
+        id,
+        displayName,
+        userImage,
+        userRole,
+        userStatus,
+        token
+      }
+
+      cookies.set(
+        'tokenObject',
+        String(accessToken(tokenObject)),
+        cookieOptions
+      )
+      cookies.update()
+      dispatch(setCookieEncode(String(accessToken(tokenObject))))
+      navigate(`/`)
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        if (signInQrModal.current) {
+          signInQrModal.current.close()
+        }
+        await showToast({
+          type: 'error',
+          icon: BiSolidDownArrow,
+          message: error.response?.data.message ?? t('somethingWentWrong'),
+          duration: 3000,
+          showClose: false
+        }).finally(() => {
+          if (signInQrModal.current) {
+            signInQrModal.current.showModal()
+          }
         })
       } else {
         console.error(error)
@@ -86,6 +144,26 @@ const Login = () => {
     }))
   }
 
+  const signInWithQrCode = () => {
+    if (signInQrModal.current) {
+      signInQrModal.current.showModal()
+      document.addEventListener('keypress', onBarcodeScan)
+    }
+  }
+
+  const stopKeyboardEvent = () => {
+    document.removeEventListener('keypress', onBarcodeScan)
+  }
+
+  const onBarcodeScan = async (e: KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleLoginWithQrCode(textScanner)
+      textScanner = ''
+    } else {
+      textScanner += e.key
+    }
+  }
+
   return (
     <div className='min-h-screen flex justify-center items-center bg-base-200 p-4'>
       <div className='card w-full rounded-[32px] sm:rounded-[48px] max-w-lg bg-base-100 shadow-xl'>
@@ -99,7 +177,7 @@ const Login = () => {
             </p>
           </div>
 
-          <form onSubmit={handleLogin} className='flex flex-col gap-6'>
+          <form onSubmit={handleLogin} className='flex flex-col gap-4'>
             <div className='form-control w-full'>
               <label className='input input-bordered flex items-center gap-4 rounded-[20px] h-[60px] w-full'>
                 <BiUser size={22} />
@@ -160,9 +238,39 @@ const Login = () => {
                 )}
               </button>
             </div>
+
+            <div className='divider'>OR</div>
+
+            <button
+              type='button'
+              disabled={loading}
+              className='btn btn-ghost w-full text-xl rounded-[20px] h-[42px]'
+              onClick={signInWithQrCode}
+            >
+              {t('loginWithQrCode')}
+            </button>
           </form>
         </div>
       </div>
+
+      <dialog ref={signInQrModal} className='modal'>
+        <div className='modal-box'>
+          <h3 className='font-bold text-lg'>{t('scanQrCode')}</h3>
+          <div className='flex items-center justify-center h-64'>
+            <BiSolidDownArrow size={64} className='text-primary' />
+          </div>
+          <div className='modal-action'>
+            <form method='dialog'>
+              <button
+                className='btn text-base rounded-[16px]'
+                onClick={stopKeyboardEvent}
+              >
+                {t('closeButton')}
+              </button>
+            </form>
+          </div>
+        </div>
+      </dialog>
     </div>
   )
 }

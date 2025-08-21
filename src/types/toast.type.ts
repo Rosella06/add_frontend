@@ -6,6 +6,7 @@ type ToastType = {
   icon: IconType
   message: string
   duration: number
+  showClose?: boolean
   id?: string
 }
 
@@ -14,6 +15,7 @@ type ToastComponentType = {
   icon: IconType
   message: string
   type: 'success' | 'error' | 'warning' | 'info'
+  showClose?: boolean
 }
 
 export type { ToastType, ToastComponentType }

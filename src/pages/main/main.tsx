@@ -3,9 +3,9 @@ import Navbar from '../../components/navigation/navbar'
 
 const Layout = () => {
   return (
-    <div className='min-h-screen bg-base-200'>
+    <div className='min-h-dvh flex flex-col bg-base-200'>
       <Navbar />
-      <main className='p-4 sm:p-6 lg:p-8'>
+      <main className='flex-1 flex flex-col p-4 sm:p-6 lg:p-8'>
         <Outlet />
       </main>
     </div>

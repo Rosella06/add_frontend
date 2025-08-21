@@ -18,7 +18,7 @@ interface UtilsState {
   socketId: string | undefined
   socketData: SocketResponse | undefined
   currentLang: string
-  machineID: string | undefined
+  machineId: string | undefined
 }
 
 type UtilsAction =
