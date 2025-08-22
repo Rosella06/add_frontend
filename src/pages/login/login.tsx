@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { BiError, BiLockAlt, BiSolidDownArrow, BiUser } from 'react-icons/bi'
 import { showToast } from '../../constants/utils/toast'
-import Logo from '../../../public/add-512.png'
+import Logo from '../../assets/images/add-512.png'
 
 const Login = () => {
   const dispatch = useDispatch()

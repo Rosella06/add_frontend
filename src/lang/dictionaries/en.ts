@@ -40,6 +40,9 @@ export default {
     floor: 'Floor',
     position: 'Position',
     reset: 'Reset',
+    min: 'Min',
+    max: 'Max',
+    expiryDate: 'Expiry date',
 
     addMachine: 'Add machine',
     editMachine: 'Edit machine',
@@ -57,6 +60,27 @@ export default {
     logOutTitle: 'Sign out',
     logOutDescription: 'Are you sure you want to sign out?',
     online: 'Online',
-    offline: 'Offline'
+    offline: 'Offline',
+
+    drugName: 'Drug name',
+    drugSelect: 'Select drug',
+    machineSelect: 'Select machine',
+    image: 'Image',
+    addInventory: 'Add inventory',
+    editInventory: 'Edit inventory',
+    refillStock: 'Refill drug',
+    update: 'Update',
+    displayName: 'Nanme',
+    active: 'Active',
+    inActive: 'Inactive',
+    role: 'Role',
+    addUser: 'Add user',
+    editUser: 'Edit user',
+    roleADMIN: 'Admin',
+    roleUSER: 'User',
+    roleHEAD_PHARMACIST: 'Head Pharmacist',
+    rolePHARMACIST: 'Pharmacist',
+    roleASSISTANT: 'Assistant',
+    roleSUPER: 'Super Admin'
   }
 }

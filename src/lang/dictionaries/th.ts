@@ -39,6 +39,9 @@ export default {
     floor: 'ชั้น',
     position: 'ช่อง',
     reset: 'รีเซ็ต',
+    min: 'ต่ำสุด',
+    max: 'สูงสุด',
+    expiryDate: 'วันหมดอายุ',
 
     addMachine: 'เพิ่มเครื่อง',
     editMachine: 'แก้ไขเครื่อง',
@@ -56,6 +59,27 @@ export default {
     logOutTitle: 'ออกจากระบบ',
     logOutDescription: 'คุณต้องการออกจากระบบหรือไม่?',
     online: 'ออนไลน์',
-    offline: 'ออฟไลน์'
+    offline: 'ออฟไลน์',
+
+    drugName: 'ชื่อยา',
+    drugSelect: 'เลือกยา',
+    machineSelect: 'เลื่อกเครื่อง',
+    image: 'รูปภาพ',
+    addInventory: 'เพิ่มช่อง',
+    editInventory: 'แก้ไขช่อง',
+    refillStock: 'เติมยา',
+    update: 'อัปเดท',
+    displayName: 'ชื่อ',
+    active: 'ใช้งาน',
+    inActive: 'ปิดใช้งาน',
+    role: 'สิทธิ์',
+    addUser: 'เพิ่มผู้ใช้',
+    editUser: 'แก้ไขผู้ใช้',
+    roleADMIN: 'แอดมิน',
+    roleUSER: 'ผู้ใช้',
+    roleHEAD_PHARMACIST: 'หัวหน้าเภสัชกร',
+    rolePHARMACIST: 'เภสัชกร',
+    roleASSISTANT: 'ผู้ช่วย',
+    roleSUPER: 'ผู้ดูแลระบบ'
   }
 }

@@ -180,12 +180,12 @@ const Machine = () => {
   }
 
   const openEdit = (machine: Machines) => {
-    editModal.current?.showModal()
     setMachineForm({
       id: machine.id,
       machineName: machine.machineName,
       ipAddress: machine.ipAddress
     })
+    editModal.current?.showModal()
   }
 
   const resetForm = () => {
@@ -196,7 +196,11 @@ const Machine = () => {
     () => [
       {
         name: t('machineName'),
-        selector: item => item.machineName,
+        cell: item => (
+          <div className='tooltip' data-tip={item.machineName}>
+            <span className='truncate w-[128px] block text-center'>{item.machineName}</span>
+          </div>
+        ),
         sortable: false,
         center: true
       },
@@ -240,7 +244,7 @@ const Machine = () => {
                 })
 
                 if (confirmed) {
-                  deleteMachine(item.id)
+                  await deleteMachine(item.id)
                 }
               }}
             >

@@ -7,6 +7,8 @@ import Home from '../pages/home/home'
 import Layout from '../pages/main/main'
 import Machine from '../pages/machine/machine'
 import Inventory from '../pages/inventories/inventories'
+import Stock from '../pages/stock/stock'
+import User from '../pages/user/user'
 
 const router = () =>
   createBrowserRouter([
@@ -26,7 +28,7 @@ const router = () =>
             },
             {
               path: '/refill',
-              element: <div>Refill</div>,
+              element: <Stock />,
               errorElement: <ErrorPage />
             },
             {
@@ -46,7 +48,7 @@ const router = () =>
             },
             {
               path: '/user',
-              element: <div>User</div>,
+              element: <User />,
               errorElement: <ErrorPage />
             },
             {

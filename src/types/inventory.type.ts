@@ -1,3 +1,6 @@
+import { Drug } from "./drug.type"
+import { Machines } from "./machine.type"
+
 type Inventories = {
   id: string
   floor: number
@@ -11,6 +14,8 @@ type Inventories = {
   updatedAt: string
   drugId: string
   machineId: string
+  drug: Drug
+  machine: Machines
 }
 
 export type { Inventories }

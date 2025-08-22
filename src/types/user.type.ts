@@ -7,4 +7,17 @@ enum Role {
   SUPER = 'SUPER'
 }
 
+type Users = {
+  id: string
+  userName: string
+  displayName: string
+  userImage: string
+  userRole: string
+  userStatus: boolean
+  createBy?: string
+  createdAt: string
+  updatedAt: string
+}
+
 export { Role }
+export type { Users }

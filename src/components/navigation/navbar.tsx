@@ -6,7 +6,7 @@ import { cookieOptions, cookies } from '../../constants/utils/utilsConstants'
 import { useTranslation } from 'react-i18next'
 import ConfirmModal, { ConfirmModalRef } from '../modal/ConfirmModal'
 import { useRef } from 'react'
-import Logo from '../../../public/add-512.png'
+import Logo from '../../assets/images/add-512.png'
 
 const Navbar = () => {
   const { t } = useTranslation()
