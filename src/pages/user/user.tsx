@@ -5,6 +5,7 @@ import {
   BiCheck,
   BiEdit,
   BiError,
+  BiErrorCircle,
   BiImage,
   BiPencil,
   BiPlus,
@@ -23,14 +24,23 @@ import { showToast } from '../../constants/utils/toast'
 import Select from 'react-select'
 import { mapDefaultValue, mapOptions } from '../../constants/utils/reacr.select'
 import { resizeImage } from '../../constants/utils/image'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../redux/reducers/rootReducer'
 
 interface RoleSelect {
   key: string
   value: string
 }
 
+interface UserActive {
+  key: string
+  value: string
+}
+
 const User = () => {
   const { t } = useTranslation()
+  const { cookieDecode } = useSelector((state: RootState) => state.utils)
+  const { id } = cookieDecode ?? {}
   const [search, setSearch] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const addModal = useRef<HTMLDialogElement>(null)
@@ -42,6 +52,7 @@ const User = () => {
     id: '',
     userName: '',
     userPassword: '',
+    userStatus: true,
     displayName: '',
     userRole: '',
     imageFile: null as File | null,
@@ -75,11 +86,23 @@ const User = () => {
     }
   ]
 
+  const UserStatus = [
+    {
+      key: 'true',
+      value: t('active')
+    },
+    {
+      key: 'false',
+      value: t('inActive')
+    }
+  ]
+
   const fetchUser = async () => {
     setIsLoading(true)
     try {
       const result = await axiosInstance.get<ApiResponse<Users[]>>('/users')
-      setUserData(result.data.data)
+      const userData = result.data.data.filter(f => f.id !== id)
+      setUserData(userData)
     } catch (error) {
       if (error instanceof AxiosError) {
         console.error(error.response?.data.message)
@@ -92,10 +115,132 @@ const User = () => {
   }
 
   const handleSubmit = async () => {
-    console.table(userForm)
+    if (
+      userForm.userName !== '' &&
+      userForm.userPassword !== '' &&
+      userForm.displayName !== '' &&
+      userForm.imageFile !== null &&
+      userForm.userRole !== ''
+    ) {
+      setIsLoading(true)
+      const formData = new FormData()
+      formData.append('userName', userForm.userName)
+      formData.append('userPassword', userForm.userPassword)
+      formData.append('displayName', userForm.displayName)
+      formData.append('userRole', userForm.userRole)
+      formData.append('upload', userForm.imageFile)
+      try {
+        const result = await axiosInstance.post<ApiResponse<Users>>(
+          `/auth/register`,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          }
+        )
+        addModal.current?.close()
+        resetForm()
+        showToast({
+          type: 'success',
+          icon: BiCheck,
+          message: result.data.message,
+          duration: 3000,
+          showClose: false
+        })
+      } catch (error) {
+        if (error instanceof AxiosError) {
+          addModal.current?.close()
+          await showToast({
+            type: 'error',
+            icon: BiError,
+            message: error.response?.data.message ?? t('somethingWentWrong'),
+            duration: 3000,
+            showClose: false
+          }).finally(() => addModal.current?.showModal())
+        } else {
+          console.error(error)
+        }
+      } finally {
+        await fetchUser()
+        setIsLoading(false)
+      }
+    } else {
+      addModal.current?.close()
+      await showToast({
+        type: 'warning',
+        icon: BiErrorCircle,
+        message: t('pleaseCompleteField'),
+        duration: 3000,
+        showClose: true
+      }).finally(() => addModal.current?.showModal())
+    }
   }
 
-  const handleUpdate = async () => {}
+  const handleUpdate = async () => {
+    if (
+      userForm.userName !== '' &&
+      userForm.displayName !== '' &&
+      userForm.userRole !== ''
+    ) {
+      setIsLoading(true)
+      const formData = new FormData()
+      formData.append('userName', userForm.userName)
+      formData.append('displayName', userForm.displayName)
+      formData.append('userStatus', userForm.userStatus.toString())
+      formData.append('userRole', userForm.userRole)
+
+      if (userForm.imageFile !== null) {
+        formData.append('upload', userForm.imageFile)
+      }
+
+      try {
+        const result = await axiosInstance.patch<ApiResponse<Users>>(
+          `/users/${userForm.id}`,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          }
+        )
+        editModal.current?.close()
+        resetForm()
+        showToast({
+          type: 'success',
+          icon: BiCheck,
+          message: result.data.message,
+          duration: 3000,
+          showClose: false
+        })
+      } catch (error) {
+        if (error instanceof AxiosError) {
+          editModal.current?.close()
+          await showToast({
+            type: 'error',
+            icon: BiError,
+            message: error.response?.data.message ?? t('somethingWentWrong'),
+            duration: 3000,
+            showClose: false
+          }).finally(() => editModal.current?.showModal())
+        } else {
+          console.error(error)
+        }
+      } finally {
+        await fetchUser()
+        setIsLoading(false)
+      }
+    } else {
+      editModal.current?.close()
+      await showToast({
+        type: 'warning',
+        icon: BiErrorCircle,
+        message: t('pleaseCompleteField'),
+        duration: 3000,
+        showClose: true
+      }).finally(() => editModal.current?.showModal())
+    }
+  }
 
   const deleteUser = async (userId: string) => {
     setIsLoading(true)
@@ -134,6 +279,7 @@ const User = () => {
       userName: user.userName,
       userPassword: '',
       displayName: user.displayName,
+      userStatus: user.userStatus,
       userRole: user.userRole,
       imageFile: null,
       imagePreview: user.userImage
@@ -147,6 +293,7 @@ const User = () => {
       userName: '',
       userPassword: '',
       displayName: '',
+      userStatus: true,
       userRole: '',
       imageFile: null,
       imagePreview: null
@@ -225,7 +372,22 @@ const User = () => {
       },
       {
         name: t('role'),
-        selector: item => item.displayName,
+        selector: item => {
+          switch (item.userRole) {
+            case 'ADMIN':
+              return t('roleADMIN')
+            case 'USER':
+              return t('roleUSER')
+            case 'HEAD_PHARMACIST':
+              return t('roleHEAD_PHARMACIST')
+            case 'PHARMACIST':
+              return t('rolePHARMACIST')
+            case 'ASSISTANT':
+              return t('roleASSISTANT')
+            default:
+              return t('roleSUPER')
+          }
+        },
         sortable: false,
         center: true
       },
@@ -587,6 +749,35 @@ const User = () => {
                 classNamePrefix='react-select'
               />
             </fieldset>
+            <fieldset className='fieldset'>
+              <legend className='fieldset-legend text-sm font-medium'>
+                {t('status')}
+              </legend>
+              <Select
+                key={userForm.userStatus ? 'true' : 'false'}
+                options={mapOptions<UserActive, keyof UserActive>(
+                  UserStatus,
+                  'key',
+                  'value'
+                )}
+                value={mapDefaultValue<UserActive, keyof UserActive>(
+                  UserStatus,
+                  userForm.userStatus ? 'true' : 'false',
+                  'key',
+                  'value'
+                )}
+                onChange={e =>
+                  setUserForm({
+                    ...userForm,
+                    userStatus: e?.value === 'true' ? true : false
+                  })
+                }
+                menuPlacement='top'
+                autoFocus={false}
+                className='custom-react-select z-20'
+                classNamePrefix='react-select'
+              />
+            </fieldset>
           </div>
           <div className='modal-action'>
             <form method='dialog' className='flex items-center gap-3 w-full'>
@@ -600,7 +791,7 @@ const User = () => {
               <button
                 type='button'
                 className='btn btn-primary text-base font-bold h-12 flex-1'
-                onClick={handleSubmit}
+                onClick={handleUpdate}
                 disabled={isLoading}
               >
                 {isLoading ? (

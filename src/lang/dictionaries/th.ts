@@ -72,6 +72,7 @@ export default {
     displayName: 'ชื่อ',
     active: 'ใช้งาน',
     inActive: 'ปิดใช้งาน',
+    status: 'สถานะ',
     role: 'สิทธิ์',
     addUser: 'เพิ่มผู้ใช้',
     editUser: 'แก้ไขผู้ใช้',

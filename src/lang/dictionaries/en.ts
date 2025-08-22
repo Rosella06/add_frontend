@@ -73,6 +73,7 @@ export default {
     displayName: 'Nanme',
     active: 'Active',
     inActive: 'Inactive',
+    status: 'Status',
     role: 'Role',
     addUser: 'Add user',
     editUser: 'Edit user',

@@ -190,6 +190,7 @@ const Login = () => {
                   type='text'
                   className='grow border-none focus:ring-0 focus:outline-none text-lg'
                   required
+                  autoFocus
                   placeholder={t('userName')}
                   pattern='[A-Za-z][A-Za-z0-9\-]*'
                   minLength={3}

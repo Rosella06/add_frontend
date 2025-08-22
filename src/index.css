@@ -237,7 +237,7 @@
 }
 
 .react-select__control {
-  @apply !border-base-content/20 !bg-base-100 !rounded-field h-[40px] !border;
+  @apply !border-base-content/20 !bg-base-100 !rounded-field h-12 !border;
 }
 
 .react-select__indicator,

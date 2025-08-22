@@ -9,7 +9,12 @@ import {
   OrderStatus
 } from '../../types/dispense.order.type'
 import OrderItem from '../../components/pages/home/orderItem'
-import { BiError, BiErrorCircle, BiReset, BiSolidDownArrow } from 'react-icons/bi'
+import {
+  BiError,
+  BiErrorCircle,
+  BiReset,
+  BiSolidDownArrow
+} from 'react-icons/bi'
 import { useTranslation } from 'react-i18next'
 import { showToast } from '../../constants/utils/toast'
 
@@ -186,6 +191,13 @@ const Home = () => {
       )
     } catch (error) {
       if (error instanceof AxiosError) {
+        await showToast({
+          type: 'error',
+          icon: BiError,
+          message: error.response?.data.message ?? t('somethingWentWrong'),
+          duration: 3000,
+          showClose: false
+        })
       } else {
         console.error(error)
       }
