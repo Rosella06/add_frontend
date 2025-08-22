@@ -205,20 +205,6 @@ const Stock = () => {
         sortable: false,
         center: true
       },
-      // {
-      //   name: t('machineStatus'),
-      //   cell: item => (
-      //     <div
-      //       className={`badge ${
-      //         item.machine.status === 'online' ? 'badge-success' : 'badge-error'
-      //       } text-base-100 py-3 px-2`}
-      //     >
-      //       {item.machine.status === 'online' ? t('online') : t('offline')}
-      //     </div>
-      //   ),
-      //   sortable: false,
-      //   center: true
-      // },
       {
         name: t('action'),
         cell: item => (
@@ -228,6 +214,7 @@ const Stock = () => {
               onClick={() => openRefillStock(item)}
             >
               <GiMedicines size={24} />
+              <span>{t('itemRefill')}</span>
             </button>
           </div>
         ),
