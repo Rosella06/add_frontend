@@ -81,6 +81,7 @@ export default {
     roleHEAD_PHARMACIST: 'Head Pharmacist',
     rolePHARMACIST: 'Pharmacist',
     roleASSISTANT: 'Assistant',
-    roleSUPER: 'Super Admin'
+    roleSUPER: 'Super Admin',
+    imageSizeLimit: 'Image size must be less than 5MB'
   }
 }

@@ -22,6 +22,7 @@ import ConfirmModal, {
 import { showToast } from '../../constants/utils/toast'
 import Select from 'react-select'
 import { mapDefaultValue, mapOptions } from '../../constants/utils/reacr.select'
+import { resizeImage } from '../../constants/utils/image'
 
 interface RoleSelect {
   key: string
@@ -90,7 +91,9 @@ const User = () => {
     }
   }
 
-  const handleSubmit = async () => {}
+  const handleSubmit = async () => {
+    console.table(userForm)
+  }
 
   const handleUpdate = async () => {}
 
@@ -150,17 +153,35 @@ const User = () => {
     })
   }
 
-  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0]
+  const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        addModal.current?.close()
+        editModal.current?.close()
+        await showToast({
+          type: 'error',
+          icon: BiError,
+          message: t('imageSizeLimit'),
+          duration: 1800,
+          showClose: false
+        }).finally(async () => {
+          setUserForm({
+            ...userForm,
+            imageFile: null,
+            imagePreview: null
+          })
+        })
+        return
+      }
 
-      const previewUrl = URL.createObjectURL(file)
-
-      setUserForm({
-        ...userForm,
-        imageFile: file,
-        imagePreview: previewUrl
-      })
+      await new Promise(resolve => setTimeout(resolve, 500))
+      const reSized = await resizeImage(file)
+      setUserForm(prev => ({
+        ...prev,
+        imageFile: reSized,
+        imagePreview: URL.createObjectURL(file)
+      }))
     }
   }
 
@@ -378,7 +399,7 @@ const User = () => {
                 {t('userPassword')}
               </legend>
               <input
-                type='text'
+                type='password'
                 className='input w-full h-12 rounded-3xl'
                 value={userForm.userPassword}
                 onChange={e =>
@@ -463,8 +484,48 @@ const User = () => {
 
       <dialog ref={editModal} className='modal'>
         <div className='modal-box p-[24px] rounded-[48px]'>
-          <h3 className='font-bold text-lg'>{t('editInventory')}</h3>
+          <h3 className='font-bold text-lg'>{t('editUser')}</h3>
           <div className='w-full'>
+            <fieldset className='fieldset'>
+              <legend className='fieldset-legend text-sm font-medium'>
+                {t('image')}
+              </legend>
+              <div className='flex items-center justify-center'>
+                <div className='relative w-45 h-45'>
+                  <div className='w-full h-full rounded-full bg-base-200 flex items-center justify-center overflow-hidden'>
+                    {userForm.imagePreview ? (
+                      <img
+                        src={
+                          userForm.imageFile === null
+                            ? import.meta.env.VITE_APP_IMG +
+                              userForm.imagePreview
+                            : userForm.imagePreview
+                        }
+                        alt='Image Preview'
+                        className='w-full h-full object-cover'
+                      />
+                    ) : (
+                      <BiImage size={64} className='text-base-content/30' />
+                    )}
+                  </div>
+
+                  <label
+                    htmlFor='image-upload'
+                    className='absolute bottom-1 right-1 btn btn-primary btn-circle shadow-md cursor-pointer'
+                  >
+                    <BiPencil size={24} />
+                  </label>
+
+                  <input
+                    id='image-upload'
+                    type='file'
+                    accept='image/*'
+                    className='hidden'
+                    onChange={handleImageChange}
+                  />
+                </div>
+              </div>
+            </fieldset>
             <fieldset className='fieldset'>
               <legend className='fieldset-legend text-sm font-medium'>
                 {t('userName')}
@@ -481,6 +542,51 @@ const User = () => {
                 }
               />
             </fieldset>
+            <fieldset className='fieldset'>
+              <legend className='fieldset-legend text-sm font-medium'>
+                {t('displayName')}
+              </legend>
+              <input
+                type='text'
+                className='input w-full h-12 rounded-3xl'
+                value={userForm.displayName}
+                onChange={e =>
+                  setUserForm({
+                    ...userForm,
+                    displayName: e.target.value
+                  })
+                }
+              />
+            </fieldset>
+            <fieldset className='fieldset'>
+              <legend className='fieldset-legend text-sm font-medium'>
+                {t('role')}
+              </legend>
+              <Select
+                key={userForm.userRole}
+                options={mapOptions<RoleSelect, keyof RoleSelect>(
+                  RoleArray,
+                  'key',
+                  'value'
+                )}
+                value={mapDefaultValue<RoleSelect, keyof RoleSelect>(
+                  RoleArray,
+                  userForm.userRole ?? '',
+                  'key',
+                  'value'
+                )}
+                onChange={e =>
+                  setUserForm({
+                    ...userForm,
+                    userRole: String(e?.value)
+                  })
+                }
+                menuPlacement='top'
+                autoFocus={false}
+                className='custom-react-select z-20'
+                classNamePrefix='react-select'
+              />
+            </fieldset>
           </div>
           <div className='modal-action'>
             <form method='dialog' className='flex items-center gap-3 w-full'>
@@ -494,7 +600,7 @@ const User = () => {
               <button
                 type='button'
                 className='btn btn-primary text-base font-bold h-12 flex-1'
-                onClick={handleUpdate}
+                onClick={handleSubmit}
                 disabled={isLoading}
               >
                 {isLoading ? (

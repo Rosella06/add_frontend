@@ -80,6 +80,7 @@ export default {
     roleHEAD_PHARMACIST: 'หัวหน้าเภสัชกร',
     rolePHARMACIST: 'เภสัชกร',
     roleASSISTANT: 'ผู้ช่วย',
-    roleSUPER: 'ผู้ดูแลระบบ'
+    roleSUPER: 'ผู้ดูแลระบบ',
+    imageSizeLimit: 'ขนาดไฟล์รูปภาพไม่เกิน 5MB'
   }
 }

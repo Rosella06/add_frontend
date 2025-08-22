@@ -31,4 +31,8 @@ const cookieOptions: CookieSetOptions = {
   sameSite: 'strict' // ตัวเลือก 'strict', 'lax', หรือ 'none'
 }
 
-export { cookies, cookieOptions, accessToken, cookieDecodeObject }
+const delay = (ms: number) => {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
+
+export { cookies, cookieOptions, accessToken, cookieDecodeObject, delay }
