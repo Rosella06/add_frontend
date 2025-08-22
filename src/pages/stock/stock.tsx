@@ -309,8 +309,8 @@ const Stock = () => {
             <h3 className='font-bold text-lg'>{t('refillStock')}</h3>
             <span
               className={`${
-                !buttonStatus ? 'opacity-0' : 'opacity-100'
-              } duration-300 ease-out transition-[opacity] badge bg-info/50 p-3 font-medium`}
+                !buttonStatus ? 'opacity-0 scale-90' : 'opacity-100 scale-100'
+              } duration-300 ease-out transition-all badge bg-info/50 p-3 font-medium`}
             >
               <BiInfoCircle /> {t('confirmDescription')}
             </span>
@@ -393,11 +393,9 @@ const Stock = () => {
                 disabled={isloading}
               >
                 {!buttonStatus ? (
-                  isloading ? (
-                    <span className='loading loading-spinner loading-md'></span>
-                  ) : (
-                    t('update')
-                  )
+                  t('update')
+                ) : isloading ? (
+                  <span className='loading loading-spinner loading-md'></span>
                 ) : (
                   t('confirmButton')
                 )}
