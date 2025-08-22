@@ -88,6 +88,7 @@ export default {
     filterAll: 'All',
     addDrug: 'Add drug',
     drugCode: 'Drug code',
-    drugStatus: 'Drug status'
+    drugStatus: 'Drug status',
+    confirmDescription: 'Please confirm to turn off the light.',
   }
 }

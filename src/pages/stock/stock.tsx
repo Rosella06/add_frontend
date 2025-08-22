@@ -11,15 +11,19 @@ import {
   BiChevronRight,
   BiError,
   BiErrorCircle,
+  BiInfoCircle,
   BiSearch,
   BiX
 } from 'react-icons/bi'
 import { GiMedicines } from 'react-icons/gi'
 import { showToast } from '../../constants/utils/toast'
 import { IoBackspaceOutline } from 'react-icons/io5'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../redux/reducers/rootReducer'
 
 const Stock = () => {
   const { t } = useTranslation()
+  const { machineId } = useSelector((state: RootState) => state.utils)
   const [inventoriesData, setInventoriesData] = useState<Inventories[]>([])
   const [inventoriesFilterData, setInventoriesFilterData] = useState<
     Inventories[]
@@ -32,6 +36,7 @@ const Stock = () => {
     id: '',
     quantity: '0'
   })
+  const [buttonStatus, setButtonStatus] = useState(false)
 
   const fetchInventories = async () => {
     setIsLoading(true)
@@ -53,23 +58,14 @@ const Stock = () => {
 
   const handleUpdateStock = async () => {
     if (refill.quantity !== '0') {
-      setIsLoading(true)
       try {
-        const result = await axiosInstance.patch<ApiResponse<Inventories>>(
+        await axiosInstance.patch<ApiResponse<Inventories>>(
           `/inventories/${refill.id}`,
           {
             quantity: Number(refill.quantity)
           }
         )
-        refillModal.current?.close()
-        resetForm()
-        showToast({
-          type: 'success',
-          icon: BiCheck,
-          message: result.data.message,
-          duration: 3000,
-          showClose: false
-        })
+        setButtonStatus(true)
       } catch (error) {
         if (error instanceof AxiosError) {
           refillModal.current?.close()
@@ -85,7 +81,6 @@ const Stock = () => {
         }
       } finally {
         await fetchInventories()
-        setIsLoading(false)
       }
     } else {
       refillModal.current?.close()
@@ -99,6 +94,45 @@ const Stock = () => {
     }
   }
 
+  const handleConfirm = async () => {
+    setIsLoading(true)
+    try {
+      const result = await axiosInstance.post<ApiResponse<any>>(`/plc/sendM`, {
+        floor: selectedItem?.floor,
+        position: selectedItem?.position,
+        qty: Number(refill.quantity),
+        machineId: machineId,
+        command: 'M32'
+      })
+      setButtonStatus(false)
+      refillModal.current?.close()
+      resetForm()
+      showToast({
+        type: 'success',
+        icon: BiCheck,
+        message: result.data.message,
+        duration: 3000,
+        showClose: false
+      })
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        refillModal.current?.close()
+        await showToast({
+          type: 'error',
+          icon: BiError,
+          message: error.response?.data.message ?? t('somethingWentWrong'),
+          duration: 3000,
+          showClose: false
+        }).finally(() => refillModal.current?.showModal())
+      } else {
+        console.error(error)
+      }
+    } finally {
+      await fetchInventories()
+      setIsLoading(false)
+    }
+  }
+
   const openRefillStock = (stock: Inventories) => {
     refillModal.current?.showModal()
     setRefill({
@@ -108,7 +142,8 @@ const Stock = () => {
     setSelectedItem(stock)
   }
 
-  const resetForm = () => {
+  const resetForm = async () => {
+    setButtonStatus(false)
     setRefill({
       id: '',
       quantity: '0'
@@ -270,9 +305,18 @@ const Stock = () => {
 
       <dialog ref={refillModal} className='modal'>
         <div className='modal-box p-[24px] rounded-[48px]'>
-          <h3 className='font-bold text-lg'>{t('refillStock')}</h3>
+          <div className='flex items-center gap-3'>
+            <h3 className='font-bold text-lg'>{t('refillStock')}</h3>
+            <span
+              className={`${
+                !buttonStatus ? 'opacity-0' : 'opacity-100'
+              } duration-300 ease-out transition-[opacity] badge bg-info/50 p-3 font-medium`}
+            >
+              <BiInfoCircle /> {t('confirmDescription')}
+            </span>
+          </div>
 
-          <div className='flex items-center justify-between w-full px-4'>
+          <div className='flex items-center justify-between w-full px-4 mt-5'>
             <button
               className='btn btn-ghost btn-circle'
               onClick={() => {
@@ -330,25 +374,32 @@ const Stock = () => {
               MAX
             </button>
           </div>
+
           <div className='modal-action'>
             <form method='dialog' className='flex items-center gap-3 w-full'>
               <button
                 className='btn text-base font-medium h-12 flex-1'
-                onClick={() => resetForm()}
+                onClick={async () => await resetForm()}
                 disabled={isloading}
               >
                 {t('closeButton')}
               </button>
               <button
                 type='button'
-                className='btn btn-primary text-base font-bold h-12 flex-1'
-                onClick={handleUpdateStock}
+                className={`btn ${
+                  !buttonStatus ? 'btn-primary flex-1' : 'btn-info flex-2'
+                } duration-300 ease-out transition-[flex] text-base font-bold h-12`}
+                onClick={!buttonStatus ? handleUpdateStock : handleConfirm}
                 disabled={isloading}
               >
-                {isloading ? (
-                  <span className='loading loading-spinner loading-md'></span>
+                {!buttonStatus ? (
+                  isloading ? (
+                    <span className='loading loading-spinner loading-md'></span>
+                  ) : (
+                    t('update')
+                  )
                 ) : (
-                  t('update')
+                  t('confirmButton')
                 )}
               </button>
             </form>

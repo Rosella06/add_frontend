@@ -88,5 +88,6 @@ export default {
     addDrug: 'เพิ่มยา',
     drugCode: 'รหัสยา',
     drugStatus: 'สถานะยา',
+        confirmDescription: 'กรุณายืนยันเพื่อปิดไฟ',
   }
 }
