@@ -13,6 +13,8 @@ export default {
 
     closeButton: 'ปิด',
     saveButton: 'บันทึก',
+    editButton: 'แก้ไข',
+    confirmButton: 'ยืนยัน',
 
     itemDispense: 'จัดยา',
     itemRefill: 'เติมยา',
@@ -38,11 +40,15 @@ export default {
     reset: 'รีเซ็ต',
 
     addMachine: 'เพิ่มเครื่อง',
+    editMachine: 'แก้ไขเครื่อง',
     search: 'ค้นหา',
 
     machineName: 'ชื่อเครื่อง',
     machineIpaddress: 'ที่อยู่ไอพี',
+    machineStatus: 'สถานะ',
 
-    pleaseCompleteField: 'กรุณากรอกข้อมูลให้ครบ'
+    pleaseCompleteField: 'กรุณากรอกข้อมูลให้ครบ',
+
+    action: 'แอคชั่น'
   }
 }

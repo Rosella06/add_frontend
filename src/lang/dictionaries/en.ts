@@ -14,6 +14,8 @@ export default {
 
     closeButton: 'Close',
     saveButton: 'Save',
+    editButton: 'Edit',
+    confirmButton: 'Confirm',
 
     itemDispense: 'Dispense',
     itemRefill: 'Refill',
@@ -38,12 +40,16 @@ export default {
     position: 'Position',
     reset: 'Reset',
 
-    addMachine: 'Add Machine',
+    addMachine: 'Add machine',
+    editMachine: 'Edit machine',
     search: 'Search',
 
     machineName: 'Machine name',
     machineIpaddress: 'Ip address',
+    machineStatus: 'Status',
 
-    pleaseCompleteField: 'Please Complete Field!'
+    pleaseCompleteField: 'Please Complete Field!',
+
+    action: 'Action'
   }
 }

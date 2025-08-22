@@ -1,12 +1,22 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { BiPlus, BiSearch, BiSolidDownArrow, BiX } from 'react-icons/bi'
+import {
+  BiEdit,
+  BiPlus,
+  BiSearch,
+  BiSolidDownArrow,
+  BiTrashAlt,
+  BiX
+} from 'react-icons/bi'
 import { showToast } from '../../constants/utils/toast'
 import { AxiosError } from 'axios'
 import { ApiResponse } from '../../types/api.response.type'
 import { Machines } from '../../types/machine.type'
 import DataTable, { TableColumn } from 'react-data-table-component'
 import axiosInstance from '../../constants/axios/axiosInstance'
+import ConfirmModal, {
+  ConfirmModalRef
+} from '../../components/modal/ConfirmModal'
 
 const Machine = () => {
   const { t } = useTranslation()
@@ -14,12 +24,14 @@ const Machine = () => {
   const [machineData, setMachineData] = useState<Machines[]>([])
   const [machineDataFilter, setMachineDataFilter] = useState<Machines[]>([])
   const [machineForm, setMachineForm] = useState({
+    id: '',
     machineName: '',
     ipAddress: ''
   })
   const [isloading, setIsLoading] = useState(false)
   const addModal = useRef<HTMLDialogElement>(null)
   const editModal = useRef<HTMLDialogElement>(null)
+  const confirmModalRef = useRef<ConfirmModalRef>(null)
 
   const fetchMachine = async () => {
     try {
@@ -42,13 +54,14 @@ const Machine = () => {
       try {
         const result = await axiosInstance.post<ApiResponse<string>>(
           `/machines`,
-          machineForm
+          {
+            machineName: machineForm.machineName,
+            ipAddress: machineForm.ipAddress
+          }
         )
         addModal.current?.close()
         resetForm()
-        setIsLoading(false)
-        await fetchMachine()
-        await showToast({
+        showToast({
           type: 'success',
           icon: BiSolidDownArrow,
           message: result.data.message,
@@ -68,6 +81,9 @@ const Machine = () => {
         } else {
           console.error(error)
         }
+      } finally {
+        await fetchMachine()
+        setIsLoading(false)
       }
     } else {
       addModal.current?.close()
@@ -81,18 +97,149 @@ const Machine = () => {
     }
   }
 
+  const handleUpdate = async () => {
+    if (machineForm.machineName !== '' && machineForm.ipAddress !== '') {
+      setIsLoading(true)
+      try {
+        const result = await axiosInstance.patch<ApiResponse<string>>(
+          `/machines/${machineForm.id}`,
+          {
+            machineName: machineForm.machineName,
+            ipAddress: machineForm.ipAddress
+          }
+        )
+        editModal.current?.close()
+        resetForm()
+        showToast({
+          type: 'success',
+          icon: BiSolidDownArrow,
+          message: result.data.message,
+          duration: 3000,
+          showClose: false
+        })
+      } catch (error) {
+        if (error instanceof AxiosError) {
+          editModal.current?.close()
+          await showToast({
+            type: 'error',
+            icon: BiSolidDownArrow,
+            message: error.response?.data.message ?? t('somethingWentWrong'),
+            duration: 3000,
+            showClose: false
+          }).finally(() => editModal.current?.showModal())
+        } else {
+          console.error(error)
+        }
+      } finally {
+        await fetchMachine()
+        setIsLoading(false)
+      }
+    } else {
+      editModal.current?.close()
+      await showToast({
+        type: 'warning',
+        icon: BiSolidDownArrow,
+        message: t('pleaseCompleteField'),
+        duration: 3000,
+        showClose: true
+      }).finally(() => editModal.current?.showModal())
+    }
+  }
+
+  const deleteMachine = async (machineId: string) => {
+    setIsLoading(true)
+    try {
+      const result = await axiosInstance.delete<ApiResponse<string>>(
+        `/machines/${machineId}`
+      )
+      showToast({
+        type: 'success',
+        icon: BiSolidDownArrow,
+        message: result.data.message,
+        duration: 3000,
+        showClose: false
+      })
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        await showToast({
+          type: 'error',
+          icon: BiSolidDownArrow,
+          message: error.response?.data.message ?? t('somethingWentWrong'),
+          duration: 3000,
+          showClose: false
+        })
+      } else {
+        console.error(error)
+      }
+    } finally {
+      await fetchMachine()
+      setIsLoading(false)
+    }
+  }
+
+  const openEdit = (machine: Machines) => {
+    editModal.current?.showModal()
+    setMachineForm({
+      id: machine.id,
+      machineName: machine.machineName,
+      ipAddress: machine.ipAddress
+    })
+  }
+
   const resetForm = () => {
-    setMachineForm({ machineName: '', ipAddress: '' })
+    setMachineForm({ id: '', machineName: '', ipAddress: '' })
   }
 
   const columns: TableColumn<Machines>[] = useMemo(
     () => [
       {
-        name: 'name',
+        name: t('machineName'),
         selector: item => item.machineName,
         sortable: false,
-        center: true,
-        width: '200px'
+        center: true
+      },
+      {
+        name: t('machineIpaddress'),
+        selector: item => item.ipAddress,
+        sortable: false,
+        center: true
+      },
+      {
+        name: t('machineStatus'),
+        selector: item => item.status,
+        sortable: false,
+        center: true
+      },
+      {
+        name: t('action'),
+        cell: item => (
+          <div className='flex items-center gap-3'>
+            <button
+              className='btn btn-primary p-2.5'
+              onClick={() => openEdit(item)}
+            >
+              <BiEdit size={24} />
+            </button>
+            <button
+              className='btn btn-error p-2.5'
+              onClick={async () => {
+                const confirmed = await confirmModalRef.current?.show({
+                  title: 'ลบข้อมูล?',
+                  description: 'คุณแน่ใจหรือไม่ว่าต้องการลบข้อมูลนี้?',
+                  type: 'warning'
+                })
+
+                if (confirmed) {
+                  deleteMachine(item.id)
+                }
+              }}
+            >
+              <BiTrashAlt size={24} />
+            </button>
+          </div>
+        ),
+        sortable: false,
+        center: true
       }
     ],
     [t, machineDataFilter, search]
@@ -114,7 +261,7 @@ const Machine = () => {
       <div className='flex items-center justify-between'>
         <span className='text-2xl font-medium'>{t('itemMachine')}</span>
         <div className='flex items-center gap-3'>
-          <label className='input h-12'>
+          <label className='input h-12 rounded-3xl'>
             <BiSearch size={22} />
             <input
               type='text'
@@ -133,7 +280,7 @@ const Machine = () => {
           </label>
           <div className='tooltip tooltip-bottom' data-tip={t('addMachine')}>
             <button
-              className='btn btn-primary text-base h-12 w-12 p-0'
+              className='btn btn-primary text-base h-12 w-12 p-0 rounded-3xl'
               onClick={() => {
                 if (addModal.current) {
                   addModal.current.showModal()
@@ -165,7 +312,7 @@ const Machine = () => {
       </div>
 
       <dialog ref={addModal} className='modal'>
-        <div className='modal-box'>
+        <div className='modal-box p-[24px] rounded-[48px]'>
           <h3 className='font-bold text-lg'>{t('addMachine')}</h3>
           <div className='w-full'>
             <fieldset className='fieldset'>
@@ -174,7 +321,7 @@ const Machine = () => {
               </legend>
               <input
                 type='text'
-                className='input w-full'
+                className='input w-full h-12 rounded-3xl'
                 value={machineForm.machineName}
                 onChange={e =>
                   setMachineForm({
@@ -190,7 +337,7 @@ const Machine = () => {
               </legend>
               <input
                 type='text'
-                className='input w-full'
+                className='input w-full h-12 flex-1 rounded-3xl'
                 value={machineForm.ipAddress}
                 onChange={e =>
                   setMachineForm({ ...machineForm, ipAddress: e.target.value })
@@ -207,9 +354,9 @@ const Machine = () => {
             </fieldset> */}
           </div>
           <div className='modal-action'>
-            <form method='dialog' className='flex items-center gap-3'>
+            <form method='dialog' className='flex items-center gap-3 w-full'>
               <button
-                className='btn text-base font-medium'
+                className='btn text-base font-medium h-12 rounded-3xl flex-1'
                 onClick={() => resetForm()}
                 disabled={isloading}
               >
@@ -217,7 +364,7 @@ const Machine = () => {
               </button>
               <button
                 type='button'
-                className='btn btn-primary text-base font-bold'
+                className='btn btn-primary text-base font-bold h-12 rounded-3xl flex-1'
                 onClick={handleSubmit}
                 disabled={isloading}
               >
@@ -231,6 +378,76 @@ const Machine = () => {
           </div>
         </div>
       </dialog>
+
+      <dialog ref={editModal} className='modal'>
+        <div className='modal-box p-[24px] rounded-[48px]'>
+          <h3 className='font-bold text-lg'>{t('editMachine')}</h3>
+          <div className='w-full'>
+            <fieldset className='fieldset'>
+              <legend className='fieldset-legend text-sm font-medium'>
+                {t('machineName')}
+              </legend>
+              <input
+                type='text'
+                className='input w-full h-12 rounded-3xl'
+                value={machineForm.machineName}
+                onChange={e =>
+                  setMachineForm({
+                    ...machineForm,
+                    machineName: e.target.value
+                  })
+                }
+              />
+            </fieldset>
+            <fieldset className='fieldset'>
+              <legend className='fieldset-legend text-sm font-medium'>
+                {t('machineIpaddress')}
+              </legend>
+              <input
+                type='text'
+                className='input w-full h-12 rounded-3xl'
+                value={machineForm.ipAddress}
+                onChange={e =>
+                  setMachineForm({ ...machineForm, ipAddress: e.target.value })
+                }
+              />
+            </fieldset>
+            {/* <fieldset className='fieldset'>
+              <legend className='fieldset-legend'>What is your name?</legend>
+              <select defaultValue='Pick a color' className='select w-full'>
+                <option disabled={true}>Pick a color</option>
+                <option>Crimson</option>
+                <option>Amber</option>
+              </select>
+            </fieldset> */}
+          </div>
+          <div className='modal-action'>
+            <form method='dialog' className='flex items-center gap-3 w-full'>
+              <button
+                className='btn text-base font-medium h-12 flex-1'
+                onClick={() => resetForm()}
+                disabled={isloading}
+              >
+                {t('closeButton')}
+              </button>
+              <button
+                type='button'
+                className='btn btn-primary text-base font-bold h-12 flex-1'
+                onClick={handleUpdate}
+                disabled={isloading}
+              >
+                {isloading ? (
+                  <span className='loading loading-spinner loading-md'></span>
+                ) : (
+                  t('editButton')
+                )}
+              </button>
+            </form>
+          </div>
+        </div>
+      </dialog>
+
+      <ConfirmModal ref={confirmModalRef} />
     </div>
   )
 }

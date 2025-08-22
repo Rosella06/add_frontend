@@ -224,6 +224,21 @@ const Home = () => {
     }
   }, [])
 
+  useEffect(() => {
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      event.preventDefault()
+      event.returnValue = ''
+    }
+
+    if (dispenseOrder) {
+      window.addEventListener('beforeunload', handleBeforeUnload)
+    }
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload)
+    }
+  }, [dispenseOrder])
+
   return (
     <div className='flex flex-col gap-3 flex-1'>
       {isLoading ? (

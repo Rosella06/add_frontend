@@ -166,8 +166,8 @@ const Login = () => {
 
   return (
     <div className='min-h-screen flex justify-center items-center bg-base-200 p-4'>
-      <div className='card w-full rounded-[32px] sm:rounded-[48px] max-w-lg bg-base-100 shadow-xl'>
-        <div className='card-body p-8 sm:p-12'>
+      <div className='card w-full rounded-[48px] max-w-lg bg-base-100 shadow-xl'>
+        <div className='card-body p-[24px]'>
           <div className='text-center mb-6'>
             <h1 className='text-5xl font-bold text-primary'>
               <BiSolidDownArrow className='text-center w-full' />
@@ -179,7 +179,7 @@ const Login = () => {
 
           <form onSubmit={handleLogin} className='flex flex-col gap-4'>
             <div className='form-control w-full'>
-              <label className='input input-bordered flex items-center gap-4 rounded-[20px] h-[60px] w-full'>
+              <label className='input input-bordered flex items-center gap-4 rounded-3xl h-[58px] w-full'>
                 <BiUser size={22} />
                 <input
                   type='text'
@@ -203,7 +203,7 @@ const Login = () => {
             </div>
 
             <div className='form-control w-full'>
-              <label className='input input-bordered flex items-center gap-4 rounded-[20px] h-[60px] w-full'>
+              <label className='input input-bordered flex items-center gap-4 rounded-3xl h-[58px] w-full'>
                 <BiLockAlt size={22} />
                 <input
                   type='password'
@@ -229,7 +229,7 @@ const Login = () => {
               <button
                 type='submit'
                 disabled={loading}
-                className='btn btn-primary w-full text-xl rounded-[20px] h-[60px]'
+                className='btn btn-primary w-full text-xl rounded-3xl h-[58px]'
               >
                 {loading ? (
                   <span className='loading loading-spinner'></span>
@@ -244,7 +244,7 @@ const Login = () => {
             <button
               type='button'
               disabled={loading}
-              className='btn btn-ghost w-full text-xl rounded-[20px] h-[42px]'
+              className='btn btn-ghost w-full text-xl rounded-3xl h-[54px]'
               onClick={signInWithQrCode}
             >
               {t('loginWithQrCode')}
@@ -254,7 +254,7 @@ const Login = () => {
       </div>
 
       <dialog ref={signInQrModal} className='modal'>
-        <div className='modal-box'>
+        <div className='modal-box p-[24px] rounded-[48px]'>
           <h3 className='font-bold text-lg'>{t('scanQrCode')}</h3>
           <div className='flex items-center justify-center h-64'>
             <BiSolidDownArrow size={64} className='text-primary' />
@@ -262,7 +262,7 @@ const Login = () => {
           <div className='modal-action'>
             <form method='dialog'>
               <button
-                className='btn text-base rounded-[16px]'
+                className='btn text-base rounded-3xl h-12'
                 onClick={stopKeyboardEvent}
               >
                 {t('closeButton')}
