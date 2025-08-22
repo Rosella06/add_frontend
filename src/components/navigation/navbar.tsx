@@ -30,7 +30,7 @@ const Navbar = () => {
           <div className='flex-shrink-0'>
             <Link to='/' className='text-4xl font-bold text-base-content'>
               <div className='avatar'>
-                <div className='w-12 rounded'>
+                <div className='w-15 rounded'>
                   <img src={Logo} />
                 </div>
               </div>

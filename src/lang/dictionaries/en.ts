@@ -55,6 +55,8 @@ export default {
     deleteTitle: 'Delete',
     deleteDescription: 'Are you sure you want to delete this data?',
     logOutTitle: 'Sign out',
-    logOutDescription: 'Are you sure you want to sign out?'
+    logOutDescription: 'Are you sure you want to sign out?',
+    online: 'Online',
+    offline: 'Offline'
   }
 }

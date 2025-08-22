@@ -11,7 +11,7 @@ import { useDispatch } from 'react-redux'
 import { setCookieEncode } from '../../redux/actions/utilsActions'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { BiLockAlt, BiSolidDownArrow, BiUser } from 'react-icons/bi'
+import { BiError, BiLockAlt, BiSolidDownArrow, BiUser } from 'react-icons/bi'
 import { showToast } from '../../constants/utils/toast'
 import Logo from '../../../public/add-512.png'
 
@@ -66,9 +66,9 @@ const Login = () => {
       if (error instanceof AxiosError) {
         await showToast({
           type: 'error',
-          icon: BiSolidDownArrow,
+          icon: BiError,
           message: error.response?.data.message ?? t('somethingWentWrong'),
-          duration: 3000,
+          duration: 1800,
           showClose: false
         })
       } else {
@@ -117,9 +117,9 @@ const Login = () => {
         }
         await showToast({
           type: 'error',
-          icon: BiSolidDownArrow,
+          icon: BiError,
           message: error.response?.data.message ?? t('somethingWentWrong'),
-          duration: 3000,
+          duration: 1800,
           showClose: false
         }).finally(() => {
           if (signInQrModal.current) {

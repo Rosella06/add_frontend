@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
+  BiCheck,
   BiEdit,
+  BiError,
+  BiErrorCircle,
   BiPlus,
   BiSearch,
-  BiSolidDownArrow,
   BiTrashAlt,
   BiX
 } from 'react-icons/bi'
@@ -63,7 +65,7 @@ const Machine = () => {
         resetForm()
         showToast({
           type: 'success',
-          icon: BiSolidDownArrow,
+          icon: BiCheck,
           message: result.data.message,
           duration: 3000,
           showClose: false
@@ -73,7 +75,7 @@ const Machine = () => {
           addModal.current?.close()
           await showToast({
             type: 'error',
-            icon: BiSolidDownArrow,
+            icon: BiError,
             message: error.response?.data.message ?? t('somethingWentWrong'),
             duration: 3000,
             showClose: false
@@ -89,7 +91,7 @@ const Machine = () => {
       addModal.current?.close()
       await showToast({
         type: 'warning',
-        icon: BiSolidDownArrow,
+        icon: BiErrorCircle,
         message: t('pleaseCompleteField'),
         duration: 3000,
         showClose: true
@@ -112,7 +114,7 @@ const Machine = () => {
         resetForm()
         showToast({
           type: 'success',
-          icon: BiSolidDownArrow,
+          icon: BiCheck,
           message: result.data.message,
           duration: 3000,
           showClose: false
@@ -122,7 +124,7 @@ const Machine = () => {
           editModal.current?.close()
           await showToast({
             type: 'error',
-            icon: BiSolidDownArrow,
+            icon: BiError,
             message: error.response?.data.message ?? t('somethingWentWrong'),
             duration: 3000,
             showClose: false
@@ -138,7 +140,7 @@ const Machine = () => {
       editModal.current?.close()
       await showToast({
         type: 'warning',
-        icon: BiSolidDownArrow,
+        icon: BiErrorCircle,
         message: t('pleaseCompleteField'),
         duration: 3000,
         showClose: true
@@ -154,7 +156,7 @@ const Machine = () => {
       )
       showToast({
         type: 'success',
-        icon: BiSolidDownArrow,
+        icon: BiCheck,
         message: result.data.message,
         duration: 3000,
         showClose: false
@@ -163,7 +165,7 @@ const Machine = () => {
       if (error instanceof AxiosError) {
         await showToast({
           type: 'error',
-          icon: BiSolidDownArrow,
+          icon: BiError,
           message: error.response?.data.message ?? t('somethingWentWrong'),
           duration: 3000,
           showClose: false
@@ -206,7 +208,15 @@ const Machine = () => {
       },
       {
         name: t('machineStatus'),
-        selector: item => item.status,
+        cell: item => (
+          <div
+            className={`badge ${
+              item.status === 'online' ? 'badge-success' : 'badge-error'
+            } text-base-100 py-3 px-2`}
+          >
+            {item.status === 'online' ? t('online') : t('offline')}
+          </div>
+        ),
         sortable: false,
         center: true
       },

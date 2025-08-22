@@ -44,7 +44,7 @@ const CustomToast = ({
         >
           <Icon
             className={`${styles.iconColor}`}
-            size={32}
+            size={36}
             aria-hidden='true'
           />
         </div>

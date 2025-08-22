@@ -54,6 +54,8 @@ export default {
     deleteTitle: 'ลบข้อมูล',
     deleteDescription: 'คุณแน่ใจหรือไม่ว่าต้องการลบข้อมูลนี้?',
     logOutTitle: 'ออกจากระบบ',
-    logOutDescription: 'คุณต้องการออกจากระบบหรือไม่?'
+    logOutDescription: 'คุณต้องการออกจากระบบหรือไม่?',
+    online: 'ออนไลน์',
+    offline: 'ออฟไลน์'
   }
 }

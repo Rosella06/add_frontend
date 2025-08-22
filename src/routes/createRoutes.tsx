@@ -6,6 +6,7 @@ import ErrorPage from './errorPage'
 import Home from '../pages/home/home'
 import Layout from '../pages/main/main'
 import Machine from '../pages/machine/machine'
+import Inventories from '../pages/inventories/inventories'
 
 const router = () =>
   createBrowserRouter([
@@ -35,7 +36,7 @@ const router = () =>
             },
             {
               path: '/inventory',
-              element: <div>Inventory</div>,
+              element: <Inventories />,
               errorElement: <ErrorPage />
             },
             {
