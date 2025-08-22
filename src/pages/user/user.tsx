@@ -58,6 +58,7 @@ const User = () => {
     imageFile: null as File | null,
     imagePreview: null as string | null
   })
+  const [filterRole, setFilterRole] = useState('')
 
   const RoleArray = [
     {
@@ -439,12 +440,13 @@ const User = () => {
   useEffect(() => {
     const filter = userData.filter(
       f =>
-        f.displayName.toLowerCase().includes(search.toLowerCase()) ||
-        f.userName.toLowerCase().includes(search.toLowerCase())
+        (f.displayName.toLowerCase().includes(search.toLowerCase()) ||
+          f.userName.toLowerCase().includes(search.toLowerCase())) &&
+        f.userRole.includes(filterRole)
     )
 
     setUserFilterData(filter)
-  }, [userData, search])
+  }, [userData, search, filterRole])
 
   return (
     <div>
@@ -468,6 +470,25 @@ const User = () => {
               </span>
             )}
           </label>
+          <Select
+            key={filterRole}
+            options={mapOptions<RoleSelect, keyof RoleSelect>(
+              [{ key: '', value: t('filterAll') }, ...RoleArray],
+              'key',
+              'value'
+            )}
+            value={mapDefaultValue<RoleSelect, keyof RoleSelect>(
+              [{ key: '', value: t('filterAll') }, ...RoleArray],
+              filterRole ?? '',
+              'key',
+              'value'
+            )}
+            onChange={e => setFilterRole(String(e?.value))}
+            menuPlacement='bottom'
+            autoFocus={false}
+            className='custom-react-select w-48 z-20'
+            classNamePrefix='react-select'
+          />
           <div className='tooltip tooltip-bottom' data-tip={t('addMachine')}>
             <button
               className='btn btn-primary text-base h-12 w-12 p-0 rounded-3xl'

@@ -152,12 +152,32 @@ const Stock = () => {
         center: true
       },
       {
+        name: `${t('max')} / ${t('max')}`,
+        selector: item => `${item.min} / ${item.max}`,
+        sortable: false,
+        center: true
+      },
+      {
         name: t('machineName'),
         cell: item => (
           <div className='tooltip' data-tip={item.machine.machineName}>
             <span className='truncate w-[128px] block text-center'>
               {item.machine.machineName}
             </span>
+          </div>
+        ),
+        sortable: false,
+        center: true
+      },
+      {
+        name: t('machineStatus'),
+        cell: item => (
+          <div
+            className={`badge ${
+              item.machine.status === 'online' ? 'badge-success' : 'badge-error'
+            } text-base-100 py-3 px-2`}
+          >
+            {item.machine.status === 'online' ? t('online') : t('offline')}
           </div>
         ),
         sortable: false,

@@ -82,6 +82,7 @@ export default {
     rolePHARMACIST: 'เภสัชกร',
     roleASSISTANT: 'ผู้ช่วย',
     roleSUPER: 'ผู้ดูแลระบบ',
-    imageSizeLimit: 'ขนาดไฟล์รูปภาพไม่เกิน 5MB'
+    imageSizeLimit: 'ขนาดไฟล์รูปภาพไม่เกิน 5MB',
+    filterAll: 'ทั้งหมด'
   }
 }
