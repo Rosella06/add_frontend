@@ -224,8 +224,8 @@ const Machine = () => {
               className='btn btn-error p-2.5'
               onClick={async () => {
                 const confirmed = await confirmModalRef.current?.show({
-                  title: 'ลบข้อมูล?',
-                  description: 'คุณแน่ใจหรือไม่ว่าต้องการลบข้อมูลนี้?',
+                  title: t('deleteTitle'),
+                  description: t('deleteDescription'),
                   type: 'warning'
                 })
 

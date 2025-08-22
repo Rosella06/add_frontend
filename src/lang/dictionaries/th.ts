@@ -10,6 +10,7 @@ export default {
     logoutButton: 'ออกจากระบบ',
     loginWithQrCode: 'เข้าสู่ระบบด้วย QR Code',
     scanQrCode: 'สแกน QR Code เพื่อเข้าสู่ระบบ',
+    dividerOr: 'หรือ',
 
     closeButton: 'ปิด',
     saveButton: 'บันทึก',
@@ -49,6 +50,10 @@ export default {
 
     pleaseCompleteField: 'กรุณากรอกข้อมูลให้ครบ',
 
-    action: 'แอคชั่น'
+    action: 'แอคชั่น',
+    deleteTitle: 'ลบข้อมูล',
+    deleteDescription: 'คุณแน่ใจหรือไม่ว่าต้องการลบข้อมูลนี้?',
+    logOutTitle: 'ออกจากระบบ',
+    logOutDescription: 'คุณต้องการออกจากระบบหรือไม่?'
   }
 }

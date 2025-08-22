@@ -4,10 +4,14 @@ import { useSelector } from 'react-redux'
 import { RootState } from '../../redux/reducers/rootReducer'
 import { cookieOptions, cookies } from '../../constants/utils/utilsConstants'
 import { useTranslation } from 'react-i18next'
+import ConfirmModal, { ConfirmModalRef } from '../modal/ConfirmModal'
+import { useRef } from 'react'
+import Logo from '../../../public/add-512.png'
 
 const Navbar = () => {
   const { t } = useTranslation()
   const { cookieDecode } = useSelector((state: RootState) => state.utils)
+  const confirmModalRef = useRef<ConfirmModalRef>(null)
 
   const menuItems = [
     { name: t('itemDispense'), path: '/', icon: BiSolidDownArrow },
@@ -25,7 +29,11 @@ const Navbar = () => {
         <div className='flex h-20 items-center justify-between'>
           <div className='flex-shrink-0'>
             <Link to='/' className='text-4xl font-bold text-base-content'>
-              ADD
+              <div className='avatar'>
+                <div className='w-12 rounded'>
+                  <img src={Logo} />
+                </div>
+              </div>
             </Link>
           </div>
 
@@ -58,10 +66,19 @@ const Navbar = () => {
               <li className='mt-2'>
                 <span
                   className='text-base font-medium text-red-500 hover:bg-red-50 rounded-[16px]'
-                  onClick={() => {
-                    cookies.remove('tokenObject', cookieOptions)
-                    cookies.update()
-                    window.location.href = '/login'
+                  onClick={async () => {
+                    const confirmed = await confirmModalRef.current?.show({
+                      title: t('logOutTitle'),
+                      description: t('logOutDescription'),
+                      buttonConfirmText: t('logoutButton'),
+                      type: 'warning'
+                    })
+
+                    if (confirmed) {
+                      cookies.remove('tokenObject', cookieOptions)
+                      cookies.update()
+                      window.location.href = '/login'
+                    }
                   }}
                 >
                   <BiSolidDownArrow className='h-4 w-4' />
@@ -96,6 +113,7 @@ const Navbar = () => {
           </div>
         </div>
       </div>
+      <ConfirmModal ref={confirmModalRef} />
     </nav>
   )
 }

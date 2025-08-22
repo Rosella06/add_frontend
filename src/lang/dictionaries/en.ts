@@ -11,6 +11,7 @@ export default {
     logoutButton: 'Sign out',
     loginWithQrCode: 'Sign in with QR Code',
     scanQrCode: 'Scan QR Code to Sign in',
+    dividerOr: 'Or',
 
     closeButton: 'Close',
     saveButton: 'Save',
@@ -50,6 +51,10 @@ export default {
 
     pleaseCompleteField: 'Please Complete Field!',
 
-    action: 'Action'
+    action: 'Action',
+    deleteTitle: 'Delete',
+    deleteDescription: 'Are you sure you want to delete this data?',
+    logOutTitle: 'Sign out',
+    logOutDescription: 'Are you sure you want to sign out?'
   }
 }

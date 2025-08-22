@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { BiLockAlt, BiSolidDownArrow, BiUser } from 'react-icons/bi'
 import { showToast } from '../../constants/utils/toast'
+import Logo from '../../../public/add-512.png'
 
 const Login = () => {
   const dispatch = useDispatch()
@@ -170,11 +171,15 @@ const Login = () => {
         <div className='card-body p-[24px]'>
           <div className='text-center mb-6'>
             <h1 className='text-5xl font-bold text-primary'>
-              <BiSolidDownArrow className='text-center w-full' />
+              <div className='avatar'>
+                <div className='w-24 rounded'>
+                  <img src={Logo} />
+                </div>
+              </div>
             </h1>
-            <p className='text-lg text-base-content/60 mt-2'>
+            {/* <p className='text-lg text-base-content/60 mt-2'>
               {t('loginDescription')}
-            </p>
+            </p> */}
           </div>
 
           <form onSubmit={handleLogin} className='flex flex-col gap-4'>
@@ -239,7 +244,7 @@ const Login = () => {
               </button>
             </div>
 
-            <div className='divider'>OR</div>
+            <div className='divider'>{t('dividerOr')}</div>
 
             <button
               type='button'

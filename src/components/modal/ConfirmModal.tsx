@@ -7,6 +7,7 @@ type AlertType = 'info' | 'warning' | 'success' | 'error'
 type ConfirmOptions = {
   title: string
   description?: string
+  buttonConfirmText?: string
   type?: AlertType
 }
 
@@ -21,6 +22,7 @@ const ConfirmModal = forwardRef<ConfirmModalRef>((_, ref) => {
   const [options, setOptions] = useState<ConfirmOptions>({
     title: '',
     description: '',
+    buttonConfirmText: '',
     type: 'info'
   })
   const [isLoading, setIsLoading] = useState(false)
@@ -83,9 +85,9 @@ const ConfirmModal = forwardRef<ConfirmModalRef>((_, ref) => {
           >
             {renderIcon()}
           </div>
-          <h3 className='font-bold text-2xl mt-5'>{options.title}</h3>
+          <h3 className='font-bold text-2xl mt-2.5'>{options.title}</h3>
           {options.description && (
-            <span className='py-2'>{options.description}</span>
+            <span className='py-1.5 text-lg'>{options.description}</span>
           )}
         </div>
         <div className='flex gap-3 mt-6'>
@@ -106,7 +108,7 @@ const ConfirmModal = forwardRef<ConfirmModalRef>((_, ref) => {
             {isLoading ? (
               <span className='loading loading-spinner loading-md'></span>
             ) : (
-              t('confirmButton')
+              options.buttonConfirmText ?? t('confirmButton')
             )}
           </button>
         </div>

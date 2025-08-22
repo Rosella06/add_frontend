@@ -258,7 +258,7 @@ const Home = () => {
 
       <div className='flex flex-col gap-3 items-center fixed bottom-5 right-5 z-20'>
         <button
-          className='btn btn-error rounded-2xl px-3 py-3 h-17 w-17'
+          className='btn btn-error rounded-3xl px-3 py-3 h-17 w-17'
           onClick={resetPrescription}
         >
           <BiReset size={36} />
