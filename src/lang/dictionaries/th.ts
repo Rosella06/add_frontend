@@ -12,7 +12,7 @@ export default {
     scanQrCode: 'สแกน QR Code เพื่อเข้าสู่ระบบ',
     dividerOr: 'หรือ',
 
-    closeButton: 'ปิด',
+    closeButton: 'ยกเลิก',
     saveButton: 'บันทึก',
     editButton: 'แก้ไข',
     confirmButton: 'ยืนยัน',

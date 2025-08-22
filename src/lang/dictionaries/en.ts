@@ -13,7 +13,7 @@ export default {
     scanQrCode: 'Scan QR Code to Sign in',
     dividerOr: 'Or',
 
-    closeButton: 'Close',
+    closeButton: 'Cancel',
     saveButton: 'Save',
     editButton: 'Edit',
     confirmButton: 'Confirm',
