@@ -5,9 +5,18 @@ import { AxiosError } from 'axios'
 import { ApiResponse } from '../../types/api.response.type'
 import DataTable, { TableColumn } from 'react-data-table-component'
 import { useTranslation } from 'react-i18next'
-import { BiCheck, BiError, BiErrorCircle, BiSearch, BiX } from 'react-icons/bi'
+import {
+  BiCheck,
+  BiChevronLeft,
+  BiChevronRight,
+  BiError,
+  BiErrorCircle,
+  BiSearch,
+  BiX
+} from 'react-icons/bi'
 import { GiMedicines } from 'react-icons/gi'
 import { showToast } from '../../constants/utils/toast'
+import { IoBackspaceOutline } from 'react-icons/io5'
 
 const Stock = () => {
   const { t } = useTranslation()
@@ -18,9 +27,10 @@ const Stock = () => {
   const [isloading, setIsLoading] = useState(false)
   const [search, setSearch] = useState('')
   const refillModal = useRef<HTMLDialogElement>(null)
+  const [selectedItem, setSelectedItem] = useState<Inventories | null>(null)
   const [refill, setRefill] = useState({
     id: '',
-    quantity: 0
+    quantity: '0'
   })
 
   const fetchInventories = async () => {
@@ -42,13 +52,13 @@ const Stock = () => {
   }
 
   const handleUpdateStock = async () => {
-    if (refill.quantity !== 0) {
+    if (refill.quantity !== '0') {
       setIsLoading(true)
       try {
         const result = await axiosInstance.patch<ApiResponse<Inventories>>(
           `/inventories/${refill.id}`,
           {
-            quantity: refill.quantity
+            quantity: Number(refill.quantity)
           }
         )
         refillModal.current?.close()
@@ -93,15 +103,41 @@ const Stock = () => {
     refillModal.current?.showModal()
     setRefill({
       id: stock.id,
-      quantity: stock.quantity
+      quantity: String(stock.quantity)
     })
+    setSelectedItem(stock)
   }
 
   const resetForm = () => {
     setRefill({
       id: '',
-      quantity: 0
+      quantity: '0'
     })
+  }
+
+  const handleNumpadClick = (num: number) => {
+    if (!selectedItem) return
+    const newValueString =
+      refill.quantity === '0' ? String(num) : refill.quantity + num
+    if (Number(newValueString) > selectedItem.max) {
+      setRefill({ ...refill, quantity: String(selectedItem.max) })
+      return
+    }
+    setRefill({ ...refill, quantity: newValueString })
+  }
+
+  const handleBackspace = () => {
+    if (refill.quantity.length > 1) {
+      setRefill({ ...refill, quantity: String(refill.quantity.slice(0, -1)) })
+    } else {
+      setRefill({ ...refill, quantity: '0' })
+    }
+  }
+
+  const handleMaxClick = () => {
+    if (selectedItem) {
+      setRefill({ ...refill, quantity: String(selectedItem.max) })
+    }
   }
 
   useEffect(() => {
@@ -152,7 +188,7 @@ const Stock = () => {
         center: true
       },
       {
-        name: `${t('max')} / ${t('max')}`,
+        name: `${t('min')} / ${t('max')}`,
         selector: item => `${item.min} / ${item.max}`,
         sortable: false,
         center: true
@@ -248,25 +284,64 @@ const Stock = () => {
       <dialog ref={refillModal} className='modal'>
         <div className='modal-box p-[24px] rounded-[48px]'>
           <h3 className='font-bold text-lg'>{t('refillStock')}</h3>
-          <div className='w-full'>
-            <fieldset className='fieldset'>
-              <legend className='fieldset-legend text-sm font-medium'>
-                {t('quantity')}
-              </legend>
-              <input
-                type='number'
-                min={0}
-                max={128}
-                className='input w-full h-12 rounded-3xl'
-                value={refill.quantity}
-                onChange={e =>
+
+          <div className='flex items-center justify-between w-full px-4'>
+            <button
+              className='btn btn-ghost btn-circle'
+              onClick={() => {
+                if (Number(refill.quantity) > Number(selectedItem?.min)) {
                   setRefill({
                     ...refill,
-                    quantity: Number(e.target.value)
+                    quantity: String(Number(refill.quantity) - 1)
                   })
                 }
-              />
-            </fieldset>
+              }}
+            >
+              <BiChevronLeft size={32} className='text-base-content/30' />
+            </button>
+            <span className='text-6xl font-bold text-primary'>
+              {refill.quantity}
+            </span>
+            <button
+              className='btn btn-ghost btn-circle'
+              onClick={() => {
+                if (Number(refill.quantity) < Number(selectedItem?.max)) {
+                  setRefill({
+                    ...refill,
+                    quantity: String(Number(refill.quantity) + 1)
+                  })
+                }
+              }}
+            >
+              <BiChevronRight size={32} className='text-base-content/30' />
+            </button>
+          </div>
+
+          <div className='grid grid-cols-3 gap-4 w-full mt-4'>
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(num => (
+              <button
+                key={num}
+                onClick={() => handleNumpadClick(num)}
+                className='btn btn-ghost text-3xl h-20'
+              >
+                {num}
+              </button>
+            ))}
+            <button onClick={handleBackspace} className='btn btn-ghost h-20'>
+              <IoBackspaceOutline size={32} className='text-error' />
+            </button>
+            <button
+              onClick={() => handleNumpadClick(0)}
+              className='btn btn-ghost text-3xl h-20'
+            >
+              0
+            </button>
+            <button
+              onClick={handleMaxClick}
+              className='btn btn-ghost text-xl font-bold text-primary h-20'
+            >
+              MAX
+            </button>
           </div>
           <div className='modal-action'>
             <form method='dialog' className='flex items-center gap-3 w-full'>
