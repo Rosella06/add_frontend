@@ -1,60 +1,64 @@
 @import "tailwindcss";
 
 @plugin "daisyui" {
-  themes: light --default, dark --prefersdark, cupcake, caramellatte;
+  themes:
+    light --default,
+    dark --prefersdark,
+    cupcake,
+    caramellatte;
 }
 
 @font-face {
-  font-family: 'IBMPlexSansThaiLooped';
-  src: url('./assets/fonts/IBMPlexSansThaiLooped-Thin.ttf') format('truetype');
+  font-family: "IBMPlexSansThaiLooped";
+  src: url("./assets/fonts/IBMPlexSansThaiLooped-Thin.ttf") format("truetype");
   font-weight: 100;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'IBMPlexSansThaiLooped';
-  src: url('./assets/fonts/IBMPlexSansThaiLooped-ExtraLight.ttf') format('truetype');
+  font-family: "IBMPlexSansThaiLooped";
+  src: url("./assets/fonts/IBMPlexSansThaiLooped-ExtraLight.ttf") format("truetype");
   font-weight: 200;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'IBMPlexSansThaiLooped';
-  src: url('./assets/fonts/IBMPlexSansThaiLooped-Light.ttf') format('truetype');
+  font-family: "IBMPlexSansThaiLooped";
+  src: url("./assets/fonts/IBMPlexSansThaiLooped-Light.ttf") format("truetype");
   font-weight: 300;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'IBMPlexSansThaiLooped';
-  src: url('./assets/fonts/IBMPlexSansThaiLooped-Regular.ttf') format('truetype');
+  font-family: "IBMPlexSansThaiLooped";
+  src: url("./assets/fonts/IBMPlexSansThaiLooped-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'IBMPlexSansThaiLooped';
-  src: url('./assets/fonts/IBMPlexSansThaiLooped-Medium.ttf') format('truetype');
+  font-family: "IBMPlexSansThaiLooped";
+  src: url("./assets/fonts/IBMPlexSansThaiLooped-Medium.ttf") format("truetype");
   font-weight: 500;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'IBMPlexSansThaiLooped';
-  src: url('./assets/fonts/IBMPlexSansThaiLooped-SemiBold.ttf') format('truetype');
+  font-family: "IBMPlexSansThaiLooped";
+  src: url("./assets/fonts/IBMPlexSansThaiLooped-SemiBold.ttf") format("truetype");
   font-weight: 600;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'IBMPlexSansThaiLooped';
-  src: url('./assets/fonts/IBMPlexSansThaiLooped-Bold.ttf') format('truetype');
+  font-family: "IBMPlexSansThaiLooped";
+  src: url("./assets/fonts/IBMPlexSansThaiLooped-Bold.ttf") format("truetype");
   font-weight: 700;
   font-style: normal;
 }
 
 * {
-  font-family: 'IBMPlexSansThaiLooped', sans-serif;
+  font-family: "IBMPlexSansThaiLooped", sans-serif;
 }
 
 .go2072408551 {
@@ -139,7 +143,6 @@
 }
 
 @keyframes ping-pong-scroll-with-delay {
-
   0%,
   15% {
     transform: translateX(0);
@@ -191,51 +194,43 @@
 }
 
 .fade-edges {
-  -webkit-mask-image: linear-gradient(to right,
-      transparent 0%,
-      black 3%,
-      black 98%,
-      transparent 100%);
-  mask-image: linear-gradient(to right,
-      transparent 0%,
-      black 3%,
-      black 98%,
-      transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 3%, black 98%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 3%, black 98%, transparent 100%);
 }
 
 .dataTableWrapper {
-  &>div:nth-child(1) {
+  & > div:nth-child(1) {
     @apply rounded-none;
   }
 
-  &>div>div>div>div>div>div>button {
+  & > div > div > div > div > div > div > button {
     @apply text-inherit;
   }
 
-  &>div>div>div>div {
+  & > div > div > div > div {
     @apply bg-base-100 duration-300 ease-linear h-full;
   }
 
-  &>div>div>div>div>div {
-    &>div {
+  & > div > div > div > div > div {
+    & > div {
       @apply duration-300 ease-linear;
     }
 
     @apply bg-transparent !text-base-content !border-b-base-content/10 duration-300 ease-linear;
   }
 
-  &>div>div>div>div:nth-child(2)>div:hover {
+  & > div > div > div > div:nth-child(2) > div:hover {
     @apply duration-300 ease-linear bg-base-300;
   }
 
-  &>div:nth-child(2)>nav {
+  & > div:nth-child(2) > nav {
     @apply bg-transparent text-base-content border-t-base-content/10 duration-300 ease-linear;
 
-    &>div:nth-child(4)>button:disabled {
+    & > div:nth-child(4) > button:disabled {
       @apply !cursor-not-allowed text-base-content/30 fill-base-content/30;
     }
 
-    &>div:nth-child(4)>button {
+    & > div:nth-child(4) > button {
       @apply text-base-content fill-base-content;
     }
   }
@@ -274,13 +269,13 @@
 
 .react-select__indicator,
 .react-select__dropdown-indicator {
-  &>svg {
+  & > svg {
     fill: var(--fallback-bc, oklch(var(--bc) / 0.25)) !important;
   }
 }
 
 .react-select__menu {
-  @apply !bg-base-100 !rounded-field !overflow-hidden !p-2 !w-max;
+  @apply !bg-base-100 !rounded-[24px] !overflow-hidden !p-2 !w-max;
 }
 
 .react-select__menu-list {
@@ -288,7 +283,7 @@
 }
 
 .react-select__option {
-  @apply !rounded-field !cursor-pointer !px-4;
+  @apply !rounded-[16px] !cursor-pointer !p-4 !text-sm;
 }
 
 .react-select__option--is-focused {
@@ -300,7 +295,7 @@
 }
 
 .custom-react-select {
-  &>.react-select__menu>div:nth-child(1) {
+  & > .react-select__menu > div:nth-child(1) {
     justify-content: unset !important;
   }
 }
