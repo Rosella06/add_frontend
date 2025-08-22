@@ -316,9 +316,14 @@ const Stock = () => {
             </span>
           </div>
 
-          <div className='flex items-center justify-between w-full px-4 mt-5'>
+          <div
+            className={`flex items-center justify-between w-full px-4 mt-5 ${
+              buttonStatus ? 'cursor-not-allowed opacity-70' : 'opacity-100'
+            }`}
+          >
             <button
-              className='btn btn-ghost btn-circle'
+              disabled={buttonStatus}
+              className='btn btn-ghost btn-circle disabled:opacity-100'
               onClick={() => {
                 if (Number(refill.quantity) > Number(selectedItem?.min)) {
                   setRefill({
@@ -334,7 +339,8 @@ const Stock = () => {
               {refill.quantity}
             </span>
             <button
-              className='btn btn-ghost btn-circle'
+              disabled={buttonStatus}
+              className='btn btn-ghost btn-circle disabled:opacity-100'
               onClick={() => {
                 if (Number(refill.quantity) < Number(selectedItem?.max)) {
                   setRefill({
@@ -348,28 +354,39 @@ const Stock = () => {
             </button>
           </div>
 
-          <div className='grid grid-cols-3 gap-4 w-full mt-4'>
+          <div
+            className={`grid grid-cols-3 gap-4 w-full mt-4 ${
+              buttonStatus ? 'cursor-not-allowed opacity-70' : 'opacity-100'
+            }`}
+          >
             {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(num => (
               <button
                 key={num}
+                disabled={buttonStatus}
                 onClick={() => handleNumpadClick(num)}
-                className='btn btn-ghost text-3xl h-20'
+                className='btn btn-ghost text-3xl h-20 disabled:opacity-100'
               >
                 {num}
               </button>
             ))}
-            <button onClick={handleBackspace} className='btn btn-ghost h-20'>
+            <button
+              disabled={buttonStatus}
+              onClick={handleBackspace}
+              className='btn btn-ghost h-20 disabled:opacity-100'
+            >
               <IoBackspaceOutline size={32} className='text-error' />
             </button>
             <button
+              disabled={buttonStatus}
               onClick={() => handleNumpadClick(0)}
-              className='btn btn-ghost text-3xl h-20'
+              className='btn btn-ghost text-3xl h-20 disabled:opacity-100'
             >
               0
             </button>
             <button
+              disabled={buttonStatus}
               onClick={handleMaxClick}
-              className='btn btn-ghost text-xl font-bold text-primary h-20'
+              className='btn btn-ghost text-xl font-bold text-primary h-20 disabled:opacity-100'
             >
               MAX
             </button>
