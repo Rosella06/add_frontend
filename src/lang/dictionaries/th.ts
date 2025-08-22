@@ -23,6 +23,7 @@ export default {
     itemInventory: 'จัดการช่อง',
     itemMachine: 'จัดการเครื่อง',
     itemUser: 'จัดการผู้ใช้',
+    itemReport: 'รายงาน',
     itemSettings: 'การตั้งค่า',
     somethingWentWrong: 'เกิดข้อผิดพลาดขึ้น!',
 
@@ -83,6 +84,9 @@ export default {
     roleASSISTANT: 'ผู้ช่วย',
     roleSUPER: 'ผู้ดูแลระบบ',
     imageSizeLimit: 'ขนาดไฟล์รูปภาพไม่เกิน 5MB',
-    filterAll: 'ทั้งหมด'
+    filterAll: 'ทั้งหมด',
+    addDrug: 'เพิ่มยา',
+    drugCode: 'รหัสยา',
+    drugStatus: 'สถานะยา',
   }
 }

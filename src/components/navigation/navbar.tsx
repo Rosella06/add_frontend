@@ -20,6 +20,7 @@ const Navbar = () => {
     { name: t('itemInventory'), path: '/inventory', icon: BiSolidDownArrow },
     { name: t('itemMachine'), path: '/machine', icon: BiSolidDownArrow },
     { name: t('itemUser'), path: '/user', icon: BiSolidDownArrow },
+    { name: t('itemReport'), path: '/report', icon: BiSolidDownArrow },
     { name: t('itemSettings'), path: '/settings', icon: BiSolidDownArrow }
   ]
 

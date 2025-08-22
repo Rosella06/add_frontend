@@ -13,81 +13,42 @@ import {
   BiTrashAlt,
   BiX
 } from 'react-icons/bi'
-import { Users } from '../../types/user.type'
-import { AxiosError } from 'axios'
-import axiosInstance from '../../constants/axios/axiosInstance'
-import { ApiResponse } from '../../types/api.response.type'
+import { Drug } from '../../types/drug.type'
 import ConfirmModal, {
   ConfirmModalRef
 } from '../../components/modal/ConfirmModal'
+import axiosInstance from '../../constants/axios/axiosInstance'
+import { ApiResponse } from '../../types/api.response.type'
+import { AxiosError } from 'axios'
 import { showToast } from '../../constants/utils/toast'
+import { resizeImage } from '../../constants/utils/image'
 import Select from 'react-select'
 import { mapDefaultValue, mapOptions } from '../../constants/utils/reacr.select'
-import { resizeImage } from '../../constants/utils/image'
-import { useSelector } from 'react-redux'
-import { RootState } from '../../redux/reducers/rootReducer'
 
-interface RoleSelect {
+interface DrugActive {
   key: string
   value: string
 }
 
-interface UserActive {
-  key: string
-  value: string
-}
-
-const User = () => {
+const Drugs = () => {
   const { t } = useTranslation()
-  const { cookieDecode } = useSelector((state: RootState) => state.utils)
-  const { id } = cookieDecode ?? {}
   const [search, setSearch] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
   const addModal = useRef<HTMLDialogElement>(null)
   const editModal = useRef<HTMLDialogElement>(null)
   const confirmModalRef = useRef<ConfirmModalRef>(null)
-  const [userData, setUserData] = useState<Users[]>([])
-  const [userFilterData, setUserFilterData] = useState<Users[]>([])
-  const [userForm, setUserForm] = useState({
+  const [isLoading, setIsLoading] = useState(false)
+  const [drugData, setDrugData] = useState<Drug[]>([])
+  const [drugFilterData, setDrugFilterData] = useState<Drug[]>([])
+  const [drugForm, setDrugForm] = useState({
     id: '',
-    userName: '',
-    userPassword: '',
-    userStatus: true,
-    displayName: '',
-    userRole: '',
+    drugCode: '',
+    drugName: '',
+    drugStatus: true,
     imageFile: null as File | null,
     imagePreview: null as string | null
   })
-  const [filterRole, setFilterRole] = useState('')
 
-  const RoleArray = [
-    {
-      key: 'ADMIN',
-      value: t('roleADMIN')
-    },
-    {
-      key: 'USER',
-      value: t('roleUSER')
-    },
-    {
-      key: 'HEAD_PHARMACIST',
-      value: t('roleHEAD_PHARMACIST')
-    },
-    {
-      key: 'PHARMACIST',
-      value: t('rolePHARMACIST')
-    },
-    {
-      key: 'ASSISTANT',
-      value: t('roleASSISTANT')
-    },
-    {
-      key: 'SUPER',
-      value: t('roleSUPER')
-    }
-  ]
-
-  const UserStatus = [
+  const DrugStatus = [
     {
       key: 'true',
       value: t('active')
@@ -98,12 +59,11 @@ const User = () => {
     }
   ]
 
-  const fetchUser = async () => {
+  const fetchDrugs = async () => {
     setIsLoading(true)
     try {
-      const result = await axiosInstance.get<ApiResponse<Users[]>>('/users')
-      const userData = result.data.data.filter(f => f.id !== id)
-      setUserData(userData)
+      const result = await axiosInstance.get<ApiResponse<Drug[]>>('/drugs')
+      setDrugData(result.data.data)
     } catch (error) {
       if (error instanceof AxiosError) {
         console.error(error.response?.data.message)
@@ -117,22 +77,18 @@ const User = () => {
 
   const handleSubmit = async () => {
     if (
-      userForm.userName !== '' &&
-      userForm.userPassword !== '' &&
-      userForm.displayName !== '' &&
-      userForm.imageFile !== null &&
-      userForm.userRole !== ''
+      drugForm.drugCode !== '' &&
+      drugForm.drugName !== '' &&
+      drugForm.imageFile !== null
     ) {
       setIsLoading(true)
       const formData = new FormData()
-      formData.append('userName', userForm.userName)
-      formData.append('userPassword', userForm.userPassword)
-      formData.append('displayName', userForm.displayName)
-      formData.append('userRole', userForm.userRole)
-      formData.append('upload', userForm.imageFile)
+      formData.append('drugCode', drugForm.drugCode)
+      formData.append('drugName', drugForm.drugName)
+      formData.append('upload', drugForm.imageFile)
       try {
-        const result = await axiosInstance.post<ApiResponse<Users>>(
-          `/auth/register`,
+        const result = await axiosInstance.post<ApiResponse<Drug>>(
+          `/drugs`,
           formData,
           {
             headers: {
@@ -163,7 +119,7 @@ const User = () => {
           console.error(error)
         }
       } finally {
-        await fetchUser()
+        await fetchDrugs()
         setIsLoading(false)
       }
     } else {
@@ -179,25 +135,20 @@ const User = () => {
   }
 
   const handleUpdate = async () => {
-    if (
-      userForm.userName !== '' &&
-      userForm.displayName !== '' &&
-      userForm.userRole !== ''
-    ) {
+    if (drugForm.drugCode !== '' && drugForm.drugName !== '') {
       setIsLoading(true)
       const formData = new FormData()
-      formData.append('userName', userForm.userName)
-      formData.append('displayName', userForm.displayName)
-      formData.append('userStatus', userForm.userStatus.toString())
-      formData.append('userRole', userForm.userRole)
+      formData.append('drugCode', drugForm.drugCode)
+      formData.append('drugName', drugForm.drugName)
+      formData.append('drugStatus', drugForm.drugStatus.toString())
 
-      if (userForm.imageFile !== null) {
-        formData.append('upload', userForm.imageFile)
+      if (drugForm.imageFile !== null) {
+        formData.append('upload', drugForm.imageFile)
       }
 
       try {
-        const result = await axiosInstance.patch<ApiResponse<Users>>(
-          `/users/${userForm.id}`,
+        const result = await axiosInstance.patch<ApiResponse<Drug>>(
+          `/drugs/${drugForm.id}`,
           formData,
           {
             headers: {
@@ -228,7 +179,7 @@ const User = () => {
           console.error(error)
         }
       } finally {
-        await fetchUser()
+        await fetchDrugs()
         setIsLoading(false)
       }
     } else {
@@ -243,11 +194,11 @@ const User = () => {
     }
   }
 
-  const deleteUser = async (userId: string) => {
+  const deleteDrug = async (drugId: string) => {
     setIsLoading(true)
     try {
       const result = await axiosInstance.delete<ApiResponse<string>>(
-        `/users/${userId}`
+        `/drugs/${drugId}`
       )
       showToast({
         type: 'success',
@@ -269,33 +220,29 @@ const User = () => {
         console.error(error)
       }
     } finally {
-      await fetchUser()
+      await fetchDrugs()
       setIsLoading(false)
     }
   }
 
-  const openEdit = (user: Users) => {
-    setUserForm({
-      id: user.id,
-      userName: user.userName,
-      userPassword: '',
-      displayName: user.displayName,
-      userStatus: user.userStatus,
-      userRole: user.userRole,
+  const openEdit = (drug: Drug) => {
+    setDrugForm({
+      id: drug.id,
+      drugCode: drug.drugCode,
+      drugName: drug.drugName,
+      drugStatus: drug.drugStatus,
       imageFile: null,
-      imagePreview: user.userImage
+      imagePreview: drug.drugImage
     })
     editModal.current?.showModal()
   }
 
   const resetForm = () => {
-    setUserForm({
+    setDrugForm({
       id: '',
-      userName: '',
-      userPassword: '',
-      displayName: '',
-      userStatus: true,
-      userRole: '',
+      drugCode: '',
+      drugName: '',
+      drugStatus: true,
       imageFile: null,
       imagePreview: null
     })
@@ -314,8 +261,8 @@ const User = () => {
           duration: 1800,
           showClose: false
         }).finally(async () => {
-          setUserForm({
-            ...userForm,
+          setDrugForm({
+            ...drugForm,
             imageFile: null,
             imagePreview: null
           })
@@ -325,7 +272,7 @@ const User = () => {
 
       await new Promise(resolve => setTimeout(resolve, 500))
       const reSized = await resizeImage(file)
-      setUserForm(prev => ({
+      setDrugForm(prev => ({
         ...prev,
         imageFile: reSized,
         imagePreview: URL.createObjectURL(file)
@@ -333,14 +280,14 @@ const User = () => {
     }
   }
 
-  const columns: TableColumn<Users>[] = useMemo(
+  const columns: TableColumn<Drug>[] = useMemo(
     () => [
       {
         name: t('image'),
         cell: item => (
           <div className='avatar'>
             <div className='w-10 rounded'>
-              <img src={import.meta.env.VITE_APP_IMG + item.userImage} />
+              <img src={import.meta.env.VITE_APP_IMG + item.drugImage} />
             </div>
           </div>
         ),
@@ -348,11 +295,11 @@ const User = () => {
         center: true
       },
       {
-        name: t('userName'),
+        name: t('drugCode'),
         cell: item => (
-          <div className='tooltip' data-tip={item.userName}>
+          <div className='tooltip' data-tip={item.drugCode}>
             <span className='truncate w-[128px] block text-center'>
-              {item.userName}
+              {item.drugCode}
             </span>
           </div>
         ),
@@ -360,11 +307,11 @@ const User = () => {
         center: true
       },
       {
-        name: t('displayName'),
+        name: t('drugName'),
         cell: item => (
-          <div className='tooltip' data-tip={item.displayName}>
+          <div className='tooltip' data-tip={item.drugName}>
             <span className='truncate w-[128px] block text-center'>
-              {item.displayName}
+              {item.drugName}
             </span>
           </div>
         ),
@@ -372,29 +319,8 @@ const User = () => {
         center: true
       },
       {
-        name: t('role'),
-        selector: item => {
-          switch (item.userRole) {
-            case 'ADMIN':
-              return t('roleADMIN')
-            case 'USER':
-              return t('roleUSER')
-            case 'HEAD_PHARMACIST':
-              return t('roleHEAD_PHARMACIST')
-            case 'PHARMACIST':
-              return t('rolePHARMACIST')
-            case 'ASSISTANT':
-              return t('roleASSISTANT')
-            default:
-              return t('roleSUPER')
-          }
-        },
-        sortable: false,
-        center: true
-      },
-      {
-        name: t('machineStatus'),
-        selector: item => (item.userStatus ? t('active') : t('inActive')),
+        name: t('drugStatus'),
+        selector: item => (item.drugStatus ? t('active') : t('inActive')),
         sortable: false,
         center: true
       },
@@ -418,7 +344,7 @@ const User = () => {
                 })
 
                 if (confirmed) {
-                  await deleteUser(item.id)
+                  await deleteDrug(item.id)
                 }
               }}
             >
@@ -434,24 +360,23 @@ const User = () => {
   )
 
   useEffect(() => {
-    fetchUser()
+    fetchDrugs()
   }, [])
 
   useEffect(() => {
-    const filter = userData.filter(
+    const filter = drugData.filter(
       f =>
-        (f.displayName.toLowerCase().includes(search.toLowerCase()) ||
-          f.userName.toLowerCase().includes(search.toLowerCase())) &&
-        f.userRole.includes(filterRole)
+        f.drugName.toLowerCase().includes(search.toLowerCase()) ||
+        f.drugCode.toLowerCase().includes(search.toLowerCase())
     )
 
-    setUserFilterData(filter)
-  }, [userData, search, filterRole])
+    setDrugFilterData(filter)
+  }, [search, drugData])
 
   return (
     <div>
       <div className='flex items-center justify-between'>
-        <span className='text-2xl font-medium'>{t('itemUser')}</span>
+        <span className='text-2xl font-medium'>{t('itemDrugs')}</span>
         <div className='flex items-center gap-3'>
           <label className='input h-12 rounded-3xl'>
             <BiSearch size={22} />
@@ -470,26 +395,7 @@ const User = () => {
               </span>
             )}
           </label>
-          <Select
-            key={filterRole}
-            options={mapOptions<RoleSelect, keyof RoleSelect>(
-              [{ key: '', value: t('filterAll') }, ...RoleArray],
-              'key',
-              'value'
-            )}
-            value={mapDefaultValue<RoleSelect, keyof RoleSelect>(
-              [{ key: '', value: t('filterAll') }, ...RoleArray],
-              filterRole ?? '',
-              'key',
-              'value'
-            )}
-            onChange={e => setFilterRole(String(e?.value))}
-            menuPlacement='bottom'
-            autoFocus={false}
-            className='custom-react-select w-48 z-20'
-            classNamePrefix='react-select'
-          />
-          <div className='tooltip tooltip-bottom' data-tip={t('addUser')}>
+          <div className='tooltip tooltip-bottom' data-tip={t('addDrug')}>
             <button
               className='btn btn-primary text-base h-12 w-12 p-0 rounded-3xl'
               onClick={() => {
@@ -510,7 +416,7 @@ const User = () => {
           fixedHeader
           pagination
           columns={columns}
-          data={userFilterData}
+          data={drugFilterData}
           paginationPerPage={30}
           progressPending={isLoading}
           progressComponent={
@@ -524,7 +430,7 @@ const User = () => {
 
       <dialog ref={addModal} className='modal'>
         <div className='modal-box p-[24px] rounded-[48px]'>
-          <h3 className='font-bold text-lg'>{t('addUser')}</h3>
+          <h3 className='font-bold text-lg'>{t('addDrug')}</h3>
           <div className='w-full'>
             <fieldset className='fieldset'>
               <legend className='fieldset-legend text-sm font-medium'>
@@ -533,9 +439,9 @@ const User = () => {
               <div className='flex items-center justify-center'>
                 <div className='relative w-45 h-45'>
                   <div className='w-full h-full rounded-full bg-base-200 flex items-center justify-center overflow-hidden'>
-                    {userForm.imagePreview ? (
+                    {drugForm.imagePreview ? (
                       <img
-                        src={userForm.imagePreview}
+                        src={drugForm.imagePreview}
                         alt='Image Preview'
                         className='w-full h-full object-cover'
                       />
@@ -563,79 +469,34 @@ const User = () => {
             </fieldset>
             <fieldset className='fieldset'>
               <legend className='fieldset-legend text-sm font-medium'>
-                {t('userName')}
+                {t('drugCode')}
               </legend>
               <input
                 type='text'
                 className='input w-full h-12 rounded-3xl'
-                value={userForm.userName}
+                value={drugForm.drugCode}
                 onChange={e =>
-                  setUserForm({
-                    ...userForm,
-                    userName: e.target.value
+                  setDrugForm({
+                    ...drugForm,
+                    drugCode: e.target.value
                   })
                 }
               />
             </fieldset>
             <fieldset className='fieldset'>
               <legend className='fieldset-legend text-sm font-medium'>
-                {t('userPassword')}
-              </legend>
-              <input
-                type='password'
-                className='input w-full h-12 rounded-3xl'
-                value={userForm.userPassword}
-                onChange={e =>
-                  setUserForm({
-                    ...userForm,
-                    userPassword: e.target.value
-                  })
-                }
-              />
-            </fieldset>
-            <fieldset className='fieldset'>
-              <legend className='fieldset-legend text-sm font-medium'>
-                {t('displayName')}
+                {t('drugName')}
               </legend>
               <input
                 type='text'
                 className='input w-full h-12 rounded-3xl'
-                value={userForm.displayName}
+                value={drugForm.drugName}
                 onChange={e =>
-                  setUserForm({
-                    ...userForm,
-                    displayName: e.target.value
+                  setDrugForm({
+                    ...drugForm,
+                    drugName: e.target.value
                   })
                 }
-              />
-            </fieldset>
-            <fieldset className='fieldset'>
-              <legend className='fieldset-legend text-sm font-medium'>
-                {t('role')}
-              </legend>
-              <Select
-                key={userForm.userRole}
-                options={mapOptions<RoleSelect, keyof RoleSelect>(
-                  RoleArray,
-                  'key',
-                  'value'
-                )}
-                value={mapDefaultValue<RoleSelect, keyof RoleSelect>(
-                  RoleArray,
-                  userForm.userRole ?? '',
-                  'key',
-                  'value'
-                )}
-                onChange={e =>
-                  setUserForm({
-                    ...userForm,
-                    userRole: String(e?.value)
-                  })
-                }
-                menuPlacement='top'
-                autoFocus={false}
-                className='custom-react-select z-20'
-                classNamePrefix='react-select'
               />
             </fieldset>
           </div>
@@ -667,7 +528,7 @@ const User = () => {
 
       <dialog ref={editModal} className='modal'>
         <div className='modal-box p-[24px] rounded-[48px]'>
-          <h3 className='font-bold text-lg'>{t('editUser')}</h3>
+          <h3 className='font-bold text-lg'>{t('addDrug')}</h3>
           <div className='w-full'>
             <fieldset className='fieldset'>
               <legend className='fieldset-legend text-sm font-medium'>
@@ -676,13 +537,13 @@ const User = () => {
               <div className='flex items-center justify-center'>
                 <div className='relative w-45 h-45'>
                   <div className='w-full h-full rounded-full bg-base-200 flex items-center justify-center overflow-hidden'>
-                    {userForm.imagePreview ? (
+                    {drugForm.imagePreview ? (
                       <img
                         src={
-                          userForm.imageFile === null
+                          drugForm.imageFile === null
                             ? import.meta.env.VITE_APP_IMG +
-                              userForm.imagePreview
-                            : userForm.imagePreview
+                              drugForm.imagePreview
+                            : drugForm.imagePreview
                         }
                         alt='Image Preview'
                         className='w-full h-full object-cover'
@@ -711,63 +572,34 @@ const User = () => {
             </fieldset>
             <fieldset className='fieldset'>
               <legend className='fieldset-legend text-sm font-medium'>
-                {t('userName')}
+                {t('drugCode')}
               </legend>
               <input
                 type='text'
                 className='input w-full h-12 rounded-3xl'
-                value={userForm.userName}
+                value={drugForm.drugCode}
                 onChange={e =>
-                  setUserForm({
-                    ...userForm,
-                    userName: e.target.value
+                  setDrugForm({
+                    ...drugForm,
+                    drugCode: e.target.value
                   })
                 }
               />
             </fieldset>
             <fieldset className='fieldset'>
               <legend className='fieldset-legend text-sm font-medium'>
-                {t('displayName')}
+                {t('drugName')}
               </legend>
               <input
                 type='text'
                 className='input w-full h-12 rounded-3xl'
-                value={userForm.displayName}
+                value={drugForm.drugName}
                 onChange={e =>
-                  setUserForm({
-                    ...userForm,
-                    displayName: e.target.value
+                  setDrugForm({
+                    ...drugForm,
+                    drugName: e.target.value
                   })
                 }
-              />
-            </fieldset>
-            <fieldset className='fieldset'>
-              <legend className='fieldset-legend text-sm font-medium'>
-                {t('role')}
-              </legend>
-              <Select
-                key={userForm.userRole}
-                options={mapOptions<RoleSelect, keyof RoleSelect>(
-                  RoleArray,
-                  'key',
-                  'value'
-                )}
-                value={mapDefaultValue<RoleSelect, keyof RoleSelect>(
-                  RoleArray,
-                  userForm.userRole ?? '',
-                  'key',
-                  'value'
-                )}
-                onChange={e =>
-                  setUserForm({
-                    ...userForm,
-                    userRole: String(e?.value)
-                  })
-                }
-                menuPlacement='top'
-                autoFocus={false}
-                className='custom-react-select z-20'
-                classNamePrefix='react-select'
               />
             </fieldset>
             <fieldset className='fieldset'>
@@ -775,22 +607,22 @@ const User = () => {
                 {t('status')}
               </legend>
               <Select
-                key={userForm.userStatus ? 'true' : 'false'}
-                options={mapOptions<UserActive, keyof UserActive>(
-                  UserStatus,
+                key={drugForm.drugStatus ? 'true' : 'false'}
+                options={mapOptions<DrugActive, keyof DrugActive>(
+                  DrugStatus,
                   'key',
                   'value'
                 )}
-                value={mapDefaultValue<UserActive, keyof UserActive>(
-                  UserStatus,
-                  userForm.userStatus ? 'true' : 'false',
+                value={mapDefaultValue<DrugActive, keyof DrugActive>(
+                  DrugStatus,
+                  drugForm.drugStatus ? 'true' : 'false',
                   'key',
                   'value'
                 )}
                 onChange={e =>
-                  setUserForm({
-                    ...userForm,
-                    userStatus: e?.value === 'true' ? true : false
+                  setDrugForm({
+                    ...drugForm,
+                    drugStatus: e?.value === 'true' ? true : false
                   })
                 }
                 menuPlacement='top'
@@ -831,4 +663,4 @@ const User = () => {
   )
 }
 
-export default User
+export default Drugs

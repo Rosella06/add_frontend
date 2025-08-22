@@ -9,6 +9,7 @@ import Machine from '../pages/machine/machine'
 import Inventory from '../pages/inventories/inventories'
 import Stock from '../pages/stock/stock'
 import User from '../pages/user/user'
+import Drugs from '../pages/drug/drug'
 
 const router = () =>
   createBrowserRouter([
@@ -33,7 +34,7 @@ const router = () =>
             },
             {
               path: '/drugs',
-              element: <div>Drug</div>,
+              element: <Drugs />,
               errorElement: <ErrorPage />
             },
             {
@@ -49,6 +50,11 @@ const router = () =>
             {
               path: '/user',
               element: <User />,
+              errorElement: <ErrorPage />
+            },
+            {
+              path: '/report',
+              element: <div>Report</div>,
               errorElement: <ErrorPage />
             },
             {

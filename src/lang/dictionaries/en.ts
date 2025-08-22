@@ -24,6 +24,7 @@ export default {
     itemInventory: 'Inventory',
     itemMachine: 'Machine',
     itemUser: 'User',
+    itemReport: 'Report',
     itemSettings: 'Settings',
     somethingWentWrong: 'Something went wrong!',
 
@@ -85,5 +86,8 @@ export default {
     roleSUPER: 'Super Admin',
     imageSizeLimit: 'Image size must be less than 5MB',
     filterAll: 'All',
+    addDrug: 'Add drug',
+    drugCode: 'Drug code',
+    drugStatus: 'Drug status'
   }
 }

@@ -434,7 +434,7 @@ const Inventory = () => {
               </span>
             )}
           </label>
-          <div className='tooltip tooltip-bottom' data-tip={t('addMachine')}>
+          <div className='tooltip tooltip-bottom' data-tip={t('addInventory')}>
             <button
               className='btn btn-primary text-base h-12 w-12 p-0 rounded-3xl'
               onClick={() => {
