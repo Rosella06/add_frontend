@@ -329,25 +329,29 @@ const Inventory = () => {
         name: t('floor'),
         selector: item => item.floor,
         sortable: false,
-        center: true
+        center: true,
+        width: '80px'
       },
       {
         name: t('position'),
         selector: item => item.position,
         sortable: false,
-        center: true
+        center: true,
+        width: '80px'
       },
       {
         name: t('min'),
         selector: item => item.min,
         sortable: false,
-        center: true
+        center: true,
+        width: '80px'
       },
       {
         name: t('max'),
         selector: item => item.max,
         sortable: false,
-        center: true
+        center: true,
+        width: '80px'
       },
       {
         name: t('machineName'),

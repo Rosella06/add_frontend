@@ -100,7 +100,6 @@ const Stock = () => {
   }
 
   const handleConfirm = async () => {
-    setIsLoadingFetch(true)
     try {
       const result = await axiosInstance.post<ApiResponse<any>>(`/plc/sendM`, {
         floor: selectedItem?.floor,
@@ -132,9 +131,6 @@ const Stock = () => {
       } else {
         console.error(error)
       }
-    } finally {
-      await fetchInventories(true)
-      setIsLoadingFetch(false)
     }
   }
 
