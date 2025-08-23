@@ -21,7 +21,7 @@ const initialState: UtilsState = {
   socketData: undefined,
   currentLang: cookies.get('lang') ?? 'th',
   machineId: cookies.get('machineId') ?? undefined,
-  themeMode: cookies.get('theme') ?? ''
+  themeMode: cookies.get('theme') ?? 'sunset'
 }
 
 const utilsReducer = (

@@ -1,3 +1,4 @@
+import { cookieOptions, cookies } from '../../constants/utils/utilsConstants'
 import { CookieDecode } from '../../types/cookie.type'
 import { SocketResponse } from '../../types/socket.type'
 import { TokenDecode } from '../../types/token.type'
@@ -38,23 +39,35 @@ const setSocketData = (data: SocketResponse | undefined) => ({
   payload: data
 })
 
-const setLanguage = (lang: string) => ({
-  type: CURRENT_LANG,
-  payload: lang
-})
+const setLanguage = (lang: string) => {
+  cookies.set('lang', lang, cookieOptions)
 
-const setMachineId = (machineId: string) => ({
-  type: MACHINE_ID,
-  payload: machineId
-})
+  return {
+    type: CURRENT_LANG,
+    payload: lang
+  }
+}
+
+const setMachineId = (machineId: string) => {
+  cookies.set('machineId', machineId, cookieOptions)
+
+  return {
+    type: MACHINE_ID,
+    payload: machineId
+  }
+}
+
+const setTheme = (theme: string) => {
+  cookies.set('theme', theme, cookieOptions)
+
+  return {
+    type: THEME_MODE,
+    payload: theme
+  }
+}
 
 const resetUtils = () => ({
   type: RESET_UTILS
-})
-
-const setTheme = (theme: string) => ({
-  type: THEME_MODE,
-  payload: theme
 })
 
 export {
