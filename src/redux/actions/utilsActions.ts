@@ -9,7 +9,8 @@ import {
   SOCKET_ID,
   SOCKET_DATA,
   CURRENT_LANG,
-  MACHINE_ID
+  MACHINE_ID,
+  THEME_MODE
 } from '../types/utilsTypes'
 
 const setCookieEncode = (dataEncode?: string) => ({
@@ -51,6 +52,11 @@ const resetUtils = () => ({
   type: RESET_UTILS
 })
 
+const setTheme = (theme: string) => ({
+  type: THEME_MODE,
+  payload: theme
+})
+
 export {
   setCookieEncode,
   setCookieDecode,
@@ -59,5 +65,6 @@ export {
   resetUtils,
   setSocketData,
   setLanguage,
-  setMachineId
+  setMachineId,
+  setTheme
 }

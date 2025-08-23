@@ -10,6 +10,7 @@ const SOCKET_ID = 'SOCKET_ID'
 const SOCKET_DATA = 'SOCKET_DATA'
 const CURRENT_LANG = 'CURRENT_LANG'
 const MACHINE_ID = 'MACHINE_ID'
+const THEME_MODE = 'THEME_MODE'
 
 interface UtilsState {
   cookieEncode?: string
@@ -19,6 +20,7 @@ interface UtilsState {
   socketData: SocketResponse | undefined
   currentLang: string
   machineId: string | undefined
+  themeMode: string
 }
 
 type UtilsAction =
@@ -30,6 +32,7 @@ type UtilsAction =
   | { type: typeof SOCKET_DATA; payload: SocketResponse | undefined }
   | { type: typeof CURRENT_LANG; payload: string }
   | { type: typeof MACHINE_ID; payload: string }
+  | { type: typeof THEME_MODE; payload: string }
 
 export {
   COOKIE_ENCODE,
@@ -39,6 +42,7 @@ export {
   SOCKET_ID,
   SOCKET_DATA,
   CURRENT_LANG,
-  MACHINE_ID
+  MACHINE_ID,
+  THEME_MODE
 }
 export type { UtilsState, UtilsAction }

@@ -1,14 +1,20 @@
 import { useEffect, useMemo } from 'react'
 import { RouterProvider } from 'react-router-dom'
 import { router } from './createRoutes'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { socket } from '../services/webSocket'
 import { setSocketData, setSocketId } from '../redux/actions/utilsActions'
 import toast, { useToasterStore } from 'react-hot-toast'
+import { RootState } from '../redux/reducers/rootReducer'
+import { useTranslation } from 'react-i18next'
 
 const Routes = () => {
   const dispatch = useDispatch()
+  const { currentLang, themeMode } = useSelector(
+    (state: RootState) => state.utils
+  )
   const { toasts } = useToasterStore()
+  const { i18n } = useTranslation()
 
   const routerInstance = useMemo(() => router(), [])
   const routesProvider = useMemo(
@@ -31,6 +37,15 @@ const Routes = () => {
       .filter((_, index) => index >= toastLimit)
       .forEach(toasts => toast.dismiss(toasts.id))
   }, [toasts])
+
+  useEffect(() => {
+    i18n.changeLanguage(currentLang)
+  }, [currentLang, i18n])
+
+  useEffect(() => {
+    const htmlElement = document.documentElement
+    htmlElement.setAttribute('data-theme', themeMode)
+  }, [themeMode])
 
   return <>{routesProvider}</>
 }
