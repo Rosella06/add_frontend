@@ -31,7 +31,7 @@ const Navbar = () => {
           <div className='flex-shrink-0'>
             <Link to='/' className='text-4xl font-bold text-base-content'>
               <div className='avatar'>
-                <div className='w-15 rounded'>
+                <div className='w-15 rounded-3xl'>
                   <img src={Logo} />
                 </div>
               </div>
@@ -41,9 +41,9 @@ const Navbar = () => {
           <div className='dropdown dropdown-end'>
             <label
               tabIndex={0}
-              className='btn btn-ghost h-auto focus:bg-transparent p-0 rounded-full avatar'
+              className='btn btn-ghost h-auto focus:bg-transparent p-0 rounded-3xl avatar'
             >
-              <div className='w-12 rounded-full ring-2 ring-offset-2 ring-primary'>
+              <div className='w-12 rounded-3xl ring-2 ring-offset-2 ring-primary'>
                 <img
                   src={import.meta.env.VITE_APP_IMG + cookieDecode?.userImage}
                   alt='User Avatar'

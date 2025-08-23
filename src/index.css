@@ -1,11 +1,7 @@
 @import "tailwindcss";
 
 @plugin "daisyui" {
-  themes:
-    light --default,
-    dark --prefersdark,
-    cupcake,
-    caramellatte;
+  themes: all;
 }
 
 @font-face {
@@ -205,6 +201,10 @@
 
   & > div > div > div > div > div > div > button {
     @apply text-inherit;
+  }
+
+  & > div > div > div {
+    @apply bg-base-100;
   }
 
   & > div > div > div > div {

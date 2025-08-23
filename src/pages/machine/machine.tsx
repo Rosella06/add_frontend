@@ -230,13 +230,13 @@ const Machine = () => {
         cell: item => (
           <div className='flex items-center gap-3'>
             <button
-              className='btn btn-primary p-2.5'
+              className='btn btn-primary p-2.5 rounded-3xl'
               onClick={() => openEdit(item)}
             >
               <BiEdit size={24} />
             </button>
             <button
-              className='btn btn-error p-2.5'
+              className='btn btn-error p-2.5 rounded-3xl'
               onClick={async () => {
                 const confirmed = await confirmModalRef.current?.show({
                   title: t('deleteTitle'),
@@ -318,7 +318,7 @@ const Machine = () => {
           paginationPerPage={30}
           progressPending={isloading}
           progressComponent={
-            <span className='loading loading-spinner loading-md'></span>
+            <span className='loading loading-spinner text-base-content loading-md'></span>
           }
           noDataComponent={<Empty />}
           paginationRowsPerPageOptions={[30, 75, 100]}
@@ -383,7 +383,7 @@ const Machine = () => {
                 disabled={isloading}
               >
                 {isloading ? (
-                  <span className='loading loading-spinner loading-md'></span>
+                  <span className='loading loading-spinner text-base-content loading-md'></span>
                 ) : (
                   t('saveButton')
                 )}
@@ -438,7 +438,7 @@ const Machine = () => {
           <div className='modal-action'>
             <form method='dialog' className='flex items-center gap-3 w-full'>
               <button
-                className='btn text-base font-medium h-12 flex-1'
+                className='btn text-base font-medium h-12 flex-1 rounded-3xl'
                 onClick={() => resetForm()}
                 disabled={isloading}
               >
@@ -446,12 +446,12 @@ const Machine = () => {
               </button>
               <button
                 type='button'
-                className='btn btn-primary text-base font-bold h-12 flex-1'
+                className='btn btn-primary text-base font-bold h-12 flex-1 rounded-3xl'
                 onClick={handleUpdate}
                 disabled={isloading}
               >
                 {isloading ? (
-                  <span className='loading loading-spinner loading-md'></span>
+                  <span className='loading loading-spinner text-base-content loading-md'></span>
                 ) : (
                   t('editButton')
                 )}

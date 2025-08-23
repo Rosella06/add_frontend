@@ -250,7 +250,7 @@ const Stock = () => {
         cell: item => (
           <div className='flex items-center gap-3'>
             <button
-              className='btn btn-primary p-2.5'
+              className='btn btn-primary p-2.5 rounded-3xl'
               onClick={() => openRefillStock(item)}
             >
               <GiMedicines size={24} />
@@ -312,7 +312,7 @@ const Stock = () => {
           paginationPerPage={30}
           progressPending={isloadingFetch}
           progressComponent={
-            <span className='loading loading-spinner loading-md'></span>
+            <span className='loading loading-spinner text-base-content loading-md'></span>
           }
           noDataComponent={<Empty />}
           paginationRowsPerPageOptions={[30, 75, 100]}
@@ -428,7 +428,7 @@ const Stock = () => {
           <div className='modal-action'>
             <button
               type={`${!buttonStatus ? 'submit' : 'button'}`}
-              className='btn text-base font-medium h-12 flex-1'
+              className='btn text-base font-medium h-12 flex-1 rounded-3xl'
               onClick={async () => {
                 if (!buttonStatus) {
                   refillModal.current?.close()
@@ -446,12 +446,12 @@ const Stock = () => {
               type='button'
               className={`btn ${
                 !buttonStatus ? 'btn-primary flex-1' : 'btn-info flex-2'
-              } duration-300 ease-out transition-[flex] text-base font-bold h-12`}
+              } duration-300 ease-out transition-[flex] text-base font-bold h-12 rounded-3xl`}
               onClick={!buttonStatus ? handleUpdateStock : handleConfirm}
               disabled={isloading}
             >
               {isloading ? (
-                <span className='loading loading-spinner loading-md'></span>
+                <span className='loading loading-spinner text-base-content loading-md'></span>
               ) : !buttonStatus ? (
                 t('update')
               ) : (

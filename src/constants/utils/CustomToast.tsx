@@ -12,19 +12,23 @@ const CustomToast = ({
   const typeStyles = {
     success: {
       iconBg: 'bg-success/20',
-      iconColor: 'text-success'
+      iconColor: 'text-success',
+      bg: 'bg-success/5'
     },
     error: {
       iconBg: 'bg-error/20',
-      iconColor: 'text-error'
+      iconColor: 'text-error',
+      bg: 'bg-error/5'
     },
     warning: {
       iconBg: 'bg-warning/20',
-      iconColor: 'text-warning'
+      iconColor: 'text-warning',
+      bg: 'bg-warning/5'
     },
     info: {
       iconBg: 'bg-info/20',
-      iconColor: 'text-info'
+      iconColor: 'text-info',
+      bg: 'bg-info/5'
     }
   }
 
@@ -34,7 +38,7 @@ const CustomToast = ({
     <div
       className={`${
         t.visible ? 'animate-enter' : 'animate-leave'
-      } flex items-center min-w-[354px] w-full max-w-2xl bg-base-100 shadow-lg rounded-full pointer-events-auto p-2 animate-jelly-bounce`}
+      } flex items-center min-w-[354px] w-full max-w-2xl ${styles.bg} shadow-lg rounded-full pointer-events-auto p-2 animate-jelly-bounce`}
     >
       <div
         className={`flex-shrink-0 w-14 h-14 flex items-center justify-center rounded-full animate-bounce-in`}

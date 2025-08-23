@@ -93,7 +93,7 @@ const OrderItem = (props: OrderItem) => {
                     </div>
                   ) : item.status === OrderStatus.PENDING ? (
                     <div className='flex flex-col items-center justify-center gap-2'>
-                      <span className='loading loading-spinner text-[#FFC736] loading-lg'></span>
+                      <span className='loading loading-spinner text-base-content text-[#FFC736] loading-lg'></span>
                       <span className='font-medium text-[#FFC736]'>
                         {t('pendingStatus')}
                       </span>

@@ -106,7 +106,7 @@ const ConfirmModal = forwardRef<ConfirmModalRef>((_, ref) => {
             disabled={isLoading}
           >
             {isLoading ? (
-              <span className='loading loading-spinner loading-md'></span>
+              <span className='loading loading-spinner text-base-content loading-md'></span>
             ) : (
               options.buttonConfirmText ?? t('confirmButton')
             )}
