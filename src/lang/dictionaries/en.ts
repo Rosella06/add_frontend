@@ -101,6 +101,8 @@ export default {
     manageDevice: 'Manage machine',
     changeImageProfile: 'Change profile image',
     personalInformation: 'Personal Information',
-    editProfile: 'Edit Profile'
+    editProfile: 'Edit Profile',
+    theme: 'Theme',
+    systemMode: 'System mode'
   }
 }

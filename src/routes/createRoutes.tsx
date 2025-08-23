@@ -12,6 +12,7 @@ import User from '../pages/user/user'
 import Drugs from '../pages/drug/drug'
 import Settings from '../pages/setting/setting'
 import Profile from '../pages/setting/profile'
+import Theme from '../pages/setting/theme'
 
 const router = () =>
   createBrowserRouter([
@@ -79,7 +80,7 @@ const router = () =>
                 },
                 {
                   path: '/settings/theme',
-                  element: <div>Theme</div>,
+                  element: <Theme />,
                   errorElement: <ErrorPage />
                 },
                 {

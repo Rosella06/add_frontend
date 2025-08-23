@@ -100,6 +100,8 @@ export default {
     manageDevice: 'จัดการเครื่อง',
     changeImageProfile: 'เปลี่ยนรูปโปรไฟล์',
     personalInformation: 'ข้อมูลส่วนตัว',
-    editProfile: 'แก้ไขโปรไฟล์'
+    editProfile: 'แก้ไขโปรไฟล์',
+    theme: 'ธีม',
+    systemMode: 'โหมดระบบ'
   }
 }
