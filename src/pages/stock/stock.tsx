@@ -451,7 +451,7 @@ const Stock = () => {
               {isloading ? (
                 <span className='loading loading-spinner text-base-content loading-md'></span>
               ) : !buttonStatus ? (
-                t('update')
+                t('itemRefill')
               ) : (
                 t('confirmButton')
               )}
