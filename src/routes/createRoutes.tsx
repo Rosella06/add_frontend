@@ -13,6 +13,7 @@ import Drugs from '../pages/drug/drug'
 import Settings from '../pages/setting/setting'
 import Profile from '../pages/setting/profile'
 import Theme from '../pages/setting/theme'
+import Language from '../pages/setting/language'
 
 const router = () =>
   createBrowserRouter([
@@ -75,7 +76,7 @@ const router = () =>
                 },
                 {
                   path: '/settings/language',
-                  element: <div>Language</div>,
+                  element: <Language />,
                   errorElement: <ErrorPage />
                 },
                 {
