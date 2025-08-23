@@ -282,7 +282,7 @@ const Stock = () => {
       <div className='flex items-center justify-between'>
         <span className='text-2xl font-medium'>{t('itemRefill')}</span>
         <div className='flex items-center gap-3'>
-          <label className='input h-12 rounded-3xl'>
+          <label className='input h-15 rounded-3xl'>
             <BiSearch size={22} />
             <input
               type='text'
@@ -397,7 +397,7 @@ const Stock = () => {
                 key={num}
                 disabled={buttonStatus}
                 onClick={() => handleNumpadClick(num)}
-                className='btn btn-ghost text-3xl h-20 disabled:opacity-100'
+                className='btn btn-ghost text-3xl h-20 rounded-3xl disabled:opacity-100'
               >
                 {num}
               </button>
@@ -405,21 +405,21 @@ const Stock = () => {
             <button
               disabled={buttonStatus}
               onClick={handleBackspace}
-              className='btn btn-ghost h-20 disabled:opacity-100'
+              className='btn btn-ghost h-20 rounded-3xl disabled:opacity-100'
             >
               <IoBackspaceOutline size={32} className='text-error' />
             </button>
             <button
               disabled={buttonStatus}
               onClick={() => handleNumpadClick(0)}
-              className='btn btn-ghost text-3xl h-20 disabled:opacity-100'
+              className='btn btn-ghost text-3xl h-20 rounded-3xl disabled:opacity-100'
             >
               0
             </button>
             <button
               disabled={buttonStatus}
               onClick={handleMaxClick}
-              className='btn btn-ghost text-xl font-bold text-primary h-20 disabled:opacity-100'
+              className='btn btn-ghost text-xl font-bold text-primary h-20 rounded-3xl disabled:opacity-100'
             >
               MAX
             </button>
@@ -428,7 +428,7 @@ const Stock = () => {
           <div className='modal-action'>
             <button
               type={`${!buttonStatus ? 'submit' : 'button'}`}
-              className='btn text-base font-medium h-12 flex-1 rounded-3xl'
+              className='btn text-base font-medium h-15 flex-1 rounded-3xl'
               onClick={async () => {
                 if (!buttonStatus) {
                   refillModal.current?.close()
@@ -446,7 +446,7 @@ const Stock = () => {
               type='button'
               className={`btn ${
                 !buttonStatus ? 'btn-primary flex-1' : 'btn-info flex-2'
-              } duration-300 ease-out transition-[flex] text-base font-bold h-12 rounded-3xl`}
+              } duration-300 ease-out transition-[flex] text-base font-bold h-15 rounded-3xl`}
               onClick={!buttonStatus ? handleUpdateStock : handleConfirm}
               disabled={isloading}
             >

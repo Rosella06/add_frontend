@@ -418,7 +418,7 @@ const Inventory = () => {
       <div className='flex items-center justify-between'>
         <span className='text-2xl font-medium'>{t('itemInventory')}</span>
         <div className='flex items-center gap-3'>
-          <label className='input h-12 rounded-3xl'>
+          <label className='input h-15 rounded-3xl'>
             <BiSearch size={22} />
             <input
               type='text'
@@ -437,7 +437,7 @@ const Inventory = () => {
           </label>
           <div className='tooltip tooltip-bottom' data-tip={t('addInventory')}>
             <button
-              className='btn btn-primary text-base h-12 w-12 p-0 rounded-3xl'
+              className='btn btn-primary text-base h-15 w-12 p-0 rounded-3xl'
               onClick={() => {
                 if (addModal.current) {
                   addModal.current.showModal()
@@ -479,7 +479,7 @@ const Inventory = () => {
                 type='number'
                 min={0}
                 max={12}
-                className='input w-full h-12 rounded-3xl'
+                className='input w-full h-15 rounded-3xl'
                 value={inventoriesForm.floor}
                 onChange={e =>
                   setInventoriesForm({
@@ -497,7 +497,7 @@ const Inventory = () => {
                 type='number'
                 min={0}
                 max={128}
-                className='input w-full h-12 flex-1 rounded-3xl'
+                className='input w-full h-15 flex-1 rounded-3xl'
                 value={inventoriesForm.position}
                 onChange={e =>
                   setInventoriesForm({
@@ -515,7 +515,7 @@ const Inventory = () => {
                 type='number'
                 min={0}
                 max={20}
-                className='input w-full h-12 flex-1 rounded-3xl'
+                className='input w-full h-15 flex-1 rounded-3xl'
                 value={inventoriesForm.min}
                 onChange={e =>
                   setInventoriesForm({
@@ -533,7 +533,7 @@ const Inventory = () => {
                 type='number'
                 min={0}
                 max={20}
-                className='input w-full h-12 flex-1 rounded-3xl'
+                className='input w-full h-15 flex-1 rounded-3xl'
                 value={inventoriesForm.max}
                 onChange={e =>
                   setInventoriesForm({
@@ -551,7 +551,7 @@ const Inventory = () => {
                 type='date'
                 min={0}
                 max={20}
-                className='input w-full h-12 flex-1 rounded-3xl'
+                className='input w-full h-15 flex-1 rounded-3xl'
                 value={inventoriesForm.expiryDate}
                 onChange={e =>
                   setInventoriesForm({
@@ -623,7 +623,7 @@ const Inventory = () => {
           <div className='modal-action'>
             <form method='dialog' className='flex items-center gap-3 w-full'>
               <button
-                className='btn text-base font-medium h-12 rounded-3xl flex-1'
+                className='btn text-base font-medium h-15 rounded-3xl flex-1'
                 onClick={() => resetForm()}
                 disabled={isloading.inventory}
               >
@@ -631,7 +631,7 @@ const Inventory = () => {
               </button>
               <button
                 type='button'
-                className='btn btn-primary text-base font-bold h-12 rounded-3xl flex-1'
+                className='btn btn-primary text-base font-bold h-15 rounded-3xl flex-1'
                 onClick={handleSubmit}
                 disabled={isloading.inventory}
               >
@@ -658,7 +658,7 @@ const Inventory = () => {
                 type='number'
                 min={0}
                 max={12}
-                className='input w-full h-12 rounded-3xl'
+                className='input w-full h-15 rounded-3xl'
                 value={inventoriesForm.floor}
                 onChange={e =>
                   setInventoriesForm({
@@ -676,7 +676,7 @@ const Inventory = () => {
                 type='number'
                 min={0}
                 max={128}
-                className='input w-full h-12 flex-1 rounded-3xl'
+                className='input w-full h-15 flex-1 rounded-3xl'
                 value={inventoriesForm.position}
                 onChange={e =>
                   setInventoriesForm({
@@ -694,7 +694,7 @@ const Inventory = () => {
                 type='number'
                 min={0}
                 max={20}
-                className='input w-full h-12 flex-1 rounded-3xl'
+                className='input w-full h-15 flex-1 rounded-3xl'
                 value={inventoriesForm.min}
                 onChange={e =>
                   setInventoriesForm({
@@ -712,7 +712,7 @@ const Inventory = () => {
                 type='number'
                 min={0}
                 max={20}
-                className='input w-full h-12 flex-1 rounded-3xl'
+                className='input w-full h-15 flex-1 rounded-3xl'
                 value={inventoriesForm.max}
                 onChange={e =>
                   setInventoriesForm({
@@ -730,7 +730,7 @@ const Inventory = () => {
                 type='date'
                 min={0}
                 max={20}
-                className='input w-full h-12 flex-1 rounded-3xl'
+                className='input w-full h-15 flex-1 rounded-3xl'
                 value={inventoriesForm.expiryDate}
                 onChange={e =>
                   setInventoriesForm({
@@ -802,7 +802,7 @@ const Inventory = () => {
           <div className='modal-action'>
             <form method='dialog' className='flex items-center gap-3 w-full'>
               <button
-                className='btn text-base font-medium h-12 flex-1 rounded-3xl'
+                className='btn text-base font-medium h-15 flex-1 rounded-3xl'
                 onClick={() => resetForm()}
                 disabled={isloading.inventory}
               >
@@ -810,7 +810,7 @@ const Inventory = () => {
               </button>
               <button
                 type='button'
-                className='btn btn-primary text-base font-bold h-12 flex-1 rounded-3xl'
+                className='btn btn-primary text-base font-bold h-15 flex-1 rounded-3xl'
                 onClick={handleUpdate}
                 disabled={isloading.inventory}
               >

@@ -454,7 +454,7 @@ const User = () => {
       <div className='flex items-center justify-between'>
         <span className='text-2xl font-medium'>{t('itemUser')}</span>
         <div className='flex items-center gap-3'>
-          <label className='input h-12 rounded-3xl'>
+          <label className='input h-15 rounded-3xl'>
             <BiSearch size={22} />
             <input
               type='text'
@@ -492,7 +492,7 @@ const User = () => {
           />
           <div className='tooltip tooltip-bottom' data-tip={t('addUser')}>
             <button
-              className='btn btn-primary text-base h-12 w-12 p-0 rounded-3xl'
+              className='btn btn-primary text-base h-15 w-12 p-0 rounded-3xl'
               onClick={() => {
                 if (addModal.current) {
                   addModal.current.showModal()
@@ -567,7 +567,7 @@ const User = () => {
               </legend>
               <input
                 type='text'
-                className='input w-full h-12 rounded-3xl'
+                className='input w-full h-15 rounded-3xl'
                 value={userForm.userName}
                 onChange={e =>
                   setUserForm({
@@ -583,7 +583,7 @@ const User = () => {
               </legend>
               <input
                 type='password'
-                className='input w-full h-12 rounded-3xl'
+                className='input w-full h-15 rounded-3xl'
                 value={userForm.userPassword}
                 onChange={e =>
                   setUserForm({
@@ -599,7 +599,7 @@ const User = () => {
               </legend>
               <input
                 type='text'
-                className='input w-full h-12 rounded-3xl'
+                className='input w-full h-15 rounded-3xl'
                 value={userForm.displayName}
                 onChange={e =>
                   setUserForm({
@@ -642,7 +642,7 @@ const User = () => {
           <div className='modal-action'>
             <form method='dialog' className='flex items-center gap-3 w-full'>
               <button
-                className='btn text-base font-medium h-12 flex-1 rounded-3xl'
+                className='btn text-base font-medium h-15 flex-1 rounded-3xl'
                 onClick={() => resetForm()}
                 disabled={isLoading}
               >
@@ -650,7 +650,7 @@ const User = () => {
               </button>
               <button
                 type='button'
-                className='btn btn-primary text-base font-bold h-12 flex-1 rounded-3xl'
+                className='btn btn-primary text-base font-bold h-15 flex-1 rounded-3xl'
                 onClick={handleSubmit}
                 disabled={isLoading}
               >
@@ -715,7 +715,7 @@ const User = () => {
               </legend>
               <input
                 type='text'
-                className='input w-full h-12 rounded-3xl'
+                className='input w-full h-15 rounded-3xl'
                 value={userForm.userName}
                 onChange={e =>
                   setUserForm({
@@ -731,7 +731,7 @@ const User = () => {
               </legend>
               <input
                 type='text'
-                className='input w-full h-12 rounded-3xl'
+                className='input w-full h-15 rounded-3xl'
                 value={userForm.displayName}
                 onChange={e =>
                   setUserForm({
@@ -803,7 +803,7 @@ const User = () => {
           <div className='modal-action'>
             <form method='dialog' className='flex items-center gap-3 w-full'>
               <button
-                className='btn text-base font-medium h-12 flex-1 rounded-3xl'
+                className='btn text-base font-medium h-15 flex-1 rounded-3xl'
                 onClick={() => resetForm()}
                 disabled={isLoading}
               >
@@ -811,7 +811,7 @@ const User = () => {
               </button>
               <button
                 type='button'
-                className='btn btn-primary text-base font-bold h-12 flex-1 rounded-3xl'
+                className='btn btn-primary text-base font-bold h-15 flex-1 rounded-3xl'
                 onClick={handleUpdate}
                 disabled={isLoading}
               >

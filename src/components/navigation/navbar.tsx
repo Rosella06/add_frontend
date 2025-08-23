@@ -1,5 +1,5 @@
 import { NavLink, Link } from 'react-router-dom'
-import { BiSolidDownArrow } from 'react-icons/bi'
+import { BiArchive, BiSolidDownArrow } from 'react-icons/bi'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../redux/reducers/rootReducer'
 import { cookieOptions, cookies } from '../../constants/utils/utilsConstants'
@@ -7,6 +7,11 @@ import { useTranslation } from 'react-i18next'
 import ConfirmModal, { ConfirmModalRef } from '../modal/ConfirmModal'
 import { useRef } from 'react'
 import Logo from '../../assets/images/add-512.png'
+import { FaFileContract, FaPrescriptionBottleAlt } from 'react-icons/fa'
+import { GiMedicinePills, GiVendingMachine } from 'react-icons/gi'
+import { IoIosPersonAdd } from 'react-icons/io'
+import { HiOutlineClipboardList } from 'react-icons/hi'
+import { IoSettingsOutline } from 'react-icons/io5'
 
 const Navbar = () => {
   const { t } = useTranslation()
@@ -14,24 +19,24 @@ const Navbar = () => {
   const confirmModalRef = useRef<ConfirmModalRef>(null)
 
   const menuItems = [
-    { name: t('itemDispense'), path: '/', icon: BiSolidDownArrow },
-    { name: t('itemRefill'), path: '/refill', icon: BiSolidDownArrow },
-    { name: t('itemDrugs'), path: '/drugs', icon: BiSolidDownArrow },
-    { name: t('itemInventory'), path: '/inventory', icon: BiSolidDownArrow },
-    { name: t('itemMachine'), path: '/machine', icon: BiSolidDownArrow },
-    { name: t('itemUser'), path: '/user', icon: BiSolidDownArrow },
-    { name: t('itemReport'), path: '/report', icon: BiSolidDownArrow },
-    { name: t('itemSettings'), path: '/settings', icon: BiSolidDownArrow }
+    { name: t('itemDispense'), path: '/', icon: FaFileContract },
+    { name: t('itemRefill'), path: '/refill', icon: FaPrescriptionBottleAlt },
+    { name: t('itemDrugs'), path: '/drugs', icon: GiMedicinePills },
+    { name: t('itemInventory'), path: '/inventory', icon: BiArchive },
+    { name: t('itemMachine'), path: '/machine', icon: GiVendingMachine },
+    { name: t('itemUser'), path: '/user', icon: IoIosPersonAdd },
+    { name: t('itemReport'), path: '/report', icon: HiOutlineClipboardList },
+    { name: t('itemSettings'), path: '/settings', icon: IoSettingsOutline }
   ]
 
   return (
     <nav className='bg-base-100 shadow-sm border-b border-base-200 sticky top-0 left-0 z-50'>
-      <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
-        <div className='flex h-20 items-center justify-between'>
+      <div className='flex flex-col gap-7 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
+        <div className='flex h-32 items-center justify-between'>
           <div className='flex-shrink-0'>
             <Link to='/' className='text-4xl font-bold text-base-content'>
               <div className='avatar'>
-                <div className='w-15 rounded-3xl'>
+                <div className='w-24 rounded-3xl'>
                   <img src={Logo} />
                 </div>
               </div>
@@ -43,7 +48,7 @@ const Navbar = () => {
               tabIndex={0}
               className='btn btn-ghost h-auto focus:bg-transparent p-0 rounded-3xl avatar'
             >
-              <div className='w-12 rounded-3xl ring-2 ring-offset-2 ring-primary'>
+              <div className='w-18 rounded-3xl ring-2 ring-offset-2 ring-primary'>
                 <img
                   src={import.meta.env.VITE_APP_IMG + cookieDecode?.userImage}
                   alt='User Avatar'
@@ -93,22 +98,27 @@ const Navbar = () => {
           <div className='hidden md:block'>
             <ul className='flex items-center space-x-2'>
               {menuItems.map(item => (
-                <li key={item.name}>
-                  <NavLink
-                    to={item.path}
-                    className={({ isActive }) =>
-                      `flex flex-col items-center justify-center gap-2 p-3 rounded-lg w-30 h-30 transition-colors ease-linear duration-200
+                <div className='tooltip tooltip-bottom' data-tip={item.name}>
+                  <li key={item.name}>
+                    <NavLink
+                      to={item.path}
+                      className={({ isActive }) =>
+                        `flex flex-col items-center justify-center gap-3 p-3 rounded-lg w-30 transition-colors ease-linear duration-200
                       ${
                         isActive
                           ? 'text-primary'
                           : 'text-slate-500 hover:text-slate-700'
                       }`
-                    }
-                  >
-                    <item.icon size={32} />
-                    <span className='text-base font-medium'>{item.name}</span>
-                  </NavLink>
-                </li>
+                      }
+                    >
+                      <item.icon size={64} />
+
+                      <span className='text-xl font-medium truncate block max-w-[128px]'>
+                        {item.name}
+                      </span>
+                    </NavLink>
+                  </li>
+                </div>
               ))}
             </ul>
           </div>

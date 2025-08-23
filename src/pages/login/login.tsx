@@ -268,7 +268,7 @@ const Login = () => {
           <div className='modal-action'>
             <form method='dialog'>
               <button
-                className='btn text-base rounded-3xl h-12'
+                className='btn text-base rounded-3xl h-15'
                 onClick={stopKeyboardEvent}
               >
                 {t('closeButton')}
