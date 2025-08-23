@@ -19,6 +19,7 @@ import axiosInstance from '../../constants/axios/axiosInstance'
 import ConfirmModal, {
   ConfirmModalRef
 } from '../../components/modal/ConfirmModal'
+import Empty from '../../components/empty/empty'
 
 const Machine = () => {
   const { t } = useTranslation()
@@ -319,9 +320,8 @@ const Machine = () => {
           progressComponent={
             <span className='loading loading-spinner loading-md'></span>
           }
-          noDataComponent={<span>Empty</span>}
+          noDataComponent={<Empty />}
           paginationRowsPerPageOptions={[30, 75, 100]}
-          className='md:!max-h-[calc(100dvh-530px)]'
         />
       </div>
 

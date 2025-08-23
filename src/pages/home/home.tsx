@@ -17,6 +17,7 @@ import {
 } from 'react-icons/bi'
 import { useTranslation } from 'react-i18next'
 import { showToast } from '../../constants/utils/toast'
+import Scanner from '../../assets/images/barcode_banner.png'
 
 const Home = () => {
   const { t } = useTranslation()
@@ -260,7 +261,12 @@ const Home = () => {
       ) : dispenseOrder === null ? (
         <div className='flex flex-1 items-center justify-center'>
           <div className='flex flex-col items-center gap-3'>
-            <BiSolidDownArrow size={72} className='text-primary' />
+            {/* <BiSolidDownArrow size={72} className='text-primary' /> */}
+            <div className='avatar'>
+              <div className='w-128 rounded'>
+                <img src={Scanner} />
+              </div>
+            </div>
             <span className='text-xl font-medium'>{t('pleaseScan')}</span>
           </div>
         </div>

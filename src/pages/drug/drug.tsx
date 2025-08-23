@@ -24,6 +24,7 @@ import { showToast } from '../../constants/utils/toast'
 import { resizeImage } from '../../constants/utils/image'
 import Select from 'react-select'
 import { mapDefaultValue, mapOptions } from '../../constants/utils/reacr.select'
+import Empty from '../../components/empty/empty'
 
 interface DrugActive {
   key: string
@@ -422,9 +423,8 @@ const Drugs = () => {
           progressComponent={
             <span className='loading loading-spinner loading-md'></span>
           }
-          noDataComponent={<span>Empty</span>}
+          noDataComponent={<Empty />}
           paginationRowsPerPageOptions={[30, 75, 100]}
-          className='md:!max-h-[calc(100dvh-530px)]'
         />
       </div>
 

@@ -26,6 +26,7 @@ import { mapDefaultValue, mapOptions } from '../../constants/utils/reacr.select'
 import { resizeImage } from '../../constants/utils/image'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../redux/reducers/rootReducer'
+import Empty from '../../components/empty/empty'
 
 interface RoleSelect {
   key: string
@@ -516,9 +517,8 @@ const User = () => {
           progressComponent={
             <span className='loading loading-spinner loading-md'></span>
           }
-          noDataComponent={<span>Empty</span>}
+          noDataComponent={<Empty />}
           paginationRowsPerPageOptions={[30, 75, 100]}
-          className='md:!max-h-[calc(100dvh-530px)]'
         />
       </div>
 

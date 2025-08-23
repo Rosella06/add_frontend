@@ -20,6 +20,7 @@ import { showToast } from '../../constants/utils/toast'
 import { IoBackspaceOutline } from 'react-icons/io5'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../redux/reducers/rootReducer'
+import Empty from '../../components/empty/empty'
 
 const Stock = () => {
   const { t } = useTranslation()
@@ -29,6 +30,7 @@ const Stock = () => {
     Inventories[]
   >([])
   const [isloading, setIsLoading] = useState(false)
+  const [isloadingFetch, setIsLoadingFetch] = useState(false)
   const [search, setSearch] = useState('')
   const refillModal = useRef<HTMLDialogElement>(null)
   const [selectedItem, setSelectedItem] = useState<Inventories | null>(null)
@@ -38,8 +40,8 @@ const Stock = () => {
   })
   const [buttonStatus, setButtonStatus] = useState(false)
 
-  const fetchInventories = async () => {
-    setIsLoading(true)
+  const fetchInventories = async (loadState: boolean = true) => {
+    if (loadState) setIsLoadingFetch(true)
     try {
       const result = await axiosInstance.get<ApiResponse<Inventories[]>>(
         '/inventories'
@@ -52,12 +54,13 @@ const Stock = () => {
         console.error(error)
       }
     } finally {
-      setIsLoading(false)
+      if (loadState) setIsLoadingFetch(false)
     }
   }
 
   const handleUpdateStock = async () => {
     if (refill.quantity !== '0') {
+      setIsLoading(true)
       try {
         await axiosInstance.patch<ApiResponse<Inventories>>(
           `/inventories/${refill.id}`,
@@ -65,7 +68,6 @@ const Stock = () => {
             quantity: Number(refill.quantity)
           }
         )
-        setButtonStatus(true)
       } catch (error) {
         if (error instanceof AxiosError) {
           refillModal.current?.close()
@@ -80,7 +82,10 @@ const Stock = () => {
           console.error(error)
         }
       } finally {
-        await fetchInventories()
+        await fetchInventories(false)
+        setIsLoading(false)
+        setButtonStatus(true)
+        toggle()
       }
     } else {
       refillModal.current?.close()
@@ -95,7 +100,7 @@ const Stock = () => {
   }
 
   const handleConfirm = async () => {
-    setIsLoading(true)
+    setIsLoadingFetch(true)
     try {
       const result = await axiosInstance.post<ApiResponse<any>>(`/plc/sendM`, {
         floor: selectedItem?.floor,
@@ -128,8 +133,8 @@ const Stock = () => {
         console.error(error)
       }
     } finally {
-      await fetchInventories()
-      setIsLoading(false)
+      await fetchInventories(true)
+      setIsLoadingFetch(false)
     }
   }
 
@@ -260,6 +265,18 @@ const Stock = () => {
     [t, search]
   )
 
+  const [direction, setDirection] = useState<'row' | 'row-reverse'>('row')
+  const [animating, setAnimating] = useState(false)
+
+  const toggle = () => {
+    setAnimating(true)
+    setTimeout(() => {
+      setDirection(buttonStatus ? 'row' : 'row-reverse')
+      setButtonStatus(!buttonStatus)
+      setAnimating(false)
+    }, 300)
+  }
+
   return (
     <div>
       <div className='flex items-center justify-between'>
@@ -293,31 +310,47 @@ const Stock = () => {
           columns={columns}
           data={inventoriesFilterData}
           paginationPerPage={30}
-          progressPending={isloading}
+          progressPending={isloadingFetch}
           progressComponent={
             <span className='loading loading-spinner loading-md'></span>
           }
-          noDataComponent={<span>Empty</span>}
+          noDataComponent={<Empty />}
           paginationRowsPerPageOptions={[30, 75, 100]}
-          className='md:!max-h-[calc(100dvh-530px)]'
         />
       </div>
 
       <dialog ref={refillModal} className='modal'>
         <div className='modal-box p-[24px] rounded-[48px]'>
-          <div className='flex items-center gap-3'>
-            <h3 className='font-bold text-lg'>{t('refillStock')}</h3>
-            <span
-              className={`${
-                !buttonStatus ? 'opacity-0 scale-90' : 'opacity-100 scale-100'
-              } duration-300 ease-out transition-all badge bg-info/50 p-3 font-medium`}
+          <div
+            className={`flex items-center gap-3 transition-[flex-direction] duration-300 ease-out ${
+              direction === 'row-reverse'
+                ? 'flex-row-reverse justify-end'
+                : 'flex-row justify-start'
+            }`}
+          >
+            <h3
+              className={`font-bold text-lg transition-all duration-300 ease-out ${
+                !animating && direction === 'row'
+                  ? 'opacity-100 scale-100'
+                  : 'opacity-0 scale-90'
+              }`}
             >
-              <BiInfoCircle /> {t('confirmDescription')}
+              {t('refillStock')}
+            </h3>
+
+            <span
+              className={`badge bg-warning/50 p-3 font-medium transition-all duration-300 ease-out ${
+                !animating && direction === 'row-reverse'
+                  ? 'opacity-100 scale-100'
+                  : 'opacity-0 scale-90'
+              }`}
+            >
+              <BiInfoCircle size={18} /> {t('confirmDescription')}
             </span>
           </div>
 
           <div
-            className={`flex items-center justify-between w-full px-4 mt-5 ${
+            className={`flex items-center justify-between w-full px-4 mt-5 duration-300 ease-out transition-[opacity] ${
               buttonStatus ? 'cursor-not-allowed opacity-70' : 'opacity-100'
             }`}
           >
@@ -355,7 +388,7 @@ const Stock = () => {
           </div>
 
           <div
-            className={`grid grid-cols-3 gap-4 w-full mt-4 ${
+            className={`grid grid-cols-3 gap-4 w-full mt-4 duration-300 ease-out transition-[opacity] ${
               buttonStatus ? 'cursor-not-allowed opacity-70' : 'opacity-100'
             }`}
           >
@@ -393,31 +426,38 @@ const Stock = () => {
           </div>
 
           <div className='modal-action'>
-            <form method='dialog' className='flex items-center gap-3 w-full'>
-              <button
-                className='btn text-base font-medium h-12 flex-1'
-                onClick={async () => await resetForm()}
-                disabled={isloading}
-              >
-                {t('closeButton')}
-              </button>
-              <button
-                type='button'
-                className={`btn ${
-                  !buttonStatus ? 'btn-primary flex-1' : 'btn-info flex-2'
-                } duration-300 ease-out transition-[flex] text-base font-bold h-12`}
-                onClick={!buttonStatus ? handleUpdateStock : handleConfirm}
-                disabled={isloading}
-              >
-                {!buttonStatus ? (
-                  t('update')
-                ) : isloading ? (
-                  <span className='loading loading-spinner loading-md'></span>
-                ) : (
-                  t('confirmButton')
-                )}
-              </button>
-            </form>
+            <button
+              type={`${!buttonStatus ? 'submit' : 'button'}`}
+              className='btn text-base font-medium h-12 flex-1'
+              onClick={async () => {
+                if (!buttonStatus) {
+                  refillModal.current?.close()
+                  await resetForm()
+                } else {
+                  setButtonStatus(false)
+                  toggle()
+                }
+              }}
+              disabled={isloading}
+            >
+              {`${!buttonStatus ? t('closeButton') : t('back')}`}
+            </button>
+            <button
+              type='button'
+              className={`btn ${
+                !buttonStatus ? 'btn-primary flex-1' : 'btn-info flex-2'
+              } duration-300 ease-out transition-[flex] text-base font-bold h-12`}
+              onClick={!buttonStatus ? handleUpdateStock : handleConfirm}
+              disabled={isloading}
+            >
+              {isloading ? (
+                <span className='loading loading-spinner loading-md'></span>
+              ) : !buttonStatus ? (
+                t('update')
+              ) : (
+                t('confirmButton')
+              )}
+            </button>
           </div>
         </div>
       </dialog>

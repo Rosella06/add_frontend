@@ -90,5 +90,7 @@ export default {
     drugCode: 'Drug code',
     drugStatus: 'Drug status',
     confirmDescription: 'Please confirm to turn off the light.',
+    emptyData: 'Empty data',
+    back: 'Back',
   }
 }
