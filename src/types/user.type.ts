@@ -12,7 +12,7 @@ type Users = {
   userName: string
   displayName: string
   userImage: string
-  userRole: string
+  userRole: Role
   userStatus: boolean
   createBy?: string
   createdAt: string

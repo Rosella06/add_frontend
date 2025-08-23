@@ -11,6 +11,7 @@ import Stock from '../pages/stock/stock'
 import User from '../pages/user/user'
 import Drugs from '../pages/drug/drug'
 import Settings from '../pages/setting/setting'
+import Profile from '../pages/setting/profile'
 
 const router = () =>
   createBrowserRouter([
@@ -68,7 +69,7 @@ const router = () =>
                 },
                 {
                   path: '/settings/profile',
-                  element: <div>Profile</div>,
+                  element: <Profile />,
                   errorElement: <ErrorPage />
                 },
                 {

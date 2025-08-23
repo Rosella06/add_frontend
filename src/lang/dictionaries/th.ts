@@ -97,6 +97,9 @@ export default {
     changeLanguage: 'เปลี่ยนภาษา',
     changeTheme: 'เปลี่ยนธีม',
     device: 'อุปกรณ์',
-    manageDevice: 'จัดการเครื่อง'
+    manageDevice: 'จัดการเครื่อง',
+    changeImageProfile: 'เปลี่ยนรูปโปรไฟล์',
+    personalInformation: 'ข้อมูลส่วนตัว',
+    editProfile: 'แก้ไขโปรไฟล์'
   }
 }

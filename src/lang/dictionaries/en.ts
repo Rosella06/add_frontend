@@ -98,6 +98,9 @@ export default {
     changeLanguage: 'Change language',
     changeTheme: 'Change theme',
     device: 'Machine',
-    manageDevice: 'Manage machine'
+    manageDevice: 'Manage machine',
+    changeImageProfile: 'Change profile image',
+    personalInformation: 'Personal Information',
+    editProfile: 'Edit Profile'
   }
 }
