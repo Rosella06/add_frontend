@@ -278,9 +278,11 @@ const Stock = () => {
   }
 
   return (
-    <div>
+    <div className='p-4 sm:p-6 lg:p-8'>
       <div className='flex items-center justify-between'>
-        <span className='text-2xl font-medium'>{t('itemRefill')}</span>
+        <h1 className='text-4xl font-bold text-base-content mb-8'>
+          {t('itemRefill')}
+        </h1>
         <div className='flex items-center gap-3'>
           <label className='input h-15 rounded-3xl'>
             <BiSearch size={22} />
@@ -339,7 +341,7 @@ const Stock = () => {
             </h3>
 
             <span
-              className={`badge bg-warning/50 p-3 font-medium transition-all duration-300 ease-out ${
+              className={`badge bg-warning text-black rounded-3xl py-3.5 p-3 font-medium transition-all duration-300 ease-out ${
                 !animating && direction === 'row-reverse'
                   ? 'opacity-100 scale-100'
                   : 'opacity-0 scale-90'

@@ -90,6 +90,13 @@ export default {
     drugStatus: 'สถานะยา',
     confirmDescription: 'กรุณายืนยันเพื่อปิดไฟ',
     emptyData: 'ไม่มีข้อมูล',
-    back: 'ย้อนกลับ'
+    back: 'ย้อนกลับ',
+    account: 'บัญชี',
+    manageAccount: 'จัดการโปรไฟล์',
+    generalSettings: 'ทั่วไป',
+    changeLanguage: 'เปลี่ยนภาษา',
+    changeTheme: 'เปลี่ยนธีม',
+    device: 'อุปกรณ์',
+    manageDevice: 'จัดการเครื่อง'
   }
 }

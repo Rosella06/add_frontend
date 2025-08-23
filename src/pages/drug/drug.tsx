@@ -375,9 +375,9 @@ const Drugs = () => {
   }, [search, drugData])
 
   return (
-    <div>
+    <div className='p-4 sm:p-6 lg:p-8'>
       <div className='flex items-center justify-between'>
-        <span className='text-2xl font-medium'>{t('itemDrugs')}</span>
+        <h1 className='text-4xl font-bold text-base-content mb-8'>{t('itemDrugs')}</h1>
         <div className='flex items-center gap-3'>
           <label className='input h-15 rounded-3xl'>
             <BiSearch size={22} />
@@ -398,7 +398,7 @@ const Drugs = () => {
           </label>
           <div className='tooltip tooltip-bottom' data-tip={t('addDrug')}>
             <button
-              className='btn btn-primary text-base h-15 w-12 p-0 rounded-3xl'
+              className='btn btn-primary text-base h-15 w-15 p-0 rounded-3xl'
               onClick={() => {
                 if (addModal.current) {
                   addModal.current.showModal()

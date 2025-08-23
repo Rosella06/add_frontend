@@ -92,5 +92,12 @@ export default {
     confirmDescription: 'Please confirm to turn off the light.',
     emptyData: 'Empty data',
     back: 'Back',
+    account: 'Account',
+    manageAccount: 'Manage profile',
+    generalSettings: 'General',
+    changeLanguage: 'Change language',
+    changeTheme: 'Change theme',
+    device: 'Machine',
+    manageDevice: 'Manage machine'
   }
 }

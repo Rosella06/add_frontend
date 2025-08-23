@@ -13,7 +13,6 @@ import {
   BiError,
   BiErrorCircle,
   BiReset,
-  BiSolidDownArrow
 } from 'react-icons/bi'
 import { useTranslation } from 'react-i18next'
 import { showToast } from '../../constants/utils/toast'
@@ -253,7 +252,7 @@ const Home = () => {
   }, [dispenseOrder])
 
   return (
-    <div className='flex flex-col gap-3 flex-1'>
+    <div className='flex flex-col gap-3 flex-1 p-4 sm:p-6 lg:p-8'>
       {isLoading ? (
         <div className='flex flex-1 items-center justify-center'>
           <span className='loading loading-spinner text-base-content loading-md'></span>

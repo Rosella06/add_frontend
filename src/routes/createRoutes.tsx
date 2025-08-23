@@ -10,6 +10,7 @@ import Inventory from '../pages/inventories/inventories'
 import Stock from '../pages/stock/stock'
 import User from '../pages/user/user'
 import Drugs from '../pages/drug/drug'
+import Settings from '../pages/setting/setting'
 
 const router = () =>
   createBrowserRouter([
@@ -59,7 +60,7 @@ const router = () =>
             },
             {
               path: '/settings',
-              element: <div>Settings</div>,
+              element: <Settings />,
               errorElement: <ErrorPage />
             }
           ]
