@@ -24,7 +24,7 @@ const router = () =>
           errorElement: <ErrorPage />,
           children: [
             {
-              path: '/',
+              index: true,
               element: <Home />,
               errorElement: <ErrorPage />
             },
@@ -60,8 +60,33 @@ const router = () =>
             },
             {
               path: '/settings',
-              element: <Settings />,
-              errorElement: <ErrorPage />
+              children: [
+                {
+                  index: true,
+                  element: <Settings />,
+                  errorElement: <ErrorPage />
+                },
+                {
+                  path: '/settings/profile',
+                  element: <div>Profile</div>,
+                  errorElement: <ErrorPage />
+                },
+                {
+                  path: '/settings/language',
+                  element: <div>Language</div>,
+                  errorElement: <ErrorPage />
+                },
+                {
+                  path: '/settings/theme',
+                  element: <div>Theme</div>,
+                  errorElement: <ErrorPage />
+                },
+                {
+                  path: '/settings/machine',
+                  element: <div>Machine</div>,
+                  errorElement: <ErrorPage />
+                }
+              ]
             }
           ]
         }

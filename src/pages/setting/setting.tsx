@@ -5,12 +5,14 @@ import {
   IoPersonCircle,
   IoHardwareChip
 } from 'react-icons/io5'
+import { useNavigate } from 'react-router-dom'
 
 const Settings = () => {
   const { t } = useTranslation()
+  const navigate = useNavigate()
 
   const handleMenuClick = (menuName: string) => {
-    alert(`คุณเลือกเมนู: ${menuName}`)
+    navigate(`/settings/${menuName}`)
   }
 
   return (
@@ -26,7 +28,7 @@ const Settings = () => {
         <li>
           <a
             className='py-5 text-lg rounded-2xl'
-            onClick={() => handleMenuClick('จัดการโปรไฟล์')}
+            onClick={() => handleMenuClick('profile')}
           >
             <IoPersonCircle size={32} />
             <span className='flex-grow'>{t('manageAccount')}</span>
@@ -42,7 +44,7 @@ const Settings = () => {
         <li>
           <a
             className='py-5 text-lg rounded-2xl'
-            onClick={() => handleMenuClick('เปลี่ยนภาษา')}
+            onClick={() => handleMenuClick('language')}
           >
             <IoLanguage size={32} />
             <span className='flex-grow'>{t('changeLanguage')}</span>
@@ -52,7 +54,7 @@ const Settings = () => {
         <li>
           <a
             className='py-5 text-lg rounded-2xl'
-            onClick={() => handleMenuClick('เปลี่ยนธีม')}
+            onClick={() => handleMenuClick('theme')}
           >
             <IoColorPalette size={32} />
             <span className='flex-grow'>{t('changeTheme')}</span>
@@ -68,7 +70,7 @@ const Settings = () => {
         <li>
           <a
             className='py-5 text-lg rounded-2xl'
-            onClick={() => handleMenuClick('จัดการเครื่อง')}
+            onClick={() => handleMenuClick('machine')}
           >
             <IoHardwareChip size={32} />
             <span className='flex-grow'>{t('manageDevice')}</span>
