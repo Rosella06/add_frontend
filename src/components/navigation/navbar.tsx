@@ -75,7 +75,7 @@ const Navbar = () => {
             </label>
             <ul
               tabIndex={0}
-              className='menu menu-sm dropdown-content !rounded-[24px] mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52'
+              className='menu menu-sm dropdown-content !rounded-[24px] mt-3 z-[1] p-2 shadow bg-base-200 rounded-box w-52'
             >
               <li className='h-12'>
                 <div className='flex gap-1.5 items-center justify-between h-12 rounded-[16px]'>
@@ -87,9 +87,10 @@ const Navbar = () => {
                   </span>
                 </div>
               </li>
-              <li className='h-12 mt-2'>
+              <div className='divider my-1 before:h-[1px] after:h-[1px]'></div>
+              <li className='h-12'>
                 <span
-                  className='flex items-center text-base font-medium text-red-500 h-12 hover:bg-red-50 rounded-[16px]'
+                  className='flex items-center text-base font-medium text-red-500 h-12 hover:bg-red-500/30 rounded-[16px]'
                   onClick={async () => {
                     const confirmed = await confirmModalRef.current?.show({
                       title: t('logOutTitle'),
