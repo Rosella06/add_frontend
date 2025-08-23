@@ -1,5 +1,5 @@
 import { NavLink, Link } from 'react-router-dom'
-import { BiArchive, BiSolidDownArrow } from 'react-icons/bi'
+import { BiArchive } from 'react-icons/bi'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../redux/reducers/rootReducer'
 import { cookieOptions, cookies } from '../../constants/utils/utilsConstants'
@@ -9,9 +9,10 @@ import { useRef } from 'react'
 import Logo from '../../assets/images/add-512.png'
 import { FaFileContract, FaPrescriptionBottleAlt } from 'react-icons/fa'
 import { GiMedicinePills, GiVendingMachine } from 'react-icons/gi'
-import { IoIosPersonAdd } from 'react-icons/io'
+import { IoIosPersonAdd, IoMdLogOut } from 'react-icons/io'
 import { HiOutlineClipboardList } from 'react-icons/hi'
 import { IoSettingsOutline } from 'react-icons/io5'
+import { Role } from '../../types/user.type'
 
 const Navbar = () => {
   const { t } = useTranslation()
@@ -28,6 +29,23 @@ const Navbar = () => {
     { name: t('itemReport'), path: '/report', icon: HiOutlineClipboardList },
     { name: t('itemSettings'), path: '/settings', icon: IoSettingsOutline }
   ]
+
+  const getRoleName = (role: Role | undefined) => {
+    switch (role) {
+      case 'ADMIN':
+        return t('roleADMIN')
+      case 'USER':
+        return t('roleUSER')
+      case 'HEAD_PHARMACIST':
+        return t('roleHEAD_PHARMACIST')
+      case 'PHARMACIST':
+        return t('rolePHARMACIST')
+      case 'ASSISTANT':
+        return t('roleASSISTANT')
+      default:
+        return t('roleSUPER')
+    }
+  }
 
   return (
     <nav className='bg-base-100 shadow-sm border-b border-base-200 sticky top-0 left-0 z-50'>
@@ -59,19 +77,19 @@ const Navbar = () => {
               tabIndex={0}
               className='menu menu-sm dropdown-content !rounded-[24px] mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52'
             >
-              <li>
-                <div className='flex gap-1.5 items-start justify-between rounded-[16px]'>
+              <li className='h-12'>
+                <div className='flex gap-1.5 items-center justify-between h-12 rounded-[16px]'>
                   <span className='text-base font-medium max-w-[72px] truncate'>
                     {cookieDecode?.displayName}
                   </span>
                   <span className='badge badge-ghost text-xs'>
-                    {cookieDecode?.userRole}
+                    {getRoleName(cookieDecode?.userRole)}
                   </span>
                 </div>
               </li>
-              <li className='mt-2'>
+              <li className='h-12 mt-2'>
                 <span
-                  className='text-base font-medium text-red-500 hover:bg-red-50 rounded-[16px]'
+                  className='flex items-center text-base font-medium text-red-500 h-12 hover:bg-red-50 rounded-[16px]'
                   onClick={async () => {
                     const confirmed = await confirmModalRef.current?.show({
                       title: t('logOutTitle'),
@@ -87,7 +105,7 @@ const Navbar = () => {
                     }
                   }}
                 >
-                  <BiSolidDownArrow className='h-4 w-4' />
+                  <IoMdLogOut size={24} />
                   {t('logoutButton')}
                 </span>
               </li>
