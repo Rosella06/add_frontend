@@ -93,29 +93,32 @@ const MachinePage = () => {
                 machine.status === 'online' ? 'badge-success' : 'badge-ghost'
               }`}
             >
-              {machine.status ? t('online') : t('offline')}
+              {machine.status === 'online' ? t('online') : t('offline')}
             </div>
           </div>
-          <p className='text-xs text-base-content/60 truncate mt-1'>
-            {machine.id}
+          <p className='text-sm text-base-content/60 truncate mt-1'>
+            {t('machineIpaddress')}: {machine.ipAddress.split('f:')[1]}
+          </p>
+          <p className='text-sm text-base-content/60 truncate mt-1'>
+            {t('communicationNo')}: {machine.running}
           </p>
 
           <div className='card-actions mt-4'>
             {isActive ? (
               <div className='flex items-center gap-3 w-full'>
                 <button
-                  className='btn btn-ghost btn-sm flex-1 text-error h-12 rounded-3xl text-sm font-bold'
-                  onClick={cancelSelection}
-                >
-                  <IoCloseCircleOutline size={24} />
-                  {t('closeButton')}
-                </button>
-                <button
                   disabled
                   className='btn flex-1 badge-sm h-12 rounded-3xl text-sm font-bold'
                 >
                   <IoCheckmarkOutline size={24} />
                   {t('selected')}
+                </button>
+                <button
+                  className='btn btn-ghost btn-sm flex-1 text-error h-12 rounded-3xl text-sm font-bold'
+                  onClick={cancelSelection}
+                >
+                  <IoCloseCircleOutline size={24} />
+                  {t('closeButton')}
                 </button>
               </div>
             ) : (

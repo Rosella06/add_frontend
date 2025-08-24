@@ -9,7 +9,7 @@ import {
   OrderStatus
 } from '../../types/dispense.order.type'
 import OrderItem from '../../components/pages/home/orderItem'
-import { BiError, BiErrorCircle, BiReset } from 'react-icons/bi'
+import { BiCheck, BiError, BiErrorCircle, BiReset } from 'react-icons/bi'
 import { useTranslation } from 'react-i18next'
 import { showToast } from '../../constants/utils/toast'
 import Scanner from '../../assets/images/barcode_banner.png'
@@ -178,13 +178,21 @@ const Home = () => {
     }
 
     try {
-      await axiosInstance.post<ApiResponse<DispensePrescription>>(
+      const result = await axiosInstance.post<ApiResponse<string>>(
         `/orders/order`,
         {
           machineId: machine.id,
           socketId
         }
       )
+      showToast({
+        type: 'success',
+        icon: BiCheck,
+        message: result.data.data,
+        duration: 3000,
+        showClose: false
+      })
+      setDispenseOrder(null)
     } catch (error) {
       if (error instanceof AxiosError) {
         await showToast({
@@ -197,8 +205,6 @@ const Home = () => {
       } else {
         console.error(error)
       }
-    } finally {
-      fetchOrder()
     }
   }
 

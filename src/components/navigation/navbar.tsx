@@ -1,5 +1,5 @@
 import { NavLink, Link } from 'react-router-dom'
-import { BiArchive } from 'react-icons/bi'
+import { BiArchive, BiInfoCircle } from 'react-icons/bi'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../redux/reducers/rootReducer'
 import { cookieOptions, cookies } from '../../constants/utils/utilsConstants'
@@ -11,12 +11,14 @@ import { FaFileContract, FaPrescriptionBottleAlt } from 'react-icons/fa'
 import { GiMedicinePills, GiVendingMachine } from 'react-icons/gi'
 import { IoIosPersonAdd, IoMdLogOut } from 'react-icons/io'
 import { HiOutlineClipboardList } from 'react-icons/hi'
-import { IoSettingsOutline } from 'react-icons/io5'
+import { IoCheckmarkOutline, IoSettingsOutline } from 'react-icons/io5'
 import { Role } from '../../types/user.type'
 
 const Navbar = () => {
   const { t } = useTranslation()
-  const { cookieDecode } = useSelector((state: RootState) => state.utils)
+  const { cookieDecode, machine } = useSelector(
+    (state: RootState) => state.utils
+  )
   const confirmModalRef = useRef<ConfirmModalRef>(null)
 
   const menuItems = [
@@ -51,14 +53,44 @@ const Navbar = () => {
     <nav className='bg-base-100/30 backdrop-blur-xl shadow-sm border-b border-base-200 sticky top-0 left-0 z-50'>
       <div className='flex flex-col gap-7 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
         <div className='flex h-32 items-center justify-between'>
-          <div className='flex-shrink-0'>
-            <Link to='/' className='text-4xl font-bold text-base-content'>
-              <div className='avatar'>
-                <div className='w-24 rounded-3xl'>
-                  <img src={Logo} />
+          <div
+            className={`flex ${
+              machine === undefined ? 'items-start' : 'items-center'
+            } gap-4`}
+          >
+            <div className='flex-shrink-0'>
+              <Link to='/' className='text-4xl font-bold text-base-content'>
+                <div className='avatar'>
+                  <div className='w-24 rounded-3xl'>
+                    <img src={Logo} />
+                  </div>
                 </div>
-              </div>
-            </Link>
+              </Link>
+            </div>
+            <div>
+              {machine ? (
+                <div className='flex flex-col gap-3'>
+                  <span className='badge badge-info px-3 py-4 rounded-3xl text-lg font-medium'>
+                    <IoCheckmarkOutline size={24} />
+                    {machine.machineName} | {machine.ipAddress.split('f:')[1]}
+                  </span>
+                  <span
+                    className={`badge p-3 rounded-3xl font-medium text-base ${
+                      machine.status === 'online'
+                        ? 'badge-success'
+                        : 'badge-error'
+                    }`}
+                  >
+                    {machine.status === 'online' ? t('online') : t('offline')}
+                  </span>
+                </div>
+              ) : (
+                <span className='badge badge-warning text-lg rounded-3xl py-4 px-3 font-medium mt-3'>
+                  <BiInfoCircle size={24} />
+                  {t('machineNotSelectToDispense')}
+                </span>
+              )}
+            </div>
           </div>
 
           <div className='dropdown dropdown-end'>

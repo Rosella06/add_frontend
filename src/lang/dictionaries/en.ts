@@ -111,6 +111,8 @@ export default {
       'Select the language you want for the application display',
     selectPerPage: 'Select items per page',
     selectMachine: 'Select machine',
-    selectMachineDescription: 'Select the machine you want to dispense'
+    selectMachineDescription: 'Select the machine you want to dispense',
+    machineNotSelectToDispense: 'Machine not select to dispense.',
+    communicationNo: 'Communication Number'
   }
 }

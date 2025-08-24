@@ -109,6 +109,8 @@ export default {
     languageDescription: 'เลือกภาษาที่ต้องการสำหรับแสดงผลในแอปพลิเคชัน',
     selectPerPage: 'เลือกจำนวนรายการต่อหน้า',
     selectMachine: 'เลือกเครื่อง',
-    selectMachineDescription: 'เลือกเครื่องที่ต้องการเพื่อจัดยา'
+    selectMachineDescription: 'เลือกเครื่องที่ต้องการเพื่อจัดยา',
+    machineNotSelectToDispense: 'ยังไม่ได้เลือกเครื่องเพื่อจัดยา',
+    communicationNo: 'หมายเลขการสื่อสาร'
   }
 }
