@@ -691,7 +691,7 @@ const Testtools = () => {
                                 }
                                 className='w-12 text-center text-lg font-bold bg-transparent focus:outline-none'
                               />
-                              <div className='join w-full'>
+                              <div className='join w-full gap-1'>
                                 <button
                                   onClick={e => {
                                     e.stopPropagation()
