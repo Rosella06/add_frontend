@@ -30,6 +30,7 @@ import { RootState } from '../../redux/reducers/rootReducer'
 import Empty from '../../components/empty/empty'
 import QRCode from 'react-qr-code'
 import Numpad from '../../components/pages/user/numpad'
+import html2canvas from 'html2canvas-pro'
 
 interface RoleSelect {
   key: string
@@ -390,48 +391,67 @@ const User = () => {
     }
   }
 
-  const handleDownload = () => {
-    const svg = qrCode.current as SVGElement | null
+  // const handleDownload = () => {
+  //   const wrapper = qrCode.current as HTMLDivElement | null
 
-    if (svg) {
-      const bbox = svg.getBoundingClientRect()
+  //   if (wrapper) {
+  //     const svg = wrapper.querySelector('svg') as SVGSVGElement | null
+  //     if (!svg) {
+  //       console.error('No SVG found inside QRCode wrapper.')
+  //       return
+  //     }
 
-      const canvas = document.createElement('canvas')
-      const ctx = canvas.getContext('2d')
-      if (!ctx) return
+  //     const bbox = svg.getBoundingClientRect()
 
-      canvas.width = bbox.width
-      canvas.height = bbox.height
+  //     const canvas = document.createElement('canvas')
+  //     const ctx = canvas.getContext('2d')
+  //     if (!ctx) return
 
-      const serializer = new XMLSerializer()
-      const svgString = serializer.serializeToString(svg)
-      const img = new Image()
-      const svgBlob = new Blob([svgString], {
-        type: 'image/svg+xml;charset=utf-8'
-      })
-      const url = URL.createObjectURL(svgBlob)
+  //     canvas.width = bbox.width
+  //     canvas.height = bbox.height
 
-      img.onload = () => {
-        ctx.drawImage(img, 0, 0, bbox.width, bbox.height)
+  //     const serializer = new XMLSerializer()
+  //     const svgString = serializer.serializeToString(svg)
+  //     const img = new Image()
+  //     const svgBlob = new Blob([svgString], {
+  //       type: 'image/svg+xml;charset=utf-8'
+  //     })
+  //     const url = URL.createObjectURL(svgBlob)
 
-        const pngUrl = canvas
-          .toDataURL('image/png')
-          .replace('image/png', 'image/octet-stream')
+  //     img.onload = () => {
+  //       ctx.drawImage(img, 0, 0, bbox.width, bbox.height)
 
-        const downloadLink = document.createElement('a')
-        downloadLink.href = pngUrl
-        downloadLink.download = 'qrcode.png'
-        document.body.appendChild(downloadLink)
-        downloadLink.click()
-        document.body.removeChild(downloadLink)
+  //       const pngUrl = canvas
+  //         .toDataURL('image/png')
+  //         .replace('image/png', 'image/octet-stream')
 
-        URL.revokeObjectURL(url)
-      }
+  //       const downloadLink = document.createElement('a')
+  //       downloadLink.href = pngUrl
+  //       downloadLink.download = 'qrcode.png'
+  //       document.body.appendChild(downloadLink)
+  //       downloadLink.click()
+  //       document.body.removeChild(downloadLink)
 
-      img.src = url
-    } else {
-      console.error('Could not find the QR code SVG element.')
-    }
+  //       URL.revokeObjectURL(url)
+  //     }
+
+  //     img.src = url
+  //   } else {
+  //     console.error('Could not find the QR code wrapper div.')
+  //   }
+  // }
+
+  const handleDownload = async () => {
+    const wrapper = qrCode.current as HTMLDivElement | null
+    if (!wrapper) return
+
+    const canvas = await html2canvas(wrapper)
+    const pngUrl = canvas.toDataURL('image/png')
+
+    const link = document.createElement('a')
+    link.href = pngUrl
+    link.download = 'qrcode.png'
+    link.click()
   }
 
   const handlePinChange = (newPin: string) => {
@@ -972,12 +992,13 @@ const User = () => {
             </div>
           ) : securityPage === 'genQr' ? (
             <div className='flex flex-col items-center gap-5'>
-              <div className='h-auto my-0 mx-auto max-w-64 w-full'>
+              <div ref={qrCode} className='h-auto my-0 mx-auto max-w-64 w-full'>
                 <QRCode
-                  ref={qrCode}
                   size={256}
                   viewBox={`0 0 256 256`}
                   value={String(securityModalData?.pinCode)}
+                  bgColor={'var(--color-base-100'}
+                  fgColor={'var(--color-base-content)'}
                   className='h-auto max-w-full w-full'
                 />
               </div>
