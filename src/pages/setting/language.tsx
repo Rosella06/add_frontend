@@ -46,7 +46,7 @@ const Language = () => {
             <button
               key={lang.code}
               onClick={() => changeLanguage(lang.code)}
-              className={`card bg-base-100 shadow-sm text-left p-6 transition-all duration-200 ease-in-out hover:bg-base-200
+              className={`card rounded-3xl bg-base-100 shadow-sm text-left p-6 transition-all duration-200 ease-in-out hover:bg-base-200 cursor-pointer
                 ${
                   currentLang === lang.code
                     ? 'ring-2 ring-primary ring-offset-base-100 ring-offset-2'

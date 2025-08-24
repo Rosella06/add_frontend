@@ -93,7 +93,7 @@ const MachinePage = () => {
               {machine.machineName}
             </h2>
             <div
-              className={`badge p-3 ${
+              className={`badge p-3 rounded-3xl ${
                 machine.status === 'online' ? 'badge-success' : 'badge-ghost'
               }`}
             >
@@ -163,10 +163,10 @@ const MachinePage = () => {
         ) : (
           <>
             <div className='flex justify-between mb-6'>
-              <div role='tablist' className='tabs tabs-box bg-base-300'>
+              <div role='tablist' className='tabs tabs-box bg-base-300 p-2 rounded-3xl'>
                 <a
                   role='tab'
-                  className={`tab h-13 px-5 ${
+                  className={`tab h-13 px-5 !rounded-2xl ${
                     statusFilter === 'all' ? 'tab-active' : ''
                   }`}
                   onClick={() => setStatusFilter('all')}
@@ -175,7 +175,7 @@ const MachinePage = () => {
                 </a>
                 <a
                   role='tab'
-                  className={`tab h-13 px-5 ${
+                  className={`tab h-13 px-5 !rounded-2xl ${
                     statusFilter === 'online' ? 'tab-active' : ''
                   }`}
                   onClick={() => setStatusFilter('online')}
@@ -184,7 +184,7 @@ const MachinePage = () => {
                 </a>
                 <a
                   role='tab'
-                  className={`tab h-13 px-5 ${
+                  className={`tab h-13 px-5 !rounded-2xl ${
                     statusFilter === 'offline' ? 'tab-active' : ''
                   }`}
                   onClick={() => setStatusFilter('offline')}
@@ -192,7 +192,7 @@ const MachinePage = () => {
                   {t('offline')}
                 </a>
               </div>
-              <label className='input h-13 rounded-3xl'>
+              <label className='input h-15 rounded-3xl'>
                 <BiSearch size={22} />
                 <input
                   type='text'

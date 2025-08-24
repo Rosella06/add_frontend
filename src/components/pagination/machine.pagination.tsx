@@ -47,7 +47,7 @@ const MachinePagination = <T,>({
             pages.push(
                 <button
                     key={i}
-                    className={`join-item btn ${currentPage === i ? 'btn-neutral' : 'bg-base-300 border-base-300'}`}
+                    className={`join-item btn h-13 rounded-2xl ${currentPage === i ? 'btn-neutral' : 'bg-base-300 border-base-300'}`}
                     onClick={() => i !== currentPage && goToPage(i)}
                 >
                     {i}
@@ -58,7 +58,7 @@ const MachinePagination = <T,>({
         pages.push(
             <button
                 key={1}
-                className={`join-item btn ${currentPage === 1 ? 'btn-neutral' : ''}`}
+                className={`join-item btn h-13 rounded-2xl ${currentPage === 1 ? 'btn-neutral' : ''}`}
                 onClick={() => currentPage !== 1 && goToPage(1)}
             >
                 1
@@ -66,7 +66,7 @@ const MachinePagination = <T,>({
         )
 
         if (currentPage > 3) {
-            pages.push(<button key="start-dots" className="join-item btn btn-disabled">...</button>)
+            pages.push(<button key="start-dots" className="join-item btn btn-disabled h-13 rounded-2xl">...</button>)
         }
 
         const start = Math.max(2, currentPage - 1)
@@ -76,7 +76,7 @@ const MachinePagination = <T,>({
             pages.push(
                 <button
                     key={i}
-                    className={`join-item btn ${currentPage === i ? 'btn-neutral' : ''}`}
+                    className={`join-item btn h-13 rounded-2xl ${currentPage === i ? 'btn-neutral' : ''}`}
                     onClick={() => currentPage !== i && goToPage(i)}
                 >
                     {i}
@@ -85,13 +85,13 @@ const MachinePagination = <T,>({
         }
 
         if (currentPage < totalPages - 2) {
-            pages.push(<button key="end-dots" className="join-item btn btn-disabled">...</button>)
+            pages.push(<button key="end-dots" className="join-item btn btn-disabled h-13 rounded-2xl">...</button>)
         }
 
         pages.push(
             <button
                 key={totalPages}
-                className={`join-item btn ${currentPage === totalPages ? 'btn-neutral' : ''}`}
+                className={`join-item btn h-13 rounded-2xl ${currentPage === totalPages ? 'btn-neutral' : ''}`}
                 onClick={() => currentPage !== totalPages && goToPage(totalPages)}
             >
                 {totalPages}
@@ -114,20 +114,23 @@ const MachinePagination = <T,>({
           <PaginationPerpage
             perPage={itemPerPage}
             value={perPage}
-            handlePerPageChange={handlePerPageChange} />
+            handlePerPageChange={handlePerPageChange}
+          />
         </label>
 
-        <div className="join">
-        <button
-            className={`join-item btn bg-base-300 ${currentPage !== 1 ? 'border-base-300' : ''}`}
+        <div className="flex items-center gap-2">
+          <button
+            className="btn h-13 rounded-2xl"
             onClick={() => goToPage(currentPage - 1)}
             disabled={currentPage === 1}
           >
             «
           </button>
+
           {generatePagination()}
+
           <button
-            className={`join-item btn bg-base-300 ${currentPage !== totalPages ? 'border-base-300' : ''}`}
+            className="btn h-13 rounded-2xl"
             onClick={() => goToPage(currentPage + 1)}
             disabled={currentPage === totalPages}
           >
