@@ -1210,7 +1210,7 @@ const M32Modal: FC<{
         </div>
         <div className='modal-action mt-6'>
           <button
-            className='btn btn-ghost bg-base-200 flex-1 h-15 rounded-3xl'
+            className='btn bg-base-200 flex-1 h-15 rounded-3xl'
             onClick={onClose}
           >
             ยกเลิก
