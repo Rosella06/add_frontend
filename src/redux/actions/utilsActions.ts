@@ -50,7 +50,11 @@ const setLanguage = (lang: string) => {
 }
 
 const setMachine = (machineData: Machines | undefined) => {
-  cookies.set('machine', machineData, cookieOptions)
+  if (machineData !== undefined) {
+    cookies.set('machine', machineData, cookieOptions)
+  } else {
+    cookies.remove('machine', cookieOptions)
+  }
 
   return {
     type: MACHINE_DATA,

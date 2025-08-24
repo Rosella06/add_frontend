@@ -68,7 +68,12 @@ const Navbar = () => {
               </Link>
             </div>
             <div>
-              {machine ? (
+              {machine === undefined ? (
+                <span className='badge badge-warning text-lg rounded-3xl py-4 px-3 font-medium mt-3'>
+                  <BiInfoCircle size={24} />
+                  {t('machineNotSelectToDispense')}
+                </span>
+              ) : (
                 <div className='flex flex-col gap-3'>
                   <span className='badge badge-info px-3 py-4 rounded-3xl text-lg font-medium'>
                     <IoCheckmarkOutline size={24} />
@@ -84,11 +89,6 @@ const Navbar = () => {
                     {machine.status === 'online' ? t('online') : t('offline')}
                   </span>
                 </div>
-              ) : (
-                <span className='badge badge-warning text-lg rounded-3xl py-4 px-3 font-medium mt-3'>
-                  <BiInfoCircle size={24} />
-                  {t('machineNotSelectToDispense')}
-                </span>
               )}
             </div>
           </div>

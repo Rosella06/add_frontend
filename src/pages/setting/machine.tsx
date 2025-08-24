@@ -18,12 +18,14 @@ const MachinePage = () => {
     (state: RootState) => state.utils
   )
   const [search, setSearch] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
   const [machineData, setMachineData] = useState<Machines[]>([])
   const [statusFilter, setStatusFilter] = useState<
     'all' | 'online' | 'offline'
   >('all')
 
   const fetchMachineData = async () => {
+    setIsLoading(true)
     try {
       const result = await axiosInstance.get<ApiResponse<Machines[]>>(
         '/machines'
@@ -35,6 +37,8 @@ const MachinePage = () => {
       } else {
         console.error('Unexpected error', error)
       }
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -97,7 +101,7 @@ const MachinePage = () => {
             </div>
           </div>
           <p className='text-sm text-base-content/60 truncate mt-1'>
-            {t('machineIpaddress')}: {machine.ipAddress.split('f:')[1]}
+            {t('machineIpaddress')}: {machine.ipAddress?.split('f:')[1]}
           </p>
           <p className='text-sm text-base-content/60 truncate mt-1'>
             {t('communicationNo')}: {machine.running}
@@ -152,61 +156,69 @@ const MachinePage = () => {
           {t('selectMachineDescription')}
         </p>
 
-        <div className='flex justify-between mb-6'>
-          <div role='tablist' className='tabs tabs-box bg-base-300'>
-            <a
-              role='tab'
-              className={`tab h-13 px-5 ${
-                statusFilter === 'all' ? 'tab-active' : ''
-              }`}
-              onClick={() => setStatusFilter('all')}
-            >
-              {t('filterAll')}
-            </a>
-            <a
-              role='tab'
-              className={`tab h-13 px-5 ${
-                statusFilter === 'online' ? 'tab-active' : ''
-              }`}
-              onClick={() => setStatusFilter('online')}
-            >
-              {t('online')}
-            </a>
-            <a
-              role='tab'
-              className={`tab h-13 px-5 ${
-                statusFilter === 'offline' ? 'tab-active' : ''
-              }`}
-              onClick={() => setStatusFilter('offline')}
-            >
-              {t('offline')}
-            </a>
+        {isLoading ? (
+          <div className='flex items-center justify-center h-screen'>
+            <span className='loading loading-spinner text-base-content loading-md'></span>
           </div>
-          <label className='input h-13 rounded-3xl'>
-            <BiSearch size={22} />
-            <input
-              type='text'
-              placeholder={t('search')}
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-            />
-            {search.length > 0 && (
-              <span
-                className='kbd kbd-md cursor-pointer'
-                onClick={() => setSearch('')}
-              >
-                <BiX size={24} />
-              </span>
-            )}
-          </label>
-        </div>
+        ) : (
+          <>
+            <div className='flex justify-between mb-6'>
+              <div role='tablist' className='tabs tabs-box bg-base-300'>
+                <a
+                  role='tab'
+                  className={`tab h-13 px-5 ${
+                    statusFilter === 'all' ? 'tab-active' : ''
+                  }`}
+                  onClick={() => setStatusFilter('all')}
+                >
+                  {t('filterAll')}
+                </a>
+                <a
+                  role='tab'
+                  className={`tab h-13 px-5 ${
+                    statusFilter === 'online' ? 'tab-active' : ''
+                  }`}
+                  onClick={() => setStatusFilter('online')}
+                >
+                  {t('online')}
+                </a>
+                <a
+                  role='tab'
+                  className={`tab h-13 px-5 ${
+                    statusFilter === 'offline' ? 'tab-active' : ''
+                  }`}
+                  onClick={() => setStatusFilter('offline')}
+                >
+                  {t('offline')}
+                </a>
+              </div>
+              <label className='input h-13 rounded-3xl'>
+                <BiSearch size={22} />
+                <input
+                  type='text'
+                  placeholder={t('search')}
+                  value={search}
+                  onChange={e => setSearch(e.target.value)}
+                />
+                {search.length > 0 && (
+                  <span
+                    className='kbd kbd-md cursor-pointer'
+                    onClick={() => setSearch('')}
+                  >
+                    <BiX size={24} />
+                  </span>
+                )}
+              </label>
+            </div>
 
-        <MachinePagination
-          data={sortedAndFilteredMachines}
-          initialPerPage={30}
-          itemPerPage={[10, 30, 50, 100]}
-          renderItem={renderMachineCard}
-        />
+            <MachinePagination
+              data={sortedAndFilteredMachines}
+              initialPerPage={30}
+              itemPerPage={[30, 50, 100]}
+              renderItem={renderMachineCard}
+            />
+          </>
+        )}
       </div>
     </div>
   )
