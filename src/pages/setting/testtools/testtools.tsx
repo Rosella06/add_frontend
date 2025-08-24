@@ -1018,21 +1018,31 @@ const Notification: FC<NotificationProps> = ({ message, type, onClose }) => {
     return () => clearTimeout(timer)
   }, [onClose])
 
-  const colorClasses: Record<NotificationType, string> = {
-    success: 'alert-success',
-    error: 'alert-error',
-    warning: 'alert-warning'
-  }
+  // const colorClasses: Record<NotificationType, string> = {
+  //   success: 'alert-success',
+  //   error: 'alert-error',
+  //   warning: 'alert-warning'
+  // }
 
-  return (
-    <div className='toast toast-top toast-end z-50 rounded-3xl'>
-      <div className={`alert ${colorClasses[type]}`}>
-        <div>
-          <span className='font-medium'>{message}</span>
-        </div>
-      </div>
-    </div>
-  )
+  showToast({
+    type: type,
+    icon: BiErrorCircle,
+    message: message,
+    duration: 1800,
+    showClose: false
+  })
+
+  return null
+
+  // return (
+  //   <div className='toast toast-top toast-end z-50 rounded-3xl'>
+  //     <div className={`alert ${colorClasses[type]}`}>
+  //       <div>
+  //         <span className='font-medium'>{message}</span>
+  //       </div>
+  //     </div>
+  //   </div>
+  // )
 }
 
 const QueuePanel: FC<{ queue: QueueItem[] }> = ({ queue }) => (
