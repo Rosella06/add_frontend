@@ -1065,7 +1065,7 @@ const User = () => {
                   setSecurityPage('pin')
                 }
               }}
-              disabled={isLoading}
+              disabled={pinIsLoading}
             >
               {securityPage === 'menu' ? t('closeButton') : t('back')}
             </button>
