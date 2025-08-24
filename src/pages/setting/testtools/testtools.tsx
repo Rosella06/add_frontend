@@ -1341,14 +1341,7 @@ const MedicineDispenser: FC<{
                           <p className='font-medium text-[14px]'>
                             ช่อง {position}
                           </p>
-                          <input
-                            type='number'
-                            value={qty}
-                            onChange={e =>
-                              handleQuantityChange(key, Number(e.target.value))
-                            }
-                            className='w-12 text-center text-lg font-bold bg-transparent focus:outline-none'
-                          />
+                          <span className='w-12 text-center text-xl text-neutral font-bold bg-transparent focus:outline-none'>{qty}</span>
                           <div className='join w-full gap-1'>
                             <button
                               onClick={() => handleQuantityChange(key, qty - 1)}
