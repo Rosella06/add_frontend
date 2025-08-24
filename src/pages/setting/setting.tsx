@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next'
+import { IoIosCog } from 'react-icons/io'
 import {
   IoLanguage,
   IoColorPalette,
@@ -74,6 +75,16 @@ const Settings = () => {
           >
             <IoHardwareChip size={32} />
             <span className='flex-grow'>{t('manageDevice')}</span>
+            <span className='text-base-content/50'>&rsaquo;</span>
+          </a>
+        </li>
+        <li>
+          <a
+            className='py-5 text-lg rounded-2xl'
+            onClick={() => handleMenuClick('testtool')}
+          >
+            <IoIosCog size={32} />
+            <span className='flex-grow'>{t('testTool')}</span>
             <span className='text-base-content/50'>&rsaquo;</span>
           </a>
         </li>

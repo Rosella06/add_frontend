@@ -113,6 +113,7 @@ export default {
     selectMachine: 'Select machine',
     selectMachineDescription: 'Select the machine you want to dispense',
     machineNotSelectToDispense: 'Machine not select to dispense.',
-    communicationNo: 'Communication Number'
+    communicationNo: 'Communication Number',
+    testTool: 'Test tools'
   }
 }

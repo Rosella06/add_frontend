@@ -111,6 +111,7 @@ export default {
     selectMachine: 'เลือกเครื่อง',
     selectMachineDescription: 'เลือกเครื่องที่ต้องการเพื่อจัดยา',
     machineNotSelectToDispense: 'ยังไม่ได้เลือกเครื่องเพื่อจัดยา',
-    communicationNo: 'หมายเลขการสื่อสาร'
+    communicationNo: 'หมายเลขการสื่อสาร',
+    testTool: 'เครื่องมือทดสอบ'
   }
 }

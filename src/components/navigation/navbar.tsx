@@ -1,4 +1,4 @@
-import { NavLink, Link } from 'react-router-dom'
+import { NavLink, Link, useLocation } from 'react-router-dom'
 import { BiArchive, BiInfoCircle } from 'react-icons/bi'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../redux/reducers/rootReducer'
@@ -16,6 +16,7 @@ import { Role } from '../../types/user.type'
 
 const Navbar = () => {
   const { t } = useTranslation()
+  const location = useLocation()
   const { cookieDecode, machine } = useSelector(
     (state: RootState) => state.utils
   )
@@ -50,7 +51,7 @@ const Navbar = () => {
   }
 
   return (
-    <nav className='bg-base-100/30 backdrop-blur-xl shadow-sm border-b border-base-200 sticky top-0 left-0 z-50'>
+    <nav className={`${location.pathname === '/settings/testtool' ? 'hidden' : ''} bg-base-100/30 backdrop-blur-xl shadow-sm border-b border-base-200 sticky top-0 left-0 z-50`}>
       <div className='flex flex-col gap-7 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
         <div className='flex h-32 items-center justify-between'>
           <div
