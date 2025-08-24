@@ -532,12 +532,12 @@ const Testtools = () => {
           id='m32_modal'
           className={`modal ${isM32ModalOpen ? 'modal-open' : ''}`}
         >
-          <div className='modal-box bg-base-100 text-gray-800 rounded-[40px]'>
+          <div className='modal-box bg-base-100 rounded-[40px]'>
             <h3 className='font-bold text-lg mb-4'>
               คำสั่ง M32: แสดงจำนวนหน้าโมดูล
             </h3>
             <div className='space-y-4'>
-              <label className='input input-bordered flex items-center gap-2 w-full h-15'>
+              <label className='input input-bordered flex items-center gap-2 w-full h-15 rounded-3xl'>
                 {' '}
                 ชั้นที่:{' '}
                 <input
@@ -548,7 +548,7 @@ const Testtools = () => {
                   onChange={e => setFloorOption(Number(e.target.value))}
                 />
               </label>
-              <label className='input input-bordered flex items-center gap-2 w-full h-15'>
+              <label className='input input-bordered flex items-center gap-2 w-full h-15 rounded-3xl'>
                 {' '}
                 ช่องที่:{' '}
                 <input
@@ -559,7 +559,7 @@ const Testtools = () => {
                   onChange={e => setPositionOption(Number(e.target.value))}
                 />
               </label>
-              <label className='input input-bordered flex items-center gap-2 w-full h-15'>
+              <label className='input input-bordered flex items-center gap-2 w-full h-15 rounded-3xl'>
                 {' '}
                 จำนวน:{' '}
                 <input
@@ -594,11 +594,11 @@ const Testtools = () => {
 
         <div className='card bg-base-100 shadow-lg rounded-[40px]'>
           <div
-            className={`card-body transition-all duration-300 rounded-xl ${
+            className={`card-body transition-all duration-300 rounded-[40px] ${
               selectedTray === 'L'
-                ? 'bg-blue-50'
+                ? 'bg-primary/10'
                 : selectedTray === 'R'
-                ? 'bg-green-50'
+                ? 'bg-accent/10'
                 : ''
             }`}
           >
@@ -606,7 +606,9 @@ const Testtools = () => {
               <h2 className='card-title text-lg font-bold'>
                 💊 จัดการยา (ทุกชั้น)
               </h2>
-              <div className='join border-2 border-primary rounded-3xl gap-2 p-2'>
+              <div className={`join border-2 ${
+                    selectedTray === 'R' ? 'border-accent' : 'border-primary'
+                  } rounded-3xl gap-2 p-2`}>
                 <button
                   onClick={() => setSelectedTray('L')}
                   className={`btn join-item w-28 h-15 rounded-2xl font-medium text-lg ${
@@ -651,7 +653,7 @@ const Testtools = () => {
                 return (
                   <div
                     key={floorIndex}
-                    className='p-4 bg-base-300 rounded-3xl'
+                    className='p-4 bg-base-200 rounded-3xl'
                   >
                     <h3 className='font-bold mb-3 text-center'>
                       ชั้นที่ {floorIndex}
