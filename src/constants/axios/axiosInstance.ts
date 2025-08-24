@@ -10,7 +10,8 @@ class AxiosService {
 
     this.axiosInstance = axios.create({
       baseURL: BASE_URL,
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json' },
+      withCredentials: true
     })
 
     this.initializeInterceptors()
