@@ -157,7 +157,7 @@ const MachinePage = () => {
         </p>
 
         {isLoading ? (
-          <div className='flex items-center justify-center h-screen'>
+          <div className='flex items-center justify-center'>
             <span className='loading loading-spinner text-base-content loading-md'></span>
           </div>
         ) : (
