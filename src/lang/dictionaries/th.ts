@@ -112,6 +112,12 @@ export default {
     selectMachineDescription: 'เลือกเครื่องที่ต้องการเพื่อจัดยา',
     machineNotSelectToDispense: 'ยังไม่ได้เลือกเครื่องเพื่อจัดยา',
     communicationNo: 'หมายเลขการสื่อสาร',
-    testTool: 'เครื่องมือทดสอบ'
+    testTool: 'เครื่องมือทดสอบ',
+    security: 'ความปลอดภัย',
+    detail: 'รายละเอียด',
+    genQrCode: 'สร้าง Qr Code',
+    genPin: 'สร้าง Pin',
+    changPin: 'เปลี่ยน Pin',
+    pinShouldBeSixDigit: 'Pin ต้องมีความยาวอย่างต่ำ 6 ตัวเลข'
   }
 }

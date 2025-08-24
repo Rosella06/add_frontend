@@ -3,6 +3,7 @@ import DataTable, { TableColumn } from 'react-data-table-component'
 import { useTranslation } from 'react-i18next'
 import {
   BiCheck,
+  BiDownload,
   BiEdit,
   BiError,
   BiErrorCircle,
@@ -27,6 +28,8 @@ import { resizeImage } from '../../constants/utils/image'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../redux/reducers/rootReducer'
 import Empty from '../../components/empty/empty'
+import QRCode from 'react-qr-code'
+import Numpad from '../../components/pages/user/numpad'
 
 interface RoleSelect {
   key: string
@@ -44,17 +47,23 @@ const User = () => {
   const { id } = cookieDecode ?? {}
   const [search, setSearch] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [pinIsLoading, setPinIsLoading] = useState(false)
   const addModal = useRef<HTMLDialogElement>(null)
   const editModal = useRef<HTMLDialogElement>(null)
+  const securityModal = useRef<HTMLDialogElement>(null)
   const confirmModalRef = useRef<ConfirmModalRef>(null)
+  const qrCode = useRef<any | null>(null)
+  const [securityModalData, setSecurityModalData] = useState<Users | null>(null)
   const [userData, setUserData] = useState<Users[]>([])
   const [userFilterData, setUserFilterData] = useState<Users[]>([])
+  const [securityPage, setSecurityPage] = useState('menu')
   const [userForm, setUserForm] = useState({
     id: '',
     userName: '',
     userPassword: '',
     userStatus: true,
     displayName: '',
+    pinCode: '' as string | null,
     userRole: '',
     imageFile: null as File | null,
     imagePreview: null as string | null
@@ -244,6 +253,44 @@ const User = () => {
     }
   }
 
+  const handleSavePin = async () => {
+    setPinIsLoading(true)
+    try {
+      const result = await axiosInstance.post<ApiResponse<Users>>(
+        `/auth/pincode`,
+        {
+          id: securityModalData?.id,
+          pinCode: userForm.pinCode
+        }
+      )
+      securityModal.current?.close()
+      showToast({
+        type: 'success',
+        icon: BiCheck,
+        message: result.data.message,
+        duration: 3000,
+        showClose: false
+      })
+      resetFormPin()
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        securityModal.current?.close()
+        await showToast({
+          type: 'error',
+          icon: BiError,
+          message: error.response?.data.message ?? t('somethingWentWrong'),
+          duration: 3000,
+          showClose: false
+        }).finally(() => securityModal.current?.showModal())
+      } else {
+        console.error(error)
+      }
+    } finally {
+      await fetchUser()
+      setPinIsLoading(false)
+    }
+  }
+
   const deleteUser = async (userId: string) => {
     setIsLoading(true)
     try {
@@ -281,6 +328,7 @@ const User = () => {
       userName: user.userName,
       userPassword: '',
       displayName: user.displayName,
+      pinCode: user.pinCode,
       userStatus: user.userStatus,
       userRole: user.userRole,
       imageFile: null,
@@ -295,11 +343,19 @@ const User = () => {
       userName: '',
       userPassword: '',
       displayName: '',
+      pinCode: '',
       userStatus: true,
       userRole: '',
       imageFile: null,
       imagePreview: null
     })
+  }
+
+  const resetFormPin = () => {
+    qrCode.current = null
+    setSecurityModalData(null)
+    setUserForm({ ...userForm, pinCode: '' })
+    setSecurityPage('menu')
   }
 
   const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -332,6 +388,57 @@ const User = () => {
         imagePreview: URL.createObjectURL(file)
       }))
     }
+  }
+
+  const handleDownload = () => {
+    const svg = qrCode.current as SVGElement | null
+
+    if (svg) {
+      const bbox = svg.getBoundingClientRect()
+
+      const canvas = document.createElement('canvas')
+      const ctx = canvas.getContext('2d')
+      if (!ctx) return
+
+      canvas.width = bbox.width
+      canvas.height = bbox.height
+
+      const serializer = new XMLSerializer()
+      const svgString = serializer.serializeToString(svg)
+      const img = new Image()
+      const svgBlob = new Blob([svgString], {
+        type: 'image/svg+xml;charset=utf-8'
+      })
+      const url = URL.createObjectURL(svgBlob)
+
+      img.onload = () => {
+        ctx.drawImage(img, 0, 0, bbox.width, bbox.height)
+
+        const pngUrl = canvas
+          .toDataURL('image/png')
+          .replace('image/png', 'image/octet-stream')
+
+        const downloadLink = document.createElement('a')
+        downloadLink.href = pngUrl
+        downloadLink.download = 'qrcode.png'
+        document.body.appendChild(downloadLink)
+        downloadLink.click()
+        document.body.removeChild(downloadLink)
+
+        URL.revokeObjectURL(url)
+      }
+
+      img.src = url
+    } else {
+      console.error('Could not find the QR code SVG element.')
+    }
+  }
+
+  const handlePinChange = (newPin: string) => {
+    setUserForm({
+      ...userForm,
+      pinCode: newPin
+    })
   }
 
   const columns: TableColumn<Users>[] = useMemo(
@@ -400,6 +507,22 @@ const User = () => {
         center: true
       },
       {
+        name: t('security'),
+        cell: item => (
+          <span
+            className='btn btn-link'
+            onClick={() => {
+              setSecurityModalData(item)
+              securityModal.current?.showModal()
+            }}
+          >
+            {t('detail')}
+          </span>
+        ),
+        sortable: false,
+        center: true
+      },
+      {
         name: t('action'),
         cell: item => (
           <div className='flex items-center gap-3'>
@@ -452,7 +575,9 @@ const User = () => {
   return (
     <div className='p-4 sm:p-6 lg:p-8'>
       <div className='flex items-center justify-between'>
-        <h1 className='text-4xl font-bold text-base-content mb-8'>{t('itemUser')}</h1>
+        <h1 className='text-4xl font-bold text-base-content mb-8'>
+          {t('itemUser')}
+        </h1>
         <div className='flex items-center gap-3'>
           <label className='input h-15 rounded-3xl'>
             <BiSearch size={22} />
@@ -822,6 +947,128 @@ const User = () => {
                 )}
               </button>
             </form>
+          </div>
+        </div>
+      </dialog>
+
+      <dialog ref={securityModal} className='modal'>
+        <div className='modal-box p-[24px] rounded-[48px]'>
+          <h3 className='font-bold text-lg mb-5'>{t('security')}</h3>
+          {securityPage === 'menu' ? (
+            <div className='flex flex-col gap-3'>
+              <button
+                className='btn btn-primary text-base font-bold h-15 rounded-3xl'
+                onClick={() => setSecurityPage('pin')}
+              >
+                PIN
+              </button>
+              <button
+                className='btn btn-primary text-base font-bold h-15 rounded-3xl'
+                onClick={() => setSecurityPage('genQr')}
+                disabled={securityModalData?.pinCode === null}
+              >
+                {t('genQrCode')}
+              </button>
+            </div>
+          ) : securityPage === 'genQr' ? (
+            <div className='flex flex-col items-center gap-5'>
+              <div className='h-auto my-0 mx-auto max-w-64 w-full'>
+                <QRCode
+                  ref={qrCode}
+                  size={256}
+                  viewBox={`0 0 256 256`}
+                  value={String(securityModalData?.pinCode)}
+                  className='h-auto max-w-full w-full'
+                />
+              </div>
+              <button
+                onClick={handleDownload}
+                className='btn btn-primary text-base font-bold h-15 w-full rounded-3xl'
+              >
+                <BiDownload size={24} /> {t('saveButton')}
+              </button>
+            </div>
+          ) : securityPage === 'pin' ? (
+            <div className='flex flex-col gap-3'>
+              <button
+                disabled={securityModalData?.pinCode !== null}
+                onClick={() => setSecurityPage('newPin')}
+                className='btn btn-primary text-base font-bold h-15 w-full rounded-3xl'
+              >
+                {t('genPin')}
+              </button>
+              <button
+                disabled={securityModalData?.pinCode === null}
+                onClick={() => setSecurityPage('updatePin')}
+                className='btn btn-primary text-base font-bold h-15 w-full rounded-3xl'
+              >
+                {t('changPin')}
+              </button>
+            </div>
+          ) : securityPage === 'newPin' ? (
+            <div className='flex flex-col gap-3'>
+              <span className='badge badge-info px-3 py-3.5'>
+                {t('pinShouldBeSixDigit')}
+              </span>
+              <Numpad
+                value={String(userForm.pinCode)}
+                onChange={handlePinChange}
+                maxLength={64}
+              />
+              <button
+                disabled={Number(userForm.pinCode?.length) < 6 || pinIsLoading}
+                onClick={handleSavePin}
+                className='btn btn-primary text-base font-bold h-15 w-full rounded-3xl'
+              >
+                {pinIsLoading ? (
+                  <span className='loading loading-spinner text-base-content loading-md'></span>
+                ) : (
+                  t('saveButton')
+                )}
+              </button>
+            </div>
+          ) : (
+            <div className='flex flex-col gap-3'>
+              <span className='badge badge-info px-3 py-3.5'>
+                {t('pinShouldBeSixDigit')}
+              </span>
+              <Numpad
+                value={String(userForm.pinCode)}
+                onChange={handlePinChange}
+                maxLength={64}
+              />
+              <button
+                disabled={Number(userForm.pinCode?.length) < 6 || pinIsLoading}
+                onClick={handleSavePin}
+                className='btn btn-primary text-base font-bold h-15 w-full rounded-3xl'
+              >
+                {pinIsLoading ? (
+                  <span className='loading loading-spinner text-base-content loading-md'></span>
+                ) : (
+                  t('editButton')
+                )}
+              </button>
+            </div>
+          )}
+          <div className='modal-action'>
+            <button
+              className='btn text-base font-bold h-15 flex-1 rounded-3xl'
+              onClick={() => {
+                if (securityPage === 'menu') {
+                  securityModal.current?.close()
+                } else if (securityPage === 'genQr' || securityPage === 'pin') {
+                  setSecurityPage('menu')
+                } else if (
+                  securityPage === 'newPin' ||
+                  securityPage === 'updatePin'
+                ) {
+                  setSecurityPage('pin')
+                }
+              }}
+              disabled={isLoading}
+            >
+              {securityPage === 'menu' ? t('closeButton') : t('back')}
+            </button>
           </div>
         </div>
       </dialog>

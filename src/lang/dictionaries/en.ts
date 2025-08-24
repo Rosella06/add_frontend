@@ -114,6 +114,12 @@ export default {
     selectMachineDescription: 'Select the machine you want to dispense',
     machineNotSelectToDispense: 'Machine not select to dispense.',
     communicationNo: 'Communication Number',
-    testTool: 'Test tools'
+    testTool: 'Test tools',
+    security: 'Security',
+    detail: 'Details',
+    genQrCode: 'Generate Qr Code',
+    genPin: 'Generate Pin',
+    changPin: 'Change Pin',
+    pinShouldBeSixDigit: 'Pin must be at least 6 digits long.'
   }
 }

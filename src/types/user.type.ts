@@ -11,6 +11,7 @@ type Users = {
   id: string
   userName: string
   displayName: string
+  pinCode: string | null
   userImage: string
   userRole: Role
   userStatus: boolean
