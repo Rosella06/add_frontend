@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback } from 'react'
-import { io } from 'socket.io-client'
 import axiosInstance from '../../../constants/axios/axiosInstance'
 import { BiArrowBack } from 'react-icons/bi'
 import { useTranslation } from 'react-i18next'
+import { socket } from '../../../services/webSocket'
 
 const Notification: React.FC<{
   message: string
@@ -43,7 +43,6 @@ const Testtools = () => {
   const [queue, setQueue] = useState<
     { floor: number; position: number; qty: number }[]
   >([])
-  // const { cookieDecode } = useSelector((state: RootState) => state.utils)
   const [deviceLog, setDeviceLog] = useState<string[]>([])
   const [isM32ModalOpen, setIsM32ModalOpen] = useState(false)
   const [floorOption, setFloorOption] = useState<number | null>(null)
@@ -60,8 +59,6 @@ const Testtools = () => {
   const machineId = 'MID-9b687fb9-64b6-461f-9708-70ac8ac48814'
 
   useEffect(() => {
-    const socket = io('http://localhost:3000')
-
     socket.on('device', (message: DeviceLogType) => {
       setDeviceLog(prev =>
         [
@@ -72,7 +69,7 @@ const Testtools = () => {
     })
 
     return () => {
-      socket.disconnect() // ใช้ disconnect แทน close() จะปลอดภัยกว่า
+      socket.disconnect()
     }
   }, [])
 
@@ -606,9 +603,11 @@ const Testtools = () => {
               <h2 className='card-title text-lg font-bold'>
                 💊 จัดการยา (ทุกชั้น)
               </h2>
-              <div className={`join border-2 ${
-                    selectedTray === 'R' ? 'border-accent' : 'border-primary'
-                  } rounded-3xl gap-2 p-2`}>
+              <div
+                className={`join border-2 ${
+                  selectedTray === 'R' ? 'border-accent' : 'border-primary'
+                } rounded-3xl gap-2 p-2`}
+              >
                 <button
                   onClick={() => setSelectedTray('L')}
                   className={`btn join-item w-28 h-15 rounded-2xl font-medium text-lg ${
@@ -629,7 +628,10 @@ const Testtools = () => {
             </div>
 
             {!selectedTray && (
-              <div role='alert' className='alert alert-warning my-4 rounded-3xl'>
+              <div
+                role='alert'
+                className='alert alert-warning my-4 rounded-3xl'
+              >
                 <svg
                   xmlns='http://www.w3.org/2000/svg'
                   className='stroke-current shrink-0 h-6 w-6'
@@ -643,7 +645,9 @@ const Testtools = () => {
                     d='M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z'
                   />
                 </svg>
-                <span className='font-medium text-base'>กรุณาเลือก Tray L หรือ R เพื่อเริ่มทำการจัดยา</span>
+                <span className='font-medium text-base'>
+                  กรุณาเลือก Tray L หรือ R เพื่อเริ่มทำการจัดยา
+                </span>
               </div>
             )}
 
@@ -651,10 +655,7 @@ const Testtools = () => {
               {[...Array(7)].map((_, i) => {
                 const floorIndex = 7 - i
                 return (
-                  <div
-                    key={floorIndex}
-                    className='p-4 bg-base-200 rounded-3xl'
-                  >
+                  <div key={floorIndex} className='p-4 bg-base-200 rounded-3xl'>
                     <h3 className='font-bold mb-3 text-center'>
                       ชั้นที่ {floorIndex}
                     </h3>
