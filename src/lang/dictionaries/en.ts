@@ -17,6 +17,8 @@ export default {
     saveButton: 'Save',
     editButton: 'Edit',
     confirmButton: 'Confirm',
+    selected: 'Selected',
+    select: 'Select',
 
     itemDispense: 'Dispense',
     itemRefill: 'Refill',
@@ -103,6 +105,12 @@ export default {
     personalInformation: 'Personal Information',
     editProfile: 'Edit Profile',
     theme: 'Theme',
-    systemMode: 'System mode'
+    systemMode: 'System mode',
+    langguage: 'Language',
+    languageDescription:
+      'Select the language you want for the application display',
+    selectPerPage: 'Select items per page',
+    selectMachine: 'Select machine',
+    selectMachineDescription: 'Select the machine you want to dispense'
   }
 }

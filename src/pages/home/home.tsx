@@ -9,18 +9,14 @@ import {
   OrderStatus
 } from '../../types/dispense.order.type'
 import OrderItem from '../../components/pages/home/orderItem'
-import {
-  BiError,
-  BiErrorCircle,
-  BiReset,
-} from 'react-icons/bi'
+import { BiError, BiErrorCircle, BiReset } from 'react-icons/bi'
 import { useTranslation } from 'react-i18next'
 import { showToast } from '../../constants/utils/toast'
 import Scanner from '../../assets/images/barcode_banner.png'
 
 const Home = () => {
   const { t } = useTranslation()
-  const { socketId, machineId, socketData } = useSelector(
+  const { socketId, machine, socketData } = useSelector(
     (state: RootState) => state.utils
   )
   const [dispenseOrder, setDispenseOrder] =
@@ -80,7 +76,7 @@ const Home = () => {
   }
 
   const dispense = async (qrCodeText: string) => {
-    if (machineId === undefined) {
+    if (machine === undefined) {
       await showToast({
         type: 'warning',
         icon: BiErrorCircle,
@@ -98,7 +94,7 @@ const Home = () => {
       const result = await axiosInstance.post<
         ApiResponse<DispensePrescription>
       >(`/orders/dispense/${qrCodeText}`, {
-        machineId,
+        machineId: machine.id,
         socketId
       })
       const prescriptionData = result.data.data
@@ -169,7 +165,7 @@ const Home = () => {
   }
 
   const resetPrescription = async () => {
-    if (machineId === undefined) {
+    if (machine === undefined) {
       await showToast({
         type: 'warning',
         icon: BiErrorCircle,
@@ -185,7 +181,7 @@ const Home = () => {
       await axiosInstance.post<ApiResponse<DispensePrescription>>(
         `/orders/order`,
         {
-          machineId,
+          machineId: machine.id,
           socketId
         }
       )

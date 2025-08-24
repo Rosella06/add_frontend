@@ -1,4 +1,5 @@
 import { CookieDecode } from '../../types/cookie.type'
+import { Machines } from '../../types/machine.type'
 import { SocketResponse } from '../../types/socket.type'
 import { TokenDecode } from '../../types/token.type'
 
@@ -9,7 +10,7 @@ const RESET_UTILS = 'RESET_UTILS'
 const SOCKET_ID = 'SOCKET_ID'
 const SOCKET_DATA = 'SOCKET_DATA'
 const CURRENT_LANG = 'CURRENT_LANG'
-const MACHINE_ID = 'MACHINE_ID'
+const MACHINE_DATA = 'MACHINE_DATA'
 const THEME_MODE = 'THEME_MODE'
 
 interface UtilsState {
@@ -19,7 +20,7 @@ interface UtilsState {
   socketId: string | undefined
   socketData: SocketResponse | undefined
   currentLang: string
-  machineId: string | undefined
+  machine: Machines | undefined
   themeMode: string
 }
 
@@ -31,7 +32,7 @@ type UtilsAction =
   | { type: typeof SOCKET_ID; payload: string | undefined }
   | { type: typeof SOCKET_DATA; payload: SocketResponse | undefined }
   | { type: typeof CURRENT_LANG; payload: string }
-  | { type: typeof MACHINE_ID; payload: string }
+  | { type: typeof MACHINE_DATA; payload: Machines | undefined }
   | { type: typeof THEME_MODE; payload: string }
 
 export {
@@ -42,7 +43,7 @@ export {
   SOCKET_ID,
   SOCKET_DATA,
   CURRENT_LANG,
-  MACHINE_ID,
+  MACHINE_DATA,
   THEME_MODE
 }
 export type { UtilsState, UtilsAction }

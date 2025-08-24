@@ -9,7 +9,7 @@ import {
   SOCKET_ID,
   SOCKET_DATA,
   CURRENT_LANG,
-  MACHINE_ID,
+  MACHINE_DATA,
   THEME_MODE
 } from '../types/utilsTypes'
 
@@ -20,7 +20,7 @@ const initialState: UtilsState = {
   socketId: undefined,
   socketData: undefined,
   currentLang: cookies.get('lang') ?? 'th',
-  machineId: cookies.get('machineId') ?? undefined,
+  machine: cookies.get('machine') ?? undefined,
   themeMode: cookies.get('theme') ?? 'sunset'
 }
 
@@ -43,8 +43,8 @@ const utilsReducer = (
       return { ...state, socketData: action.payload }
     case CURRENT_LANG:
       return { ...state, currentLang: action.payload }
-    case MACHINE_ID:
-      return { ...state, machineId: action.payload }
+    case MACHINE_DATA:
+      return { ...state, machine: action.payload }
     case THEME_MODE:
       return { ...state, themeMode: action.payload }
     default:

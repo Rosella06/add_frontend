@@ -14,6 +14,7 @@ import Settings from '../pages/setting/setting'
 import Profile from '../pages/setting/profile'
 import Theme from '../pages/setting/theme'
 import Language from '../pages/setting/language'
+import MachinePage from '../pages/setting/machine'
 
 const router = () =>
   createBrowserRouter([
@@ -86,7 +87,7 @@ const router = () =>
                 },
                 {
                   path: '/settings/machine',
-                  element: <div>Machine</div>,
+                  element: <MachinePage />,
                   errorElement: <ErrorPage />
                 }
               ]

@@ -24,7 +24,7 @@ import Empty from '../../components/empty/empty'
 
 const Stock = () => {
   const { t } = useTranslation()
-  const { machineId } = useSelector((state: RootState) => state.utils)
+  const { machine } = useSelector((state: RootState) => state.utils)
   const [inventoriesData, setInventoriesData] = useState<Inventories[]>([])
   const [inventoriesFilterData, setInventoriesFilterData] = useState<
     Inventories[]
@@ -105,7 +105,7 @@ const Stock = () => {
         floor: selectedItem?.floor,
         position: selectedItem?.position,
         qty: Number(refill.quantity),
-        machineId: machineId,
+        machineId: machine?.id,
         command: 'M32'
       })
       setButtonStatus(false)

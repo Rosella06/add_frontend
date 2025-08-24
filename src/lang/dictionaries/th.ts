@@ -16,6 +16,8 @@ export default {
     saveButton: 'บันทึก',
     editButton: 'แก้ไข',
     confirmButton: 'ยืนยัน',
+    selected: 'เลือกแล้ว',
+    select: 'เลือก',
 
     itemDispense: 'จัดยา',
     itemRefill: 'เติมยา',
@@ -102,6 +104,11 @@ export default {
     personalInformation: 'ข้อมูลส่วนตัว',
     editProfile: 'แก้ไขโปรไฟล์',
     theme: 'ธีม',
-    systemMode: 'โหมดระบบ'
+    systemMode: 'โหมดระบบ',
+    langguage: 'ภาษา',
+    languageDescription: 'เลือกภาษาที่ต้องการสำหรับแสดงผลในแอปพลิเคชัน',
+    selectPerPage: 'เลือกจำนวนรายการต่อหน้า',
+    selectMachine: 'เลือกเครื่อง',
+    selectMachineDescription: 'เลือกเครื่องที่ต้องการเพื่อจัดยา'
   }
 }

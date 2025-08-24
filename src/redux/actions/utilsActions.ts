@@ -1,5 +1,6 @@
 import { cookieOptions, cookies } from '../../constants/utils/utilsConstants'
 import { CookieDecode } from '../../types/cookie.type'
+import { Machines } from '../../types/machine.type'
 import { SocketResponse } from '../../types/socket.type'
 import { TokenDecode } from '../../types/token.type'
 import {
@@ -10,7 +11,7 @@ import {
   SOCKET_ID,
   SOCKET_DATA,
   CURRENT_LANG,
-  MACHINE_ID,
+  MACHINE_DATA,
   THEME_MODE
 } from '../types/utilsTypes'
 
@@ -48,12 +49,12 @@ const setLanguage = (lang: string) => {
   }
 }
 
-const setMachineId = (machineId: string) => {
-  cookies.set('machineId', machineId, cookieOptions)
+const setMachine = (machineData: Machines | undefined) => {
+  cookies.set('machine', machineData, cookieOptions)
 
   return {
-    type: MACHINE_ID,
-    payload: machineId
+    type: MACHINE_DATA,
+    payload: machineData
   }
 }
 
@@ -78,6 +79,6 @@ export {
   resetUtils,
   setSocketData,
   setLanguage,
-  setMachineId,
+  setMachine,
   setTheme
 }
