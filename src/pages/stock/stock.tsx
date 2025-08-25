@@ -100,13 +100,14 @@ const Stock = () => {
   }
 
   const handleConfirm = async () => {
+    setIsLoading(true)
     try {
       const result = await axiosInstance.post<ApiResponse<any>>(`/plc/sendM`, {
         floor: selectedItem?.floor,
         position: selectedItem?.position,
         qty: Number(refill.quantity),
         machineId: machine?.id,
-        command: 'M32'
+        command: 'M33'
       })
       setButtonStatus(false)
       refillModal.current?.close()
@@ -127,7 +128,10 @@ const Stock = () => {
           message: error.response?.data.message ?? t('somethingWentWrong'),
           duration: 3000,
           showClose: false
-        }).finally(() => refillModal.current?.showModal())
+        }).finally(() => {
+          refillModal.current?.showModal()
+          setIsLoading(false)
+        })
       } else {
         console.error(error)
       }
