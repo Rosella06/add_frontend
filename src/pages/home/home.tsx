@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux'
 import { RootState } from '../../redux/reducers/rootReducer'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { AxiosError } from 'axios'
 import axiosInstance from '../../constants/axios/axiosInstance'
 import { ApiResponse } from '../../types/api.response.type'
@@ -253,6 +253,14 @@ const Home = () => {
     }
   }, [dispenseOrder])
 
+  const OrderItemAnimate = useMemo(
+    () =>
+      function WrappedOrderItem () {
+        return <OrderItem prescriptionData={dispenseOrder} />
+      },
+    [dispenseOrder]
+  )
+
   return (
     <div className='flex flex-col gap-3 flex-1 p-4 sm:p-6 lg:p-8'>
       {isLoading ? (
@@ -272,7 +280,7 @@ const Home = () => {
           </div>
         </div>
       ) : (
-        <OrderItem prescriptionData={dispenseOrder} />
+        <OrderItemAnimate />
       )}
 
       <div className='flex flex-col gap-3 items-center fixed bottom-5 right-5 z-20'>

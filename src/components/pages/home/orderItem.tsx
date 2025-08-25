@@ -11,6 +11,7 @@ import {
 import MarqueeText from '../../textAnimation/MarqueeText'
 import { BiTimeFive } from 'react-icons/bi'
 import { useTranslation } from 'react-i18next'
+import { useEffect, useRef } from 'react'
 
 interface OrderItem {
   prescriptionData: DispensePrescription | null
@@ -19,11 +20,18 @@ interface OrderItem {
 const OrderItem = (props: OrderItem) => {
   const { prescriptionData } = props
   const { t } = useTranslation()
+  const didAnimate = useRef(false)
+
+  useEffect(() => {
+    didAnimate.current = true
+  }, [])
 
   return (
     <div className='flex flex-col gap-3 flex-1'>
       <div className='flex flex-col gap-1.5'>
-        <span className='text-base'>PrescriptionNo: {prescriptionData?.prescriptionNo}</span>
+        <span className='text-base'>
+          PrescriptionNo: {prescriptionData?.prescriptionNo}
+        </span>
         <span className='text-base'>Name: {prescriptionData?.patientName}</span>
         <span className='text-base'>an: {prescriptionData?.an}</span>
       </div>
@@ -32,7 +40,9 @@ const OrderItem = (props: OrderItem) => {
         {prescriptionData?.orders.map((item, index) => (
           <div
             key={item.id}
-            className={`card rounded-t-3xl rounded-b-none min-h-36 border-b-[6px] bg-base-100 shadow-md animate-bounce-in-two ${
+            className={`card rounded-t-3xl rounded-b-none min-h-36 border-b-[6px] bg-base-100 shadow-md ${
+              !didAnimate.current ? 'animate-bounce-in-two' : ''
+            } ${
               item.status === OrderStatus.READY
                 ? 'border-[#D4D4D4]'
                 : item.status === OrderStatus.PENDING
@@ -93,7 +103,7 @@ const OrderItem = (props: OrderItem) => {
                     </div>
                   ) : item.status === OrderStatus.PENDING ? (
                     <div className='flex flex-col items-center justify-center gap-2'>
-                      <span className='loading loading-spinner text-base-content text-[#FFC736] loading-lg'></span>
+                      <span className='loading loading-spinner text-[#FFC736] loading-lg'></span>
                       <span className='font-medium text-[#FFC736]'>
                         {t('pendingStatus')}
                       </span>
