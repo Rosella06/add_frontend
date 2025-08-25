@@ -26,8 +26,10 @@ const Navbar = () => {
   )
   const confirmModalRef = useRef<ConfirmModalRef>(null)
   const [machineData, setMachineData] = useState<Machines>()
+  const [isLaoding, setIsLoading] = useState(false)
 
   const fetctMachine = async () => {
+    setIsLoading(true)
     try {
       const result = await axiosInstance.get<ApiResponse<Machines>>(
         `/machines/${machine?.id}`
@@ -39,6 +41,8 @@ const Navbar = () => {
       } else {
         console.error(error)
       }
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -104,7 +108,9 @@ const Navbar = () => {
               </Link>
             </div>
             <div>
-              {machine === undefined ? (
+              {isLaoding ? (
+                <span className='loading loading-spinner loading-md'></span>
+              ) : machine === undefined ? (
                 <span className='badge badge-warning text-lg rounded-3xl py-4 px-3 font-medium mt-3'>
                   <BiInfoCircle size={24} />
                   {t('machineNotSelectToDispense')}
