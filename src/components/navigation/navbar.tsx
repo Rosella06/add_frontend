@@ -5,14 +5,18 @@ import { RootState } from '../../redux/reducers/rootReducer'
 import { cookieOptions, cookies } from '../../constants/utils/utilsConstants'
 import { useTranslation } from 'react-i18next'
 import ConfirmModal, { ConfirmModalRef } from '../modal/ConfirmModal'
-import { useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Logo from '../../assets/images/add-512.png'
 import { FaFileContract, FaPrescriptionBottleAlt } from 'react-icons/fa'
 import { GiMedicinePills, GiVendingMachine } from 'react-icons/gi'
 import { IoIosPersonAdd, IoMdLogOut } from 'react-icons/io'
-import { HiOutlineClipboardList } from 'react-icons/hi'
+// import { HiOutlineClipboardList } from 'react-icons/hi'
 import { IoCheckmarkOutline, IoSettingsOutline } from 'react-icons/io5'
 import { Role } from '../../types/user.type'
+import { Machines } from '../../types/machine.type'
+import { AxiosError } from 'axios'
+import axiosInstance from '../../constants/axios/axiosInstance'
+import { ApiResponse } from '../../types/api.response.type'
 
 const Navbar = () => {
   const { t } = useTranslation()
@@ -21,6 +25,33 @@ const Navbar = () => {
     (state: RootState) => state.utils
   )
   const confirmModalRef = useRef<ConfirmModalRef>(null)
+  const [machineData, setMachineData] = useState<Machines>()
+
+  const fetctMachine = async () => {
+    try {
+      const result = await axiosInstance.get<ApiResponse<Machines>>(
+        `/machines/${machine?.id}`
+      )
+      setMachineData(result.data.data)
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        console.error(error.response?.data.message)
+      } else {
+        console.error(error)
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (machine === undefined) return
+    fetctMachine()
+
+    const interval = setInterval(() => {
+      fetctMachine()
+    }, 5 * 60 * 1000)
+
+    return () => clearInterval(interval)
+  }, [machine?.id])
 
   const menuItems = [
     { name: t('itemDispense'), path: '/', icon: FaFileContract },
@@ -29,7 +60,7 @@ const Navbar = () => {
     { name: t('itemInventory'), path: '/inventory', icon: BiArchive },
     { name: t('itemMachine'), path: '/machine', icon: GiVendingMachine },
     { name: t('itemUser'), path: '/user', icon: IoIosPersonAdd },
-    { name: t('itemReport'), path: '/report', icon: HiOutlineClipboardList },
+    // { name: t('itemReport'), path: '/report', icon: HiOutlineClipboardList },
     { name: t('itemSettings'), path: '/settings', icon: IoSettingsOutline }
   ]
 
@@ -51,7 +82,11 @@ const Navbar = () => {
   }
 
   return (
-    <nav className={`${location.pathname === '/settings/testtool' ? 'hidden' : ''} bg-base-100/30 backdrop-blur-xl shadow-sm border-b border-base-200 sticky top-0 left-0 z-50`}>
+    <nav
+      className={`${
+        location.pathname === '/settings/testtool' ? 'hidden' : ''
+      } bg-base-100/30 backdrop-blur-xl shadow-sm border-b border-base-200 sticky top-0 left-0 z-50`}
+    >
       <div className='flex flex-col gap-7 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
         <div className='flex h-32 items-center justify-between'>
           <div
@@ -78,7 +113,8 @@ const Navbar = () => {
                 <div className='flex flex-col gap-3'>
                   <span className='badge badge-info px-3 py-4 rounded-3xl text-lg font-medium'>
                     <IoCheckmarkOutline size={24} />
-                    {machine.machineName} | {machine.ipAddress.split('f:')[1]}
+                    {machineData?.machineName} |{' '}
+                    {machineData?.ipAddress.split('f:')[1]}
                   </span>
                   <span
                     className={`badge p-3 rounded-3xl font-medium text-base ${
@@ -87,7 +123,9 @@ const Navbar = () => {
                         : 'badge-error'
                     }`}
                   >
-                    {machine.status === 'online' ? t('online') : t('offline')}
+                    {machineData?.status === 'online'
+                      ? t('online')
+                      : t('offline')}
                   </span>
                 </div>
               )}
