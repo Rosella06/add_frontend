@@ -118,7 +118,7 @@ const Navbar = () => {
                   </span>
                   <span
                     className={`badge p-3 rounded-3xl font-medium text-base ${
-                      machine.status === 'online'
+                      machineData?.status === 'online'
                         ? 'badge-success'
                         : 'badge-error'
                     }`}
