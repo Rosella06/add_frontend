@@ -63,9 +63,11 @@ const Stock = () => {
       setIsLoading(true)
       try {
         await axiosInstance.patch<ApiResponse<Inventories>>(
-          `/inventories/${refill.id}`,
+          `/inventories/stock/${refill.id}`,
           {
-            quantity: Number(refill.quantity)
+            quantity: Number(refill.quantity),
+            machineId: machine?.id,
+            command: 'M32'
           }
         )
       } catch (error) {
