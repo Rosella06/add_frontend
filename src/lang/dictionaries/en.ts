@@ -112,7 +112,7 @@ export default {
     selectPerPage: 'Select items per page',
     selectMachine: 'Select machine',
     selectMachineDescription: 'Select the machine you want to dispense',
-    machineNotSelectToDispense: 'Machine not select to dispense.',
+    machineNotSelectToDispense: 'Machine not select.',
     communicationNo: 'Communication Number',
     testTool: 'Test tools',
     security: 'Security',

@@ -110,7 +110,7 @@ export default {
     selectPerPage: 'เลือกจำนวนรายการต่อหน้า',
     selectMachine: 'เลือกเครื่อง',
     selectMachineDescription: 'เลือกเครื่องที่ต้องการเพื่อจัดยา',
-    machineNotSelectToDispense: 'ยังไม่ได้เลือกเครื่องเพื่อจัดยา',
+    machineNotSelectToDispense: 'ยังไม่ได้เลือกเครื่อง',
     communicationNo: 'หมายเลขการสื่อสาร',
     testTool: 'เครื่องมือทดสอบ',
     security: 'ความปลอดภัย',
