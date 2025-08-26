@@ -9,6 +9,7 @@ import store from './redux/store'
 import i18n from './lang/i18n'
 import Routes from './routes/routes'
 import './index.css'
+import { registerSW } from 'virtual:pwa-register'
 
 class AppRenderer {
   private static instance: AppRenderer
@@ -17,6 +18,7 @@ class AppRenderer {
     this.disableConsoleInProduction()
     this.renderApp()
     this.fullScreen()
+    this.registerSW()
   }
 
   public static getInstance (): AppRenderer {
@@ -24,6 +26,17 @@ class AppRenderer {
       AppRenderer.instance = new AppRenderer()
     }
     return AppRenderer.instance
+  }
+
+  private registerSW (): void {
+    registerSW({
+      onNeedRefresh () {
+        console.log('[PWA] new version available')
+      },
+      onOfflineReady () {
+        console.log('[PWA] app ready for offline')
+      }
+    })
   }
 
   private fullScreen (): void {

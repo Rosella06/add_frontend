@@ -47,6 +47,25 @@ const Routes = () => {
     htmlElement.setAttribute('data-theme', themeMode)
   }, [themeMode])
 
+  useEffect(() => {
+    const handleOnline = () => {
+      console.info('[Network] back online')
+      window.location.href = '/'
+    }
+    const handleOffline = () => {
+      console.info('[Network] offline detected')
+      window.location.href = '/offline.html'
+    }
+
+    window.addEventListener('online', handleOnline)
+    window.addEventListener('offline', handleOffline)
+
+    return () => {
+      window.removeEventListener('online', handleOnline)
+      window.removeEventListener('offline', handleOffline)
+    }
+  }, [])
+
   return <>{routesProvider}</>
 }
 

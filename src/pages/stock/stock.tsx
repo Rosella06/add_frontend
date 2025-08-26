@@ -70,6 +70,8 @@ const Stock = () => {
             command: 'M32'
           }
         )
+        setButtonStatus(true)
+        toggle()
       } catch (error) {
         if (error instanceof AxiosError) {
           refillModal.current?.close()
@@ -83,11 +85,10 @@ const Stock = () => {
         } else {
           console.error(error)
         }
+        setButtonStatus(false)
       } finally {
         await fetchInventories(false)
         setIsLoading(false)
-        setButtonStatus(true)
-        toggle()
       }
     } else {
       refillModal.current?.close()
@@ -274,7 +275,6 @@ const Stock = () => {
     setAnimating(true)
     setTimeout(() => {
       setDirection(buttonStatus ? 'row' : 'row-reverse')
-      setButtonStatus(!buttonStatus)
       setAnimating(false)
     }, 300)
   }
