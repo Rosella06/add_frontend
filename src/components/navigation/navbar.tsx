@@ -193,9 +193,9 @@ const Navbar = () => {
         <div className='flex justify-center'>
           <div className='hidden md:block'>
             <ul className='flex items-center space-x-2'>
-              {menuItems.map(item => (
-                <div className='tooltip tooltip-bottom' data-tip={item.name}>
-                  <li key={item.name}>
+              {menuItems.map((item, index) => (
+                <div key={index + item.name} className='tooltip tooltip-bottom' data-tip={item.name}>
+                  <li>
                     <NavLink
                       to={item.path}
                       className={({ isActive }) =>

@@ -1093,26 +1093,30 @@ const QueuePanel: FC<{ queue: QueueItem[] }> = ({ queue }) => (
   </div>
 )
 
-const LogPanel: FC<{ logs: string[] }> = ({ logs }) => (
-  <div className='card bg-base-100 shadow-lg rounded-[40px]'>
-    <div className='card-body'>
-      <h2 className='card-title text-lg font-bold'>📡 Log ล่าสุดจาก PLC</h2>
-      {logs.length > 0 ? (
-        <div className='mockup-code text-xs bg-gray-800 text-white rounded-3xl h-48 overflow-y-auto'>
-          {logs.map((log, index) => (
-            <pre data-prefix='>' className='text-success' key={index}>
-              <code>{log}</code>
-            </pre>
-          ))}
-        </div>
-      ) : (
-        <div className='flex items-center justify-center h-full p-4 bg-yellow-100 text-yellow-700 rounded-3xl'>
-          <span>ยังไม่มีข้อมูลจาก PLC</span>
-        </div>
-      )}
+const LogPanel: FC<{ logs: string[] | undefined }> = ({ logs }) => {
+  if (logs === undefined) return
+
+  return (
+    <div className='card bg-base-100 shadow-lg rounded-[40px]'>
+      <div className='card-body'>
+        <h2 className='card-title text-lg font-bold'>📡 Log ล่าสุดจาก PLC</h2>
+        {logs.length > 0 ? (
+          <div className='mockup-code text-xs bg-gray-800 text-white rounded-3xl h-48 overflow-y-auto'>
+            {logs.map((log, index) => (
+              <pre data-prefix='>' className='text-success' key={index}>
+                <code>{log}</code>
+              </pre>
+            ))}
+          </div>
+        ) : (
+          <div className='flex items-center justify-center h-full p-4 bg-yellow-100 text-yellow-700 rounded-3xl'>
+            <span>ยังไม่มีข้อมูลจาก PLC</span>
+          </div>
+        )}
+      </div>
     </div>
-  </div>
-)
+  )
+}
 
 const CommandCenter: FC<{
   onCommandClick: (command: string) => void
@@ -1341,7 +1345,9 @@ const MedicineDispenser: FC<{
                           <p className='font-medium text-[14px]'>
                             ช่อง {position}
                           </p>
-                          <span className='w-12 text-center text-xl text-neutral font-bold bg-transparent focus:outline-none'>{qty}</span>
+                          <span className='w-12 text-center text-xl text-info font-bold bg-transparent focus:outline-none'>
+                            {qty}
+                          </span>
                           <div className='join w-full gap-1'>
                             <button
                               onClick={() => handleQuantityChange(key, qty - 1)}
@@ -1394,7 +1400,9 @@ const useNotifications = () => {
   return { notification, showNotification, closeNotification }
 }
 
-const useDeviceLogs = () => {
+const useDeviceLogs = (machineId: string | undefined) => {
+  if (machineId === undefined) return
+
   const [deviceLog, setDeviceLog] = useState<string[]>([])
   useEffect(() => {
     const handleDeviceMessage = (message: { message: string }) => {
@@ -1405,9 +1413,9 @@ const useDeviceLogs = () => {
         ].slice(0, 5)
       )
     }
-    socket.on('device', handleDeviceMessage)
+    socket.on(machineId, handleDeviceMessage)
     return () => {
-      socket.off('device', handleDeviceMessage)
+      socket.off(machineId, handleDeviceMessage)
     }
   }, [])
   return deviceLog
@@ -1464,7 +1472,7 @@ const Testtools = () => {
 
   const { notification, showNotification, closeNotification } =
     useNotifications()
-  const deviceLogs = useDeviceLogs()
+  const deviceLogs = useDeviceLogs(machine?.id)
   const { sendCommand, loadingCommands } = usePlcCommands(showNotification)
 
   const handleCommandClick = (command: string) => {
