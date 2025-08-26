@@ -1425,7 +1425,7 @@ const usePlcCommands = (
   showNotification: (message: string, type: NotificationType) => void
 ) => {
   const { t } = useTranslation()
-  const { machine } = useSelector((state: RootState) => state.utils)
+  const { machine, socketId } = useSelector((state: RootState) => state.utils)
   const [loadingCommands, setLoadingCommands] = useState<string[]>([])
 
   const sendCommand = useCallback(
@@ -1442,9 +1442,21 @@ const usePlcCommands = (
         return
       }
 
+      if (socketId === undefined) {
+        await showToast({
+          type: 'error',
+          icon: BiErrorCircle,
+          message: 'Socket ID not found.',
+          duration: 3000,
+          showClose: false
+        })
+
+        return
+      }
+
       setLoadingCommands(prev => [...prev, command])
       try {
-        const payload = { command, machineId: machine.id, ...params }
+        const payload = { command, machineId: machine.id, ...params, socketId }
         console.log('📤 Sending Command:', payload)
         await axiosInstance.post(`${API_URL}/sendM`, payload)
         showNotification(
@@ -1466,7 +1478,7 @@ const usePlcCommands = (
 
 const Testtools = () => {
   const { t } = useTranslation()
-  const { machine } = useSelector((state: RootState) => state.utils)
+  const { machine, socketId } = useSelector((state: RootState) => state.utils)
   const [queue, setQueue] = useState<QueueItem[]>([])
   const [isM32ModalOpen, setIsM32ModalOpen] = useState(false)
 
@@ -1509,13 +1521,26 @@ const Testtools = () => {
       return
     }
 
+    if (socketId === undefined) {
+        await showToast({
+          type: 'error',
+          icon: BiErrorCircle,
+          message: 'Socket ID not found.',
+          duration: 3000,
+          showClose: false
+        })
+
+        return
+      }
+
     const commandType = tray === 'R' ? 'M01' : 'M02'
     const commandData = {
       floor,
       position,
       qty,
       command: commandType,
-      machineId: machine.id
+      machineId: machine.id,
+      socketId
     }
 
     setQueue(prev => [...prev, { floor, position, qty }])
