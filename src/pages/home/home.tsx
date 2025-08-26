@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux'
 import { RootState } from '../../redux/reducers/rootReducer'
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { AxiosError } from 'axios'
 import axiosInstance from '../../constants/axios/axiosInstance'
 import { ApiResponse } from '../../types/api.response.type'
@@ -21,6 +21,8 @@ const Home = () => {
   )
   const [dispenseOrder, setDispenseOrder] =
     useState<DispensePrescription | null>(null)
+  const didAnimate = useRef(false)
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [qrCodeText, setQrText] = useState('')
   let textScanner = ''
@@ -75,7 +77,7 @@ const Home = () => {
     }
   }
 
-  const dispense = async (qrCodeText: string) => {
+  const dispense = useCallback(async (qrCodeText: string) => {
     if (machine === undefined) {
       await showToast({
         type: 'warning',
@@ -136,9 +138,9 @@ const Home = () => {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [])
 
-  const pickup = async (qrCodeText: string) => {
+  const pickup = useCallback(async (qrCodeText: string) => {
     const presciptionNo = qrCodeText.split('|')[0]
     const drugCode = qrCodeText.split('|')[1]
 
@@ -162,7 +164,7 @@ const Home = () => {
         console.error(error)
       }
     }
-  }
+  }, [])
 
   const resetPrescription = async () => {
     if (machine === undefined) {
@@ -218,13 +220,26 @@ const Home = () => {
   }
 
   useEffect(() => {
-    if (qrCodeText === '') return
-    if (qrCodeText.length === 1) {
-      dispense(qrCodeText)
-    } else {
-      pickup(qrCodeText)
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current)
     }
-  }, [qrCodeText])
+
+    if (qrCodeText === '') return
+
+    timeoutRef.current = setTimeout(() => {
+      if (qrCodeText.length === 1 && dispenseOrder === null) {
+        dispense(qrCodeText)
+      } else {
+        pickup(qrCodeText)
+      }
+    }, 500)
+
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+      }
+    }
+  }, [qrCodeText, dispenseOrder, dispense, pickup])
 
   useEffect(() => {
     fetchOrder()
@@ -253,12 +268,18 @@ const Home = () => {
     }
   }, [dispenseOrder])
 
+  useEffect(() => {
+    didAnimate.current = true
+  }, [])
+
   const OrderItemAnimate = useMemo(
     () =>
       function WrappedOrderItem () {
-        return <OrderItem prescriptionData={dispenseOrder} />
+        return (
+          <OrderItem prescriptionData={dispenseOrder} didAnimate={didAnimate} />
+        )
       },
-    [dispenseOrder]
+    [dispenseOrder, didAnimate]
   )
 
   return (

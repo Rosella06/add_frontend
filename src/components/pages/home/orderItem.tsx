@@ -11,20 +11,16 @@ import {
 import MarqueeText from '../../textAnimation/MarqueeText'
 import { BiTimeFive } from 'react-icons/bi'
 import { useTranslation } from 'react-i18next'
-import { useEffect, useRef } from 'react'
+import { RefObject } from 'react'
 
 interface OrderItem {
-  prescriptionData: DispensePrescription | null
+  prescriptionData: DispensePrescription | null,
+  didAnimate: RefObject<boolean>
 }
 
 const OrderItem = (props: OrderItem) => {
-  const { prescriptionData } = props
+  const { prescriptionData, didAnimate } = props
   const { t } = useTranslation()
-  const didAnimate = useRef(false)
-
-  useEffect(() => {
-    didAnimate.current = true
-  }, [])
 
   return (
     <div className='flex flex-col gap-3 flex-1'>
