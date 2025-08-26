@@ -24,7 +24,7 @@ import Empty from '../../components/empty/empty'
 
 const Stock = () => {
   const { t } = useTranslation()
-  const { machine } = useSelector((state: RootState) => state.utils)
+  const { machine, socketId } = useSelector((state: RootState) => state.utils)
   const [inventoriesData, setInventoriesData] = useState<Inventories[]>([])
   const [inventoriesFilterData, setInventoriesFilterData] = useState<
     Inventories[]
@@ -110,7 +110,8 @@ const Stock = () => {
         position: selectedItem?.position,
         qty: Number(refill.quantity),
         machineId: machine?.id,
-        command: 'M33'
+        command: 'M33',
+        socketId
       })
       setButtonStatus(false)
       refillModal.current?.close()
