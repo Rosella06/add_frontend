@@ -24,30 +24,30 @@ class SocketService {
 
   private initializeSocketEvents () {
     this.socket.on('connect', () => {
-      console.info('✅ Socket Connected:', this.socket.id)
+      console.info('Socket Connected:', this.socket.id)
 
       if (this.longReconnectTimer) {
         clearTimeout(this.longReconnectTimer)
         this.longReconnectTimer = null
-        console.info('👍 Cleared long reconnect timer.')
+        console.info('Cleared long reconnect timer.')
       }
     })
 
     this.socket.on('disconnect', reason => {
-      console.warn('⚠️ Socket Disconnected, reason:', reason)
+      console.warn('Socket Disconnected, reason:', reason)
     })
 
     this.socket.on('reconnect_attempt', attempt => {
-      console.log(`↪️ Reconnect attempt #${attempt} after 5 seconds...`)
+      console.log(`Reconnect attempt #${attempt} after 5 seconds...`)
     })
 
     this.socket.on('reconnect_failed', () => {
-      console.error('❌ All 5 reconnection attempts failed.')
+      console.error('All 5 reconnection attempts failed.')
       this.scheduleLongReconnect()
     })
 
     this.socket.on('connect_error', err => {
-      console.error('❌ Initial Connection Error:', err.message)
+      console.error('Initial Connection Error:', err.message)
     })
   }
 
@@ -57,12 +57,12 @@ class SocketService {
     }
 
     console.info(
-      `⏰ Waiting ${this.LONG_RECONNECT_DELAY / 60000} minutes to try again...`
+      `Waiting ${this.LONG_RECONNECT_DELAY / 60000} minutes to try again...`
     )
 
     this.longReconnectTimer = setTimeout(() => {
       console.info(
-        '⌛ 30 minutes have passed. Attempting to reconnect socket...'
+        '30 minutes have passed. Attempting to reconnect socket...'
       )
       this.socket.connect()
       this.longReconnectTimer = null
