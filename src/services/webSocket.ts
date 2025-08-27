@@ -24,7 +24,7 @@ class SocketService {
 
   private initializeSocketEvents () {
     this.socket.on('connect', () => {
-      console.info('Socket Connected:', this.socket.id)
+      // console.info('Socket Connected:', this.socket.id)
 
       if (this.longReconnectTimer) {
         clearTimeout(this.longReconnectTimer)

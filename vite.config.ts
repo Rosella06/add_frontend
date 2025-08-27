@@ -127,7 +127,7 @@ export default defineConfig({
     }
   },
   server: {
-    port: 5532,
+    port: 8082,
     strictPort: true,
     host: true,
     cors: true,

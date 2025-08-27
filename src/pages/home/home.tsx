@@ -63,6 +63,8 @@ const Home = () => {
         }
 
         setDispenseOrder(mergePrescription)
+      } else if (prescriptionData.orders.every((e) => e.status === "complete")) {
+        setDispenseOrder(null)
       }
     } catch (error) {
       if (error instanceof AxiosError) {

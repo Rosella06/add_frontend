@@ -24,6 +24,7 @@ const Routes = () => {
   const toastLimit = 1
 
   socket.on('connect', () => {
+    console.log('Socket Connected, ID:', socket.id)
     dispatch(setSocketId(socket.id))
   })
 
