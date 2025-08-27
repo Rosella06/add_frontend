@@ -110,7 +110,7 @@ const Navbar = () => {
             <div>
               {isLaoding ? (
                 <span className='loading loading-spinner loading-md'></span>
-              ) : machineData === undefined ? (
+              ) : machine === undefined ? (
                 <span className='badge badge-warning text-lg rounded-3xl py-4 px-3 font-medium mt-3'>
                   <BiInfoCircle size={24} />
                   {t('machineNotSelectToDispense')}

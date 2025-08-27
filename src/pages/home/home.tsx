@@ -22,7 +22,7 @@ const Home = () => {
   const [dispenseOrder, setDispenseOrder] =
     useState<DispensePrescription | null>(null)
   const didAnimate = useRef(false)
-  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const canExecuteRef = useRef(true)
   const [isLoading, setIsLoading] = useState(false)
   const [qrCodeText, setQrText] = useState('')
   let textScanner = ''
@@ -220,26 +220,30 @@ const Home = () => {
   }
 
   useEffect(() => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current)
+    if (qrCodeText === '') {
+      return
     }
 
-    if (qrCodeText === '') return
-
-    timeoutRef.current = setTimeout(() => {
+    if (canExecuteRef.current) {
+      console.log(`ทำงานทันทีสำหรับ: ${qrCodeText}`)
       if (qrCodeText.length === 1 && dispenseOrder === null) {
         dispense(qrCodeText)
       } else {
         pickup(qrCodeText)
       }
-    }, 500)
 
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current)
-      }
+      canExecuteRef.current = false
+
+      setTimeout(() => {
+        canExecuteRef.current = true
+        console.log('Cooldown สิ้นสุด พร้อมรับค่าใหม่')
+      }, 700)
+    } else {
+      console.log(`เมินค่าที่เข้ามาในช่วง Cooldown: ${qrCodeText}`)
     }
-  }, [qrCodeText, dispenseOrder, dispense, pickup])
+
+    setQrText('')
+  }, [qrCodeText, dispenseOrder, dispense, pickup, setQrText])
 
   useEffect(() => {
     fetchOrder()
@@ -279,7 +283,7 @@ const Home = () => {
           <OrderItem prescriptionData={dispenseOrder} didAnimate={didAnimate} />
         )
       },
-    [dispenseOrder, didAnimate]
+    [dispenseOrder?.orders]
   )
 
   return (

@@ -14,7 +14,7 @@ import { useTranslation } from 'react-i18next'
 import { RefObject } from 'react'
 
 interface OrderItem {
-  prescriptionData: DispensePrescription | null,
+  prescriptionData: DispensePrescription | null
   didAnimate: RefObject<boolean>
 }
 
@@ -50,7 +50,6 @@ const OrderItem = (props: OrderItem) => {
                 : 'border-[#D46161]'
             }`}
             style={{
-              opacity: 0,
               animationDelay: `${index * 100}ms`
             }}
           >
