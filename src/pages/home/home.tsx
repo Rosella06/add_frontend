@@ -45,21 +45,25 @@ const Home = () => {
         [OrderStatus.COMPLETE]: 999
       }
 
-      const orderData = result.data.data.orders
-        .filter(order => order.status !== OrderStatus.COMPLETE)
-        .sort((a, b) => {
-          const priorityA = statusOrderPriority[a.status] || 999
-          const priorityB = statusOrderPriority[b.status] || 999
+      const orderResponse = result.data.data.orders
 
-          return priorityA - priorityB
-        })
+      if (orderResponse.length > 0) {
+        const orderData = orderResponse
+          .filter(order => order.status !== OrderStatus.COMPLETE)
+          .sort((a, b) => {
+            const priorityA = statusOrderPriority[a.status] || 999
+            const priorityB = statusOrderPriority[b.status] || 999
 
-      const mergePrescription = {
-        ...prescriptionData,
-        orders: orderData
+            return priorityA - priorityB
+          })
+
+        const mergePrescription = {
+          ...prescriptionData,
+          orders: orderData
+        }
+
+        setDispenseOrder(mergePrescription)
       }
-
-      setDispenseOrder(mergePrescription)
     } catch (error) {
       if (error instanceof AxiosError) {
         await showToast({
