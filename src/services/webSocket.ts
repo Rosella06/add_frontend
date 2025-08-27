@@ -14,8 +14,8 @@ class SocketService {
 
       reconnection: true,
       reconnectionAttempts: 5,
-      reconnectionDelay: 5000,
-      reconnectionDelayMax: 5000,
+      reconnectionDelay: 5500,
+      reconnectionDelayMax: 5500,
       randomizationFactor: 0
     })
 
