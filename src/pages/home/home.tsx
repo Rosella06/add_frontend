@@ -229,7 +229,6 @@ const Home = () => {
     }
 
     if (canExecuteRef.current) {
-      console.log(`ทำงานทันทีสำหรับ: ${qrCodeText}`)
       if (qrCodeText.length === 1 && dispenseOrder === null) {
         dispense(qrCodeText)
       } else {
@@ -240,10 +239,7 @@ const Home = () => {
 
       setTimeout(() => {
         canExecuteRef.current = true
-        console.log('Cooldown สิ้นสุด พร้อมรับค่าใหม่')
       }, 700)
-    } else {
-      console.log(`เมินค่าที่เข้ามาในช่วง Cooldown: ${qrCodeText}`)
     }
 
     setQrText('')
